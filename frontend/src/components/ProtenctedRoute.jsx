@@ -5,7 +5,6 @@ import { useNavigate, Outlet } from 'react-router-dom'
 const ProtectedRoute = () => {
     const { token } = useSelector((state) => state.auth)
     const navigate = useNavigate()
-    console.log(token)
 
     useEffect(() => {
         if(!token) {
