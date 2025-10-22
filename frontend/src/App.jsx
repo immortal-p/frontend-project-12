@@ -1,13 +1,17 @@
+import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import NoteRout from "./components/NoneRout.jsx";
-import FormEl from './components/Form.jsx';
+import ProtectedRoute from './components/ProtenctedRoute.jsx';
+import Chat from "./components/Chat.jsx";
+import LogInForm from './components/Form.jsx';
 
 const App = () => {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<NoteRout />}></Route>
-                <Route path="/login" element={<FormEl />}></Route>
+                <Route path='/login' element={<LogInForm />} />
+                <Route element={<ProtectedRoute />}>
+                    <Route path='/' element={<Chat />} />
+                </Route>
             </Routes>
         </BrowserRouter>
     )
