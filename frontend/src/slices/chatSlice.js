@@ -3,15 +3,9 @@ import axios from 'axios'
 
 export const fetchChannels = createAsyncThunk(
     'chat/fetchChannels',
-    async (_, { getState, rejectWithValue}) => {
+    async (_, { rejectWithValue}) => {
         try {
-            const { auth } = getState()
-            const token = auth.token
-            const response = await axios.get('/api/v1/channels', {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                },
-            })
+            const response = await axios.get('/api/v1/channels')
             return response.data
         } catch (error) {
             return rejectWithValue(error.response?.data || 'Ошибка загрузки каналов')
@@ -25,7 +19,7 @@ export const fetchMessages = createAsyncThunk(
         try {
             const { auth } = getState()
             const token = auth.token
-            const response = await axios.get('api/v1/messages', {
+            const response = await axios.get('/api/v1/messages', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
