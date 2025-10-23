@@ -15,11 +15,10 @@ const LogInForm = () => {
 
         try {
             const response = await axios.post("/api/v1/login", values )
+
             if (response.data.token) {
-                dispath(setCredentials({
-                    token: response.data.token,
-                    user: response.data.username,
-                }))
+                const token = response.data.token
+                dispath(setCredentials({ token: token, user: response.data.username }))
                 navigate('/')
             } 
             else {
@@ -54,20 +53,18 @@ const LogInForm = () => {
                                         <h1 className="text-center-h4">Войти</h1>
                                         <div className="form-floating mb-3">
                                             <Field
-                                                className={`form-control ${status && 'is-invalid'}`}
+                                                className={`form-control ${status ? 'is-invalid' : ''}`}
                                                 type='text'
                                                 name="username"
-                                                id="username"
                                                 placeholder='Ваш ник'
                                             />
                                             <label htmlFor="username">Ваш ник</label>
                                         </div>
                                         <div className="form-floating mb-4">
                                             <Field
-                                                className={`form-control ${status && 'is-invalid'}`}
+                                                className={`form-control ${status ? 'is-invalid' : ''}`}
                                                 type="password"
                                                 name="password"
-                                                id="password"
                                                 placeholder='Пароль'
                                             />
                                             <label htmlFor="password">Пароль</label>
