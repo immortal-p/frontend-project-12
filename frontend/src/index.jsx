@@ -5,6 +5,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/noneRout.css'
 import { Provider } from 'react-redux'
 import store from "./slices/store.js";
+import { setupAxios } from './config/axios.js'
+setupAxios()
 
 const root = ReactDOM.createRoot(document.querySelector('#root'))
 root.render(
