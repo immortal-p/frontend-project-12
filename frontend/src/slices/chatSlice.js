@@ -41,12 +41,18 @@ const chatSlice = createSlice({
     name: 'chat',
     initialState,
     reducers: {
-        clearError: (state) => { state.error = null}
+        clearError: (state) => { state.error = null},
+        addMessage: (state, action) => {
+            const msg = action.payload
+            if (!state.messages.find(m => m.id === msg.id)) {
+
+                state.messages.push(msg)
+            }
+        }
     },
     extraReducers: (builder) => {
         builder
             .addCase(fetchChannels.fulfilled, (state, action) => {
-                state.loading = false
                 state.channels = action.payload
             })
             .addCase(fetchMessages.fulfilled, (state, action) => {
@@ -55,5 +61,5 @@ const chatSlice = createSlice({
     }
 })
 
-export const { clearError } = chatSlice.actions
+export const { clearError, addMessage } = chatSlice.actions
 export default chatSlice.reducer
