@@ -18,7 +18,7 @@ const LogInForm = () => {
 
             if (response.data.token) {
                 const token = response.data.token
-                dispath(setCredentials({ token: token, user: response.data.username }))
+                dispath(setCredentials({ token: token, username: response.data.username }))
                 navigate('/')
             } 
             else {
