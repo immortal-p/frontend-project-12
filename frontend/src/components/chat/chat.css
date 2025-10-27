@@ -6,8 +6,8 @@
 
 .text-container {
     display: flex;
+    align-items: start;
     justify-content: space-between;
-    align-items: center;
     border: 1px grey solid;
     border-radius: 10px;
     padding: 10px 9px;
@@ -20,4 +20,11 @@
 
 #chat{
     height: 90vh;
+}
+
+#channels-box .text-start {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  white-space: normal;
+  overflow-x: hidden;
 }
