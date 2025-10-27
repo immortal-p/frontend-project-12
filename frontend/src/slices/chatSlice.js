@@ -15,17 +15,10 @@ export const fetchChannels = createAsyncThunk(
 
 export const fetchMessages = createAsyncThunk(
     'chat/fetchMessages',
-    async (_, { getState, rejectWithValue }) => {
+    async (_, { rejectWithValue }) => {
         try {
-            const { auth } = getState()
-            const token = auth.token
-            const response = await axios.get('/api/v1/messages', {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
+            const response = await axios.get('/api/v1/messages')
             return response.data
-
         } catch (error) {
             return rejectWithValue(error.response?.data || 'Ошибка загрузки сообщений')
         }
@@ -45,9 +38,23 @@ const chatSlice = createSlice({
         addMessage: (state, action) => {
             const msg = action.payload
             if (!state.messages.find(m => m.id === msg.id)) {
-
                 state.messages.push(msg)
             }
+        },
+        addChannel: (state, action) => {
+            const newChannel = action.payload
+            if(!state.channels.find(ch => ch.id === newChannel.id)) {
+                state.channels.push(newChannel)
+            }
+        },
+        deleteChannel: (state, action) => {
+            const delChannelId = action.payload.id
+            state.channels = state.channels.filter(chan => chan.id !== delChannelId)
+        },
+        renameChannel: (state, action) => {
+            const { id, name } = action.payload
+            const channel = state.channels.find(ch => ch.id === id)
+            if (channel) channel.name = name
         }
     },
     extraReducers: (builder) => {
@@ -61,5 +68,5 @@ const chatSlice = createSlice({
     }
 })
 
-export const { clearError, addMessage } = chatSlice.actions
+export const { clearError, addMessage, addChannel, deleteChannel, renameChannel } = chatSlice.actions
 export default chatSlice.reducer
