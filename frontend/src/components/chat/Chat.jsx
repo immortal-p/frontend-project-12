@@ -19,7 +19,7 @@ const Chat = () => {
     const [errorMsg, setErrorMSg] = useState("")
     const { username, token } = useSelector((state) => state.auth)
     const socketRef = useRef(null)
-    const defaultChannel = channels[0].id
+    const defaultChannel = channels.length > 0 ? channels[0].id : null
 
     useEffect(() => {
         if(token) {
