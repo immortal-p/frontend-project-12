@@ -1,5 +1,5 @@
 import { Formik, Form, Field, ErrorMessage } from "formik"
-import { chanelValidationSchema } from "./validation"
+import { chanelValidationSchema } from "./validation.js"
 import * as bootstrap from "bootstrap"
 import { useSelector } from "react-redux"
 import { useRef, useEffect } from "react"

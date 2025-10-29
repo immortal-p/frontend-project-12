@@ -1,12 +1,13 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Formik, Form, Field } from 'formik'
 import { useDispatch } from 'react-redux'
 import { setCredentials } from '../slices/authSlice'
-import logInImg from '../assets/logInImg.webp'
+import avatar from '../assets/avatar.jpg'
 import axios from 'axios'
 
 const LogInForm = () => {
+    const inputRef = useRef(null)
     const navigate = useNavigate()
     const dispath = useDispatch()
 
@@ -17,8 +18,8 @@ const LogInForm = () => {
             const response = await axios.post("/api/v1/login", values )
 
             if (response.data.token) {
-                const token = response.data.token
-                dispath(setCredentials({ token: token, username: response.data.username }))
+                const { token, username } = response.data
+                dispath(setCredentials({ token, username }))
                 navigate('/')
             } 
             else {
@@ -30,17 +31,25 @@ const LogInForm = () => {
                 setStatus('Неверные имя пользователя или пароль')
             }
             else {
-                setStatus('Ошибка соеденение')
+                setStatus('Ошибка соединение')
             }
         }
     }
+
+    const handleSignUp = () => {
+        navigate("/signup")
+    }
+
+    useEffect(() => {
+        inputRef.current?.focus()
+    })
 
     return (
         <div className="h-100" id="chat">
             <div className="d-flex flex-column h-100">
                 <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
                     <div className="container">
-                        <a className="navbar-brand" href="#">Slack Chat</a>
+                        <a className="navbar-brand" href="/">Hexlet Chat</a>
                     </div>
                 </nav>
                 <div className="container-fluid h-100">
@@ -49,7 +58,7 @@ const LogInForm = () => {
                             <div className="card shadow-sm">
                                 <div className="card-body row p-5">
                                     <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
-                                        <img src={logInImg} className='rounded-circle' alt="Войти"/>
+                                        <img src={avatar} className='rounded-circle' alt="Войти"/>
                                     </div>
                                     <Formik
                                         initialValues={{ username: "", password: "" }}
@@ -64,6 +73,8 @@ const LogInForm = () => {
                                                         type='text'
                                                         name="username"
                                                         placeholder='Ваш ник'
+                                                        innerRef={inputRef}
+                                                        autoComplete="username"
                                                     />
                                                     <label htmlFor="username">Ваш ник</label>
                                                 </div>
@@ -73,6 +84,7 @@ const LogInForm = () => {
                                                         type="password"
                                                         name="password"
                                                         placeholder='Пароль'
+                                                        autoComplete="password"
                                                     />
                                                     <label htmlFor="password">Пароль</label>
                                                     {status && (
@@ -87,7 +99,7 @@ const LogInForm = () => {
                                 <div className="card-footer p-4">
                                     <div className='text-center'>
                                         <span>Нет аккаунта?</span>
-                                        <a href="#">Регистрация</a>
+                                        <a href="" onClick={handleSignUp}>Регистрация</a>
                                     </div>
                                 </div>
                             </div>

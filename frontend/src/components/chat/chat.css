@@ -18,10 +18,6 @@
     height: 20px;
 }
 
-#chat{
-    height: 90vh;
-}
-
 #channels-box .text-start {
   word-break: break-word;
   overflow-wrap: anywhere;
