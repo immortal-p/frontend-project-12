@@ -9,21 +9,25 @@ import './index.css'
 import store from './slices/store.js'
 import { Provider } from 'react-redux'
 import { setupAxios } from './config/axios.js'
-setupAxios()
 
 const init = async () => {
   const i18n = i18next.createInstance();
-
+  setupAxios()
+  
   await i18n
     .use(initReactI18next)
     .init({
-      resources,
+      resources: resources.ru,
       fallbackLng: 'ru',
+      interpolation: {
+        escapeValue: false,
+      }
     });
 
   return (
     <I18nextProvider i18n={i18n}>
         <Provider store={store}>
+
             <App />
         </Provider>
     </I18nextProvider>

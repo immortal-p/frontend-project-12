@@ -3,27 +3,28 @@ import { useNavigate } from 'react-router-dom'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { useDispatch } from 'react-redux'
 import { setCredentials } from '../slices/authSlice'
-import { addUser } from '../slices/usersSlice'
 import avatar_1 from '../assets/avatar_1.jpg'
 import axios from 'axios'
 import * as Yup from "yup"
+import { useTranslation } from 'react-i18next'
 
 const SignUpForm = () => {
     const inputRef = useRef(null)
     const navigate = useNavigate()
     const dispath = useDispatch()
+    const { t } = useTranslation()
 
     const validationSchema = Yup.object().shape({
         username: Yup.string()
-            .min(3, "От 3 до 20 симоволов")
-            .max(20, "От 3 lj 20 символов")
-            .required("Обязательное поле"),
+            .min(3, t('auth.errors.usernameLength'))
+            .max(20, t('auth.errors.usernameLength'))
+            .required(t('errors.required')),
         password: Yup.string()
-            .min(6, "Минимум 6 символов")
-            .required("Обязательное поле"),
+            .min(6, t('auth.errors.passwordLength'))
+            .required(t('errors.required')),
         confirmPassword: Yup.string()
-            .oneOf([Yup.ref("password"), null], "Пароль должны совпадать")
-            .required("Подвердите пароль")
+            .oneOf([Yup.ref("password"), null], t('auth.errors.confirmPasswordRequired'))
+            .required(t('auth.errors.passwordsMustMatch'))
             
     })
 
@@ -35,22 +36,18 @@ const SignUpForm = () => {
             if (response.data.token) {
                 const { token, username } = response.data
                 dispath(setCredentials({ token, username }))
-                dispath(addUser({ token, username }))
                 navigate('/')
             }
             else {
-                setStatus('Error: The server did not return a token.')
+                setStatus(t('auth.errors.noToken'))
             }
         } catch (err) {
             console.error('Login error:', err)
-            if (err.response?.status === 401) {
-                setStatus('Неверные имя пользователя или пароль')
-            }
             if(err.response?.status === 409) {
-                setStatus('Такой пользователь уже сущестует')
+                setStatus(t('auth.errors.userExists'))
             }
             else {
-                setStatus('Ошибка соединение')
+                setStatus(t('auth.errors.connectionError'))
             }
         }
     }
@@ -64,7 +61,7 @@ const SignUpForm = () => {
             <div className="d-flex flex-column h-100">
                 <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
                     <div className="container">
-                        <a className="navbar-brand" href="/">Hexlet Chat</a>
+                        <a className="navbar-brand" href="/">{t('nameChat')}</a>
                     </div>
                 </nav>
                 <div className="container-fluid h-100">
@@ -104,7 +101,7 @@ const SignUpForm = () => {
                                                         submitForm()
                                                         }
                                                     }>
-                                                    <h1 className="text-center mb-4">Регистрация</h1>
+                                                    <h1 className="text-center mb-4">{t('auth.register.title')}</h1>
 
                                                     <div className="form-floating mb-3">
                                                         <Field
@@ -115,7 +112,7 @@ const SignUpForm = () => {
                                                             innerRef={inputRef}
                                                             autoComplete="username"
                                                         />
-                                                        <label className='form-label' htmlFor="username">Ваш ник</label>
+                                                        <label className='form-label' htmlFor="username">{t('auth.register.name')}</label>
                                                         <ErrorMessage name="username" component="div" placement="right" className="invalid-tooltip" />
                                                     </div>
 
@@ -127,7 +124,7 @@ const SignUpForm = () => {
                                                             placeholder='Не менее 6 символов'
                                                             autoComplete="new-password"
                                                         />
-                                                        <label className='form-label' htmlFor="password">Пароль</label>
+                                                        <label className='form-label' htmlFor="password">{t('auth.register.password')}</label>
                                                         <ErrorMessage name="password" component="div" placement="right" className="invalid-tooltip" />
                                                     </div>
 
@@ -139,14 +136,14 @@ const SignUpForm = () => {
                                                             placeholder="Пароли должны совпадать"
                                                             autoComplete="new-password"
                                                         ></Field>
-                                                        <label className='form-label' htmlFor="confirmPassword">Подтвердите пароль</label>
+                                                        <label className='form-label' htmlFor="confirmPassword">{t('auth.register.confirmPassword')}</label>
                                                         <ErrorMessage name="confirmPassword" component="div" placement="right" className="invalid-tooltip" />
                                                     </div>
                                                     
                                                     {status && (
                                                         <div className="alert alert-danger text-center py-2">{status}</div>
                                                     )}
-                                                    <button type='submit' className='w-100 mb-3 btn btn-outline-primary' disabled={isSubmitting}>Зарегистрироваться</button>
+                                                    <button type='submit' className='w-100 mb-3 btn btn-outline-primary' disabled={isSubmitting}>{t('auth.register.button')}</button>
                                                 </Form>
                                             )}
                                         </Formik>

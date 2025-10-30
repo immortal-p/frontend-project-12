@@ -1,20 +1,22 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { chanelValidationSchema } from "./validation";
+import { chanelValidationSchema } from "../validation.js";
 import * as bootstrap from "bootstrap";
 import { useSelector } from "react-redux";
 import { useRef, useEffect } from "react";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 export const ModalEditChannel = ({ channel, onChannelEdited }) => {
     const formikRef = useRef(null);
     const inputRef = useRef(null);
+    const { t } = useTranslation()
 
     const channels = useSelector((state) => state.chat.channels);
     const existingNames = channels
       .map((ch) => ch.name)
       .filter((name) => name !== channel?.name);
 
-    const validationSchema = chanelValidationSchema(existingNames);
+    const validationSchema = chanelValidationSchema(t, existingNames);
 
     const handleSubmit = async (values, { resetForm }) => {
         const updatedChannel = { name: values.channelName };
@@ -59,7 +61,7 @@ export const ModalEditChannel = ({ channel, onChannelEdited }) => {
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title">Переименовать канал</h5>
+              <h5 className="modal-title">{t('chat.editChannelModal.title')}</h5>
               <button
                 type="button"
                 className="btn-close"
@@ -107,10 +109,10 @@ export const ModalEditChannel = ({ channel, onChannelEdited }) => {
                         data-bs-dismiss="modal"
                         onClick={() => resetForm()}
                       >
-                        Отменить
+                        {t('chat.editChannelModal.cancel')}
                       </button>
                       <button type="submit" className="btn btn-primary">
-                        Сохранить
+                        {t('chat.editChannelModal.confirm')}
                       </button>
                     </div>
                   </Form>

@@ -6,9 +6,10 @@ import { connectSocket } from "../../socket.js"
 import { uniqueId } from "lodash"
 import sendMessage from "./sendMessage.js"
 import "./chat.css"
-import { ModalAddChannel } from "./ModalAddChannel.jsx"
-import { ModalDeleteChannel } from "./ModalDeleteChannel.jsx"
-import { ModalEditChannel } from "./ModalEditChannel.jsx"
+import { ModalAddChannel } from "./components/ModalAddChannel.jsx"
+import { ModalDeleteChannel } from "./components/ModalDeleteChannel.jsx"
+import { ModalEditChannel } from "./components/ModalEditChannel.jsx"
+import { useTranslation } from "react-i18next"
 
 const Chat = () => {
     const navigate = useNavigate()
@@ -22,6 +23,7 @@ const Chat = () => {
     const { username, token } = useSelector((state) => state.auth)
     const socketRef = useRef(null)
     const defaultChannel = channels.length > 0 ? channels[0].id : null
+    const { t } = useTranslation()
 
     useEffect(() => {
         if(token) {
@@ -99,7 +101,7 @@ const Chat = () => {
                             ${channel.id === currentChannelId ? 'btn-secondary' : ''}`}
                             data-bs-toggle="dropdown"
                             aria-expanded="false">
-                            <span className="visually-hidden">Управление каналом</span>
+                            <span className="visually-hidden">{t('chat.controlChannel')}</span>
                         </button>
                         <div className="dropdown-menu">
                             <a className="dropdown-item" href="#" data-bs-target="#exampleModalDelete" data-bs-toggle="modal" onClick={() => setChannelToDelete(channel)}>Удалить</a>
@@ -123,7 +125,7 @@ const Chat = () => {
             await sendMessage(msg)
         } catch (err) {
             console.error(err)
-            setErrorMSg("Не удалось отправить сообщение. Проверьте соединение.")
+            setErrorMSg(t('chat.errors.connectionError'))
             setTimeout(() => setErrorMSg(""), 5000)
         }
 
@@ -156,8 +158,8 @@ const Chat = () => {
             <div className="d-flex flex-column h-100">
                 <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
                     <div className="container">
-                        <a className="navbar-brand" href="/">Hexlet Chat</a>
-                        <button type="button" className="btn btn-primary" onClick={handleLogout}>Выйти</button>
+                        <a className="navbar-brand" href="/">{t('nameChat')}</a>
+                        <button type="button" className="btn btn-primary" onClick={handleLogout}>{t('chat.buttonExit')}</button>
                     </div>
                 </nav>
                 <div className="container h-100 my-4 overflow-hidden rounded shadow">
@@ -165,7 +167,7 @@ const Chat = () => {
 
                         <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
                             <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
-                                <b>Каналы</b>
+                                <b>{t('chat.title')}</b>
                                 <button className="p-0 text-primary btn btn-group-vertical" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" fill="currentColor" className="bi bi-plus-square" data-darkreader-inline-fill="">
                                         <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"></path>
@@ -187,7 +189,7 @@ const Chat = () => {
                                     <p className="m-0">
                                         <b>{`# ${currentChannel ? currentChannel.name : '...'}`}</b>
                                     </p>
-                                    <span className="text-muted">{totalMessages} сообщений</span>
+                                    <span className="text-muted">{totalMessages} {t('chat.messages')}</span>
                                 </div>
                                 <div id="messages-box" className="chat-messages overflow-auto px-5 ">
                                     {currentMessages.map((message) => (
@@ -205,8 +207,8 @@ const Chat = () => {
                                         <div className={`input-group ${(newMessage.trim().length <= 0) ? "has-validation" : ""}`}>
                                             <input 
                                                 name="body" 
-                                                aria-label="Новое сообщение"
-                                                placeholder="Введите сообщение..."
+                                                aria-label={t('chat.newMessage')}
+                                                placeholder={t('chat.inputMess')}
                                                 className="border-0 p-0 ps-2 form-control"
                                                 value={newMessage}
                                                 onChange={(e) => setNewMessage(e.target.value)}
@@ -220,7 +222,7 @@ const Chat = () => {
                                                     <path fillRule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"></path>
                                                 </svg>
                                                 <span className="visually-hidden">
-                                                    Отправить
+                                                    {t('chat.send')}
                                                 </span>
                                             </button>
                                         </div>

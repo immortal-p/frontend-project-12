@@ -1,18 +1,20 @@
 import { Formik, Form, Field, ErrorMessage } from "formik"
-import { chanelValidationSchema } from "./validation.js"
+import { chanelValidationSchema } from "../validation.js"
 import * as bootstrap from "bootstrap"
 import { useSelector } from "react-redux"
 import { useRef, useEffect } from "react"
 import axios from "axios"
 import { uniqueId } from "lodash"
+import { useTranslation } from "react-i18next"
 
 export const ModalAddChannel = ({ onChannelCreated }) => {
     const formikRef = useRef(null)
     const inputRef = useRef(null)
+    const { t } = useTranslation()
 
     const channels = useSelector((state) => state.chat.channels)
     const existingNames = channels.map((ch) => ch.name)
-    const validationSchema = chanelValidationSchema(existingNames)
+    const validationSchema = chanelValidationSchema(t, existingNames)
 
     const handleSubmit = async (values, { resetForm }) => {
       const newChannel = { id: uniqueId(), name: values.channelName }
@@ -61,7 +63,7 @@ export const ModalAddChannel = ({ onChannelCreated }) => {
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title">Добавить канал</h5>
+              <h5 className="modal-title">{t('chat.addChannelModal.title')}</h5>
               <button
                 type="button"
                 className="btn-close"
@@ -103,10 +105,10 @@ export const ModalAddChannel = ({ onChannelCreated }) => {
                         data-bs-dismiss="modal"
                         onClick={() => resetForm()}
                       >
-                        Отменить
+                        {t('chat.addChannelModal.cancel')}
                       </button>
                       <button type="submit" className="btn btn-primary">
-                        Отправить
+                        {t('chat.addChannelModal.confirm')}
                       </button>
                     </div>
                   </Form>

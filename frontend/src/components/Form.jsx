@@ -5,11 +5,13 @@ import { useDispatch } from 'react-redux'
 import { setCredentials } from '../slices/authSlice'
 import avatar from '../assets/avatar.jpg'
 import axios from 'axios'
+import { useTranslation } from 'react-i18next'
 
 const LogInForm = () => {
     const inputRef = useRef(null)
     const navigate = useNavigate()
     const dispath = useDispatch()
+    const { t } = useTranslation()
 
     const handleSubmit = async (values, { setStatus }) => {
         setStatus("")
@@ -49,7 +51,7 @@ const LogInForm = () => {
             <div className="d-flex flex-column h-100">
                 <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
                     <div className="container">
-                        <a className="navbar-brand" href="/">Hexlet Chat</a>
+                        <a className="navbar-brand" href="/">{t('nameChat')}</a>
                     </div>
                 </nav>
                 <div className="container-fluid h-100">
@@ -66,40 +68,40 @@ const LogInForm = () => {
                                     >
                                         {({ status }) => (
                                             <Form className="col-12 col-md-6 mt-3 mt-md-0">
-                                                <h1 className="text-center mb-4">Войти</h1>
+                                                <h1 className="text-center mb-4">{t('auth.login.title')}</h1>
                                                 <div className="form-floating mb-3">
                                                     <Field
                                                         className={`form-control ${status ? 'is-invalid' : ''}`}
                                                         type='text'
                                                         name="username"
-                                                        placeholder='Ваш ник'
+                                                        placeholder={t('auth.login.name')}
                                                         innerRef={inputRef}
                                                         autoComplete="username"
                                                     />
-                                                    <label htmlFor="username">Ваш ник</label>
+                                                    <label htmlFor="username">{t('auth.login.name')}</label>
                                                 </div>
                                                 <div className="form-floating mb-4">
                                                     <Field
                                                         className={`form-control ${status ? 'is-invalid' : ''}`}
                                                         type="password"
                                                         name="password"
-                                                        placeholder='Пароль'
+                                                        placeholder={t('auth.login.passwor')}
                                                         autoComplete="password"
                                                     />
-                                                    <label htmlFor="password">Пароль</label>
+                                                    <label htmlFor="password">{t('auth.login.password')}</label>
                                                     {status && (
                                                         <div className="invalid-tooltip d-block">{status}</div>
                                                     )}
                                                 </div>
-                                                <button type='submit' className='w-100 mb-3 btn btn-outline-primary'>Войти</button>
+                                                <button type='submit' className='w-100 mb-3 btn btn-outline-primary'>{t('auth.login.button')}</button>
                                             </Form>
                                         )}
                                     </Formik>
                                 </div>
                                 <div className="card-footer p-4">
                                     <div className='text-center'>
-                                        <span>Нет аккаунта?</span>
-                                        <a href="" onClick={handleSignUp}>Регистрация</a>
+                                        <span>{t('auth.login.noAccount')}</span>
+                                        <a href="" onClick={handleSignUp}>{t('auth.login.buttonSignUp')}</a>
                                     </div>
                                 </div>
                             </div>
