@@ -11,6 +11,7 @@ import { ModalDeleteChannel } from "./components/ModalDeleteChannel.jsx"
 import { ModalEditChannel } from "./components/ModalEditChannel.jsx"
 import { useTranslation } from "react-i18next"
 import { ToastContainer, toast} from "react-toastify"
+import filter from 'leo-profanity'
 
 const Chat = () => {
     const navigate = useNavigate()
@@ -22,6 +23,8 @@ const Chat = () => {
     const [newMessage, setNewMessage] = useState("")
     const [errorMsg, setErrorMSg] = useState("")
     const { username, token } = useSelector((state) => state.auth)
+    const channelEndRef = useRef(null)
+    const messageEndRef = useRef(null)
     const socketRef = useRef(null)
     const defaultChannel = channels.length > 0 ? channels[0].id : null
     const { t } = useTranslation()
@@ -82,6 +85,18 @@ const Chat = () => {
         }
     }, [channels, currentChannelId, defaultChannel])
 
+    useEffect(() => {
+      if(channelEndRef.current) {
+        channelEndRef.current.scrollIntoView({ behavior: "smooth" })
+      }
+    }, [channels])
+
+    useEffect(() => {
+        if(messageEndRef.current) {
+            messageEndRef.current.scrollIntoView({ behavior: "smooth" })
+        }
+    }, [messages])
+
     const handleChannelClick = (channelId) => {
         setCurrentChannelId(channelId)
     }
@@ -137,7 +152,8 @@ const Chat = () => {
         const body = formData.get("body").trim()
         if(!body || !currentChannelId) return
 
-        const msg = { id: uniqueId(), body, channelId: currentChannelId, username }
+        const cleanBody = filter.clean(body)
+        const msg = { id: uniqueId(), body: cleanBody, channelId: currentChannelId, username }
 
         try {
             await sendMessage(msg)
@@ -199,6 +215,7 @@ const Chat = () => {
                                 {channels.map((channel) => (
                                     builderChannel(channel)
                                 ))}
+                                <div ref={channelEndRef} />
                             </ul>
                         </div>
 
@@ -217,6 +234,7 @@ const Chat = () => {
                                             <i className="bi bi-check2-all text-success"></i>
                                         </div>
                                     ))}
+                                    <div ref={messageEndRef} />
                                 </div>
                                 <div className="mt-auto px-5 py-3">
                                     {errorMsg && ( 

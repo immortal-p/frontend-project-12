@@ -6,6 +6,7 @@ import { useRef, useEffect } from "react"
 import axios from "axios"
 import { uniqueId } from "lodash"
 import { useTranslation } from "react-i18next"
+import filter from 'leo-profanity'
 
 export const ModalAddChannel = ({ onChannelCreated }) => {
     const formikRef = useRef(null)
@@ -17,7 +18,8 @@ export const ModalAddChannel = ({ onChannelCreated }) => {
     const validationSchema = chanelValidationSchema(t, existingNames)
 
     const handleSubmit = async (values, { resetForm }) => {
-      const newChannel = { id: uniqueId(), name: values.channelName }
+      const cleanValues = filter.clean(values.channelName)
+      const newChannel = { id: uniqueId(), name: cleanValues }
 
       try {
         const response = await axios.post("/api/v1/channels", newChannel)

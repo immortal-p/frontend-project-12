@@ -4,8 +4,11 @@ import ProtectedRoute from './components/ProtenctedRoute.jsx';
 import Chat from "./components/chat/Chat.jsx";
 import LogInForm from './components/Form.jsx';
 import SignUpForm from './components/SignUp.jsx';
+import filter from 'leo-profanity'
 
 const App = () => {
+    filter.loadDictionary('ru');
+    filter.add(filter.getDictionary('en'))
     return (
         <BrowserRouter>
             <Routes>
