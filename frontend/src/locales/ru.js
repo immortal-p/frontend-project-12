@@ -57,7 +57,8 @@ export default {
                     cancel: 'Отменить'
                 },
                 toastify: {
-                    connectionError: 'Не удалось загрузить данные',
+                    loadingDataError: 'Не удалось загрузить данные',
+                    connectionError: 'Ошибка соеденение',
                     createChannel: 'Канал создан',
                     deleteChannel: 'Канал удалён',
                     renameChannel: 'Канал переименован',

@@ -27,7 +27,7 @@ const Chat = () => {
     const { t } = useTranslation()
 
     useEffect(() => {
-        const lodaData = async () => {
+        const loadData = async () => {
             if(!token) return
             try { 
                 await dispath(fetchChannels()).unwrap()
@@ -35,11 +35,11 @@ const Chat = () => {
             }
             catch (err) {
                 console.error("Ошибка загрузки данных", err)
-                toast.error(t('chat.toastify.connectionError'))
+                toast.error(t('chat.toastify.loadingDataError'))
             }
         }
 
-        lodaData()
+        loadData()
     }, [token, dispath, t])
 
     useEffect(() => {
@@ -143,7 +143,7 @@ const Chat = () => {
             await sendMessage(msg)
         } catch (err) {
             console.error(err)
-            toast.error('None internet')
+            toast.error(t('chat.toastify.connectionError'))
             setErrorMSg(t('chat.errors.connectionError'))
             setTimeout(() => setErrorMSg(""), 5000)
         }
