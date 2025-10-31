@@ -10,6 +10,7 @@ import { ModalAddChannel } from "./components/ModalAddChannel.jsx"
 import { ModalDeleteChannel } from "./components/ModalDeleteChannel.jsx"
 import { ModalEditChannel } from "./components/ModalEditChannel.jsx"
 import { useTranslation } from "react-i18next"
+import { ToastContainer, toast} from "react-toastify"
 
 const Chat = () => {
     const navigate = useNavigate()
@@ -26,11 +27,20 @@ const Chat = () => {
     const { t } = useTranslation()
 
     useEffect(() => {
-        if(token) {
-            dispath(fetchChannels())
-            dispath(fetchMessages())
+        const lodaData = async () => {
+            if(!token) return
+            try { 
+                await dispath(fetchChannels()).unwrap()
+                await dispath(fetchMessages()).unwrap()
+            }
+            catch (err) {
+                console.error("Ошибка загрузки данных", err)
+                toast.error(t('chat.toastify.connectionError'))
+            }
         }
-    }, [token, dispath])
+
+        lodaData()
+    }, [token, dispath, t])
 
     useEffect(() => {
         const socket = connectSocket()
@@ -41,22 +51,30 @@ const Chat = () => {
         socket.on("newMessage", (msg) =>  {
             if(msg && msg.id) dispath(addMessage(msg))
         })
-        socket.on("newChannel", (channel) => dispath(addChannel(channel)))
+        socket.on("newChannel", (channel) => {
+            dispath(addChannel(channel))
+            toast.success(t('chat.toastify.createChannel'), { draggable: true })
+        })
         socket.on("removeChannel", (channelId) => {
             dispath(deleteChannel(channelId))
             if(currentChannelId === channelId.id) {
                 setCurrentChannelId(defaultChannel)
             }
+            toast.success(t('chat.toastify.deleteChannel'), { draggable: true })
         })
-        socket.on("renameChannel", (channel) => dispath(renameChannel(channel)))
+        socket.on("renameChannel", (channel) => {
+            dispath(renameChannel(channel))
+            toast.success(t('chat.toastify.renameChannel'), { draggable: true })
+        })
 
         return () => {
             socket.off("newMessage")
             socket.off("newChannel")
             socket.off("removeChannel")
+            socket.off("renameChannel")
         }
 
-    }, [dispath, currentChannelId, defaultChannel])
+    }, [dispath, defaultChannel, t, currentChannelId])
 
     useEffect(() => {
         if (channels.length > 0 && currentChannelId === null) {
@@ -101,7 +119,7 @@ const Chat = () => {
                             ${channel.id === currentChannelId ? 'btn-secondary' : ''}`}
                             data-bs-toggle="dropdown"
                             aria-expanded="false">
-                            <span className="visually-hidden">{t('chat.controlChannel')}</span>
+                            <span className="visually-hidden">Управление каналом</span>
                         </button>
                         <div className="dropdown-menu">
                             <a className="dropdown-item" href="#" data-bs-target="#exampleModalDelete" data-bs-toggle="modal" onClick={() => setChannelToDelete(channel)}>Удалить</a>
@@ -125,6 +143,7 @@ const Chat = () => {
             await sendMessage(msg)
         } catch (err) {
             console.error(err)
+            toast.error('None internet')
             setErrorMSg(t('chat.errors.connectionError'))
             setTimeout(() => setErrorMSg(""), 5000)
         }
@@ -207,7 +226,7 @@ const Chat = () => {
                                         <div className={`input-group ${(newMessage.trim().length <= 0) ? "has-validation" : ""}`}>
                                             <input 
                                                 name="body" 
-                                                aria-label={t('chat.newMessage')}
+                                                aria-label='Новое сообщение'
                                                 placeholder={t('chat.inputMess')}
                                                 className="border-0 p-0 ps-2 form-control"
                                                 value={newMessage}
@@ -235,8 +254,10 @@ const Chat = () => {
                 </div>
 
             </div>
+            <ToastContainer draggable />
         </>
     )
 }
+
 
 export default Chat

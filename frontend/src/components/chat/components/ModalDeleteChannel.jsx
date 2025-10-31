@@ -40,8 +40,8 @@ const ModalDeleteChannel = ({ channel, onChannelDefault}) => {
                     <div className="modal-body">
                         <p className="lead">{t('chat.deleteChannelModal.confirmMessage')}</p>
                         <div className="d-flex justify-content-end">
-                            <button type="button" className="me-2 btn btn-secondary" data-bs-dismiss="modal">{t('chat.deleteChannelModal.confirm')}</button>
-                            <button type="button" className="btn btn-danger" onClick={deleteChannel}>{t('chat.deleteChannelModal.cancel')}</button>
+                            <button type="button" className="me-2 btn btn-secondary" data-bs-dismiss="modal">{t('chat.deleteChannelModal.cancel')}</button>
+                            <button type="button" className="btn btn-danger" onClick={deleteChannel}>{t('chat.deleteChannelModal.confirm')}</button>
                         </div>
                     </div>
                 </div>

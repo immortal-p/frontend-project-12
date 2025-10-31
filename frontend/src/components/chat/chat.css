@@ -24,3 +24,7 @@
   white-space: normal;
   overflow-x: hidden;
 }
+
+.Toastify__toast {
+  cursor: pointer;
+}

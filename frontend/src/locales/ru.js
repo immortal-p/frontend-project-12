@@ -36,8 +36,6 @@ export default {
                 buttonExit: 'Выйти',
                 messages: 'сообщений',
                 inputMess: 'Введите сообщение...',
-                controlChannel: 'Управление каналом',
-                newMessage: 'Новое сообщение',
                 errors: {
                     connectionError: 'Не удалось отправить сообщение. Проверьте соединение.',
                 },
@@ -49,7 +47,7 @@ export default {
                 },
                 editChannelModal: {
                     title: 'Переименовать канал',
-                    confirm: 'Сохранить',
+                    confirm: 'Отправить',
                     cancel: 'Отменить'
                 },
                 deleteChannelModal: {
@@ -58,6 +56,12 @@ export default {
                     confirm: 'Удалить',
                     cancel: 'Отменить'
                 },
+                toastify: {
+                    connectionError: 'Не удалось загрузить данные',
+                    createChannel: 'Канал создан',
+                    deleteChannel: 'Канал удалён',
+                    renameChannel: 'Канал переименован',
+                }
                 
             },
 
