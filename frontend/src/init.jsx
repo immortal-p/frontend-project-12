@@ -30,7 +30,7 @@ i18n.use(initReactI18next).init({
   interpolation: { escapeValue: false }
 }).then(() => {
   const rollbarConfig = {
-    accessToken: '9f7e62d53f4347d2acb395ab1cc4afc4',
+    accessToken: '522190b4993341f49b425ee92846d880c414b5734011c9de3a07330f006fa6e1e6970c50c023d78a00449d1de735a378',
     environment: 'testenv',
   };
 
