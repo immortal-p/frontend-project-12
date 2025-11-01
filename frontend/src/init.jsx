@@ -33,11 +33,13 @@ const init = async () => {
 
   return (
     <Prov config={rollbarConfig}>
-      <I18nextProvider i18n={i18n}>
-          <Provider store={store}>
-            <App />
-          </Provider>
-      </I18nextProvider>
+      <ErrorBoundary>
+          <I18nextProvider i18n={i18n}>
+            <Provider store={store}>
+              <App />
+            </Provider>
+          </I18nextProvider>
+      </ErrorBoundary>
     </Prov>
   );
 };
