@@ -26,8 +26,8 @@ const init = async () => {
     });
 
   const rollbarConfig = {
-    accessToken: localStorage.getItem("token"),
-    evnironment: 'testenv'
+    accessToken: '9f7e62d53f4347d2acb395ab1cc4afc4',
+    environment: 'testenv'
   }
 
 
