@@ -9,6 +9,7 @@ import './index.css'
 import store from './slices/store.js'
 import { Provider } from 'react-redux'
 import { setupAxios } from './config/axios.js'
+import ErrorBoundary from "./ErrorBoundary.jsx"
 
 const init = async () => {
   const i18n = i18next.createInstance();
@@ -26,10 +27,11 @@ const init = async () => {
 
   return (
     <I18nextProvider i18n={i18n}>
-        <Provider store={store}>
-
-            <App />
-        </Provider>
+        <ErrorBoundary>
+            <Provider store={store}>
+              <App />
+            </Provider>
+        </ErrorBoundary>
     </I18nextProvider>
   );
 };
