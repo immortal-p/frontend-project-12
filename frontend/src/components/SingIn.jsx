@@ -6,12 +6,14 @@ import { setCredentials } from '../slices/authSlice'
 import avatar from '../assets/avatar.jpg'
 import axios from 'axios'
 import { useTranslation } from 'react-i18next'
+import { useRollbar } from '@rollbar/react'
 
 const LogInForm = () => {
     const inputRef = useRef(null)
     const navigate = useNavigate()
     const dispath = useDispatch()
     const { t } = useTranslation()
+    const rollbar = useRollbar()
 
     const handleSubmit = async (values, { setStatus }) => {
         setStatus("")
@@ -28,6 +30,8 @@ const LogInForm = () => {
                 setStatus('Error: The server did not return a token.')
             }
         } catch (err) {
+            console.error('Login error:', err)
+            rollbar.error(err, { context: "Login form submit" });
             if (err.response?.status === 401) {
                 setStatus('Неверные имя пользователя или пароль')
             }
