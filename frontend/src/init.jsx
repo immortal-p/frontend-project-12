@@ -30,17 +30,11 @@ const init = async () => {
     environment: 'testenv',
   };
 
-  function TestError() {
-    const a = null;
-    return a.hello();
-  }
-
   return (
     <Prov config={rollbarConfig}>
       <ErrorBoundary>
         <I18nextProvider i18n={i18n}>
           <Provider store={store}>
-            <TestError />
             <App />
           </Provider>
         </I18nextProvider>
