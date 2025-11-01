@@ -30,12 +30,18 @@ const init = async () => {
     environment: 'testenv',
   };
 
+  function TestError() {
+    throw new Error("Тестовая ошибка Rollbar");
+    return <div>Эта строка никогда не будет видна</div>;
+  }
+
   return (
     <Prov config={rollbarConfig}>
       <ErrorBoundary>
         <I18nextProvider i18n={i18n}>
           <Provider store={store}>
             <App />
+            <TestError />
           </Provider>
         </I18nextProvider>
       </ErrorBoundary>
