@@ -169,7 +169,7 @@ const Chat = () => {
     }
 
     const handleLogout = () => {
-        navigate("/login")
+        navigate("/signin")
         localStorage.clear()
     }
 

@@ -27,15 +27,20 @@ const init = async () => {
 
   const rollbarConfig = {
     accessToken: '9f7e62d53f4347d2acb395ab1cc4afc4',
-    environment: 'testenv'
-  }
+    environment: 'testenv',
+  };
 
+  function TestError() {
+    const a = null;
+    return a.hello();
+  }
 
   return (
     <Prov config={rollbarConfig}>
       <ErrorBoundary>
         <I18nextProvider i18n={i18n}>
           <Provider store={store}>
+            <TestError />
             <App />
           </Provider>
         </I18nextProvider>
