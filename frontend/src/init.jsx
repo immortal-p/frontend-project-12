@@ -9,7 +9,7 @@ import './index.css'
 import store from './slices/store.js'
 import { Provider } from 'react-redux'
 import { setupAxios } from './config/axios.js'
-import ErrorBoundary from "./ErrorBoundary.jsx"
+import { Provider as Prov, ErrorBoundary } from "@rollbar/react"
 
 const init = async () => {
   const i18n = i18next.createInstance();
@@ -25,14 +25,20 @@ const init = async () => {
       }
     });
 
+  const rollbarConfig = {
+    accessToken: localStorage.getItem("token"),
+    evnironment: 'testenv'
+  }
+
+
   return (
-    <I18nextProvider i18n={i18n}>
-        <ErrorBoundary>
-            <Provider store={store}>
-              <App />
-            </Provider>
-        </ErrorBoundary>
-    </I18nextProvider>
+    <Prov config={rollbarConfig}>
+      <I18nextProvider i18n={i18n}>
+          <Provider store={store}>
+            <App />
+          </Provider>
+      </I18nextProvider>
+    </Prov>
   );
 };
 
