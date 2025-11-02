@@ -22,9 +22,20 @@ const Chat = () => {
     const [currentChannelId, setCurrentChannelId] = useState(null) 
     const [channelToDelete, setChannelToDelete] = useState(null)
     const [channelToUpdate, setChannelToUpdate] = useState(null)
-    
+    const [reanderReady, setRenderReady] = useState(false)
+
     const channelEndRef = useRef(null)
     const socketRef = useRef(null)
+
+    useEffect(() => {
+        if(channelsStatus === 'succeeded' && channels.length > 0) {
+            const timer = setTimeout(() => {
+                setRenderReady(true)
+            }, 300)
+            return () => clearTimeout(timer)
+        }
+        setRenderReady(false)
+    }, [channelsStatus, channels.length])
     
     useEffect(() => {
         const loadData = async () => {
@@ -91,7 +102,7 @@ const Chat = () => {
     const isLoading = channelsStatus === 'loading'; 
     const isError = channelsStatus === 'failed';
 
-    if (isLoading) {
+    if (isLoading || !reanderReady) {
         return (
             <div className="d-flex justify-content-center align-items-center h-100">
                 <div className="spinner-border text-primary" role="status">
