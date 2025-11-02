@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom"
 import { fetchChannels, addMessage, addChannel, deleteChannel, renameChannel } from "../../slices/chatSlice" 
 import { connectSocket } from "../../socket.js"
 import "./chat.css"
+import { Button } from "react-bootstrap"
 import { ModalAddChannel } from "./components/ModalAddChannel.jsx"
 import { ModalDeleteChannel } from "./components/ModalDeleteChannel.jsx"
 import { ModalEditChannel } from "./components/ModalEditChannel.jsx"
@@ -125,15 +126,15 @@ const Chat = () => {
         return (
             <li key={channel.id} className="nav-item w-100">
                 {(!channel.removable) ? (
-                    <button 
-                        type="button" 
+                    <Button
+                        role="button" 
                         className={`w-100 rounded-0 text-start btn ${
                             channel.id === currentChannelId ? 'btn-secondary' : ''
                         }`}
                         onClick={() => handleChannelClick(channel.id)}
                         >
                         <span className="me-1" aria-hidden="true">#</span>{channel.name}
-                    </button>
+                    </Button>
                 )
                 :
                 (
