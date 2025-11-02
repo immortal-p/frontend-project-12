@@ -7,13 +7,15 @@ const ProtectedRoute = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        if(!token) {
+        if (!token) {
             navigate('/signin')
         }
 
     }), [ token, navigate ]
 
-    return token ? <Outlet /> : null
+    if (!token) return null
+
+    return <Outlet />
 }
 
 export default ProtectedRoute

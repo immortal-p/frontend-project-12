@@ -115,10 +115,8 @@ const Chat = () => {
                             channel.id === currentChannelId ? 'btn-secondary' : ''
                         }`}
                         onClick={() => handleChannelClick(channel.id)}
-                        aria-label={channel.name}
                         >
-                        <span className="me-1">#</span>
-                        {channel.name}
+                        <span className="me-1" aria-hidden="true">#</span>{channel.name}
                     </button>
                 )
                 :
@@ -129,10 +127,8 @@ const Chat = () => {
                             className={`w-100 rounded-0 text-start btn 
                             ${channel.id === currentChannelId ? 'btn-secondary' : ''}`}
                             onClick={() => handleChannelClick(channel.id)}
-                            aria-label={channel.name}
                             >
-                            <span className="me-1">#</span>
-                            {channel.name}
+                            <span className="me-1" aria-hidden="true">#</span>{channel.name}
                         </button>
                         <button 
                             type="button" 
@@ -140,7 +136,7 @@ const Chat = () => {
                             ${channel.id === currentChannelId ? 'btn-secondary' : ''}`}
                             data-bs-toggle="dropdown"
                             aria-expanded="false">
-                            <span className="visually-hidden">Управление каналом</span>
+                            <span className="visually-hidden" aria-label={t('chat.channelManagement')}>Управление каналом</span>
                         </button>
                         <div className="dropdown-menu">
                             <a className="dropdown-item" href="#" data-bs-target="#exampleModalDelete" data-bs-toggle="modal" onClick={() => setChannelToDelete(channel)}>Удалить</a>

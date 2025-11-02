@@ -36,6 +36,7 @@ export default {
                 buttonExit: 'Выйти',
                 messages: 'сообщений',
                 inputMess: 'Введите сообщение...',
+                channelManagement: 'Управление каналом',
                 errors: {
                     connectionError: 'Не удалось отправить сообщение. Проверьте соединение.',
                 },
