@@ -31,7 +31,7 @@ const Chat = () => {
         if(channelsStatus === 'succeeded' && channels.length > 0) {
             const timer = setTimeout(() => {
                 setRenderReady(true)
-            }, 300)
+            }, 3000)
             return () => clearTimeout(timer)
         }
         setRenderReady(false)
