@@ -14,8 +14,6 @@ import { ToastContainer, toast} from "react-toastify"
 import filter from 'leo-profanity'
 
 const Chat = () => {
-    console.log('check')
-    console.log('error')
     const navigate = useNavigate()
     const dispath = useDispatch()
     const { channels, messages } = useSelector((state) => state.chat)
@@ -117,8 +115,10 @@ const Chat = () => {
                             channel.id === currentChannelId ? 'btn-secondary' : ''
                         }`}
                         onClick={() => handleChannelClick(channel.id)}
+                        aria-label={channel.name}
                         >
-                        <span className="me-1" aria-hidden="true">#</span>{channel.name}
+                        <span className="me-1" aria-hidden="true">#</span>
+                        {channel.name}
                     </button>
                 )
                 :
@@ -129,15 +129,19 @@ const Chat = () => {
                             className={`w-100 rounded-0 text-start btn 
                             ${channel.id === currentChannelId ? 'btn-secondary' : ''}`}
                             onClick={() => handleChannelClick(channel.id)}
+                            aria-label={`Канал ${channel.name}`}
                             >
-                            <span className="me-1" aria-hidden="true">#</span>{channel.name}
+                            <span className="me-1" aria-hidden="true">#</span>
+                            {channel.name}
                         </button>
                         <button 
                             type="button" 
                             className={`flex-grow-0 dropdown-toggle dropdown-toggle-split btn 
                             ${channel.id === currentChannelId ? 'btn-secondary' : ''}`}
                             data-bs-toggle="dropdown"
-                            aria-expanded="false">
+                            aria-expanded="false"
+                            aria-label={`Управление каналом`}
+                            >
                             <span className="visually-hidden" aria-label={t('chat.channelManagement')}>Управление каналом</span>
                         </button>
                         <div className="dropdown-menu">
