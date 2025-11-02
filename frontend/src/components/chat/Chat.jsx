@@ -115,8 +115,9 @@ const Chat = () => {
                             channel.id === currentChannelId ? 'btn-secondary' : ''
                         }`}
                         onClick={() => handleChannelClick(channel.id)}
+                        aria-label={channel.name}
                         >
-                        <span className="me-1" aria-hidden="true">#</span>
+                        <span className="me-1">#</span>
                         {channel.name}
                     </button>
                 )
@@ -128,6 +129,7 @@ const Chat = () => {
                             className={`w-100 rounded-0 text-start btn 
                             ${channel.id === currentChannelId ? 'btn-secondary' : ''}`}
                             onClick={() => handleChannelClick(channel.id)}
+                            aria-label={channel.name}
                             >
                             <span className="me-1">#</span>
                             {channel.name}
