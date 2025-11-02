@@ -28,6 +28,16 @@ const Chat = () => {
     const socketRef = useRef(null)
     const defaultChannel = channels.length > 0 ? channels[0].id : null
     const { t } = useTranslation()
+    const placeholderChannel = { id: '1', name: 'general', removable: false }
+
+    useEffect(()  => {
+        if (channels.length > 0) {
+            setCurrentChannelId(channels[0].id)
+        }
+        else {
+            setCurrentChannelId(placeholderChannel.id)
+        }
+    }, [channels, currentChannelId, placeholderChannel.id])
 
     useEffect(() => {
         const loadData = async () => {
@@ -46,17 +56,9 @@ const Chat = () => {
     }, [token, dispath, t])
 
     useEffect(() => {
-        if (channels.length > 0 && currentChannelId === null) {
-            setCurrentChannelId(channels[0].id)
-        }
-    }, [channels, currentChannelId])
-
-    useEffect(() => {
         const socket = connectSocket()
         socketRef.current = socket
 
-        socket.on("connect", () => console.log("connect"))
-        socket.on("disconnect", () => console.log("disconnect"))
         socket.on("newMessage", (msg) =>  {
             if(msg && msg.id) dispath(addMessage(msg))
         })
@@ -182,6 +184,7 @@ const Chat = () => {
     const currentMessages = messages.filter(msg => msg.channelId === currentChannelId)
     const currentChannel = channels.find((ch) => ch.id === currentChannelId)
     const totalMessages = currentMessages.length
+    const renderedChannels = channels.length > 0 ? channels : [placeholderChannel]
 
     return (
         <>
@@ -218,9 +221,7 @@ const Chat = () => {
                                 </button>
                             </div>
                             <ul id="channels-box" className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
-                                {channels.length > 0 && (
-                                    channels.map(channel => builderChannel(channel))
-                                )}
+                                {renderedChannels.map(channel => builderChannel(channel))}
                                 <div ref={channelEndRef} />
                             </ul>
                         </div>
