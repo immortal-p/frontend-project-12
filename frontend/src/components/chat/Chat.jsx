@@ -14,6 +14,8 @@ import { ToastContainer, toast} from "react-toastify"
 import filter from 'leo-profanity'
 
 const Chat = () => {
+    console.log('check')
+    console.log('error')
     const navigate = useNavigate()
     const dispath = useDispatch()
     const { channels, messages } = useSelector((state) => state.chat)
