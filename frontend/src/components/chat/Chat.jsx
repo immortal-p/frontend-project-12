@@ -28,16 +28,16 @@ const Chat = () => {
     const socketRef = useRef(null)
     const defaultChannel = channels.length > 0 ? channels[0].id : null
     const { t } = useTranslation()
-    const placeholderChannel = { id: '1', name: 'general', removable: false }
+    const placeholderChannels = [{ id: '1', name: 'general', removable: false }, {id: '2', name: 'random', removable: false }]
 
     useEffect(()  => {
         if (channels.length > 0) {
             setCurrentChannelId(channels[0].id)
         }
         else {
-            setCurrentChannelId(placeholderChannel.id)
+            setCurrentChannelId(placeholderChannels[0].id)
         }
-    }, [channels, currentChannelId, placeholderChannel.id])
+    }, [channels, currentChannelId, placeholderChannels])
 
     useEffect(() => {
         const loadData = async () => {
@@ -184,7 +184,8 @@ const Chat = () => {
     const currentMessages = messages.filter(msg => msg.channelId === currentChannelId)
     const currentChannel = channels.find((ch) => ch.id === currentChannelId)
     const totalMessages = currentMessages.length
-    const renderedChannels = channels.length > 0 ? channels : [placeholderChannel]
+    const renderedChannels = channels.length > 0 ? channels : placeholderChannels
+    console.log(channels)
 
     return (
         <>
@@ -230,7 +231,7 @@ const Chat = () => {
                             <div className="d-flex flex-column h-100">
                                 <div className="bg-light mb-4 p-3 shadow-sm small">
                                     <p className="m-0">
-                                        <b>{`# ${currentChannel ? currentChannel.name : '...'}`}</b>
+                                        <b>{`# ${currentChannel ? currentChannel.name : placeholderChannels[0].name}`}</b>
                                     </p>
                                     <span className="text-muted">{totalMessages} {t('chat.messages')}</span>
                                 </div>
