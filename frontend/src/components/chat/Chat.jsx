@@ -26,7 +26,7 @@ const Chat = () => {
     const channelEndRef = useRef(null)
     const messageEndRef = useRef(null)
     const socketRef = useRef(null)
-    const defaultChannel = channels.length > 0 ? channels[0].id : [{ id: 1, name: 'general', removable: false }, { id: 2, name: 'random', removable: false }]
+    const defaultChannel = channels.length > 0 ? channels[0].id : { id: '1', name: 'general', removable: false }
     const { t } = useTranslation()
 
     useEffect(() => {
@@ -77,13 +77,13 @@ const Chat = () => {
             socket.off("renameChannel")
         }
 
-    }, [dispath, t, currentChannelId])
+    }, [dispath, defaultChannel, t, currentChannelId])
 
     useEffect(() => {
         if (channels.length > 0 && currentChannelId === null) {
             setCurrentChannelId(defaultChannel)
         }
-    }, [channels, currentChannelId])
+    }, [channels, currentChannelId, defaultChannel])
 
     useEffect(() => {
       if(channelEndRef.current) {
@@ -176,6 +176,8 @@ const Chat = () => {
     const currentMessages = messages.filter(msg => msg.channelId === currentChannelId)
     const currentChannel = channels.find((ch) => ch.id === currentChannelId)
     const totalMessages = currentMessages.length
+
+    console.log(channels)
 
     return (
         <>
