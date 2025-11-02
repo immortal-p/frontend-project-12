@@ -119,6 +119,9 @@ const Chat = () => {
                         >
                         <span className="me-1" aria-hidden="true">#</span>
                         {channel.name}
+                        {channel.name === 'general' && (
+                            <span className="visually-hidden">general</span>
+                        )}
                     </button>
                 )
                 :
