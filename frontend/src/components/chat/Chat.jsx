@@ -1,72 +1,73 @@
 import React, { useEffect, useState, useRef } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
-import { fetchChannels, fetchMessages, addMessage, addChannel, deleteChannel, renameChannel } from "../../slices/chatSlice"
+import { fetchChannels, addMessage, addChannel, deleteChannel, renameChannel } from "../../slices/chatSlice" 
 import { connectSocket } from "../../socket.js"
-import { uniqueId } from "lodash"
-import sendMessage from "./sendMessage.js"
 import "./chat.css"
 import { ModalAddChannel } from "./components/ModalAddChannel.jsx"
 import { ModalDeleteChannel } from "./components/ModalDeleteChannel.jsx"
 import { ModalEditChannel } from "./components/ModalEditChannel.jsx"
 import { useTranslation } from "react-i18next"
 import { ToastContainer, toast} from "react-toastify"
-import filter from 'leo-profanity'
+import MessagesBox from "./MessageBox.jsx"
 
 const Chat = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const { channels, messages } = useSelector((state) => state.chat)
-    const { username, token } = useSelector((state) => state.auth)
+    const { t } = useTranslation()
+
+    const { items: channels, status: channelsStatus, error: channelsError } = useSelector((state) => state.chat.channels)
+    const { token } = useSelector((state) => state.auth)
     
-    const placeholderChannels = [{ id: '1', name: 'general', removable: false }, {id: '2', name: 'random', removable: false }]
-    const defaultChannelId = channels.length > 0 ? channels[0].id : placeholderChannels[0].id
-    
-    const [currentChannelId, setCurrentChannelId] = useState(placeholderChannels[0].id)
+    const [currentChannelId, setCurrentChannelId] = useState(null) 
     const [channelToDelete, setChannelToDelete] = useState(null)
     const [channelToUpdate, setChannelToUpdate] = useState(null)
-    const [newMessage, setNewMessage] = useState("")
-    const [errorMsg, setErrorMSg] = useState("")
-
-    const channelEndRef = useRef(null)
-    const messageEndRef = useRef(null)
-    const socketRef = useRef(null)
-    const { t } = useTranslation()
     
-    const renderedChannels = channels.length > 0 ? channels : placeholderChannels
-
+    const channelEndRef = useRef(null)
+    const socketRef = useRef(null)
+    
     useEffect(() => {
         const loadData = async () => {
             if (!token) return
-            try { 
-                await dispatch(fetchChannels()).unwrap()
-                await dispatch(fetchMessages()).unwrap()
-            }
-            catch (err) {
-                console.error(err)
-                toast.error(t('chat.toastify.loadingDataError'))
+            if (channelsStatus === 'idle') {
+                try { 
+                    await dispatch(fetchChannels()).unwrap()
+                }
+                catch (err) {
+                    console.error(err)
+                }
             }
         }
-
         loadData()
-    }, [token, dispatch, t])
+    }, [token, dispatch, channelsStatus]) 
+
+    useEffect(() => {
+        if (channelsStatus === 'succeeded' && currentChannelId === null && channels.length > 0) {
+            const generalChannel = channels.find(ch => ch.name === 'general');
+            setCurrentChannelId(generalChannel?.id ?? channels[0].id);
+        }
+    }, [channels, currentChannelId, channelsStatus]); 
 
     useEffect(() => {
         const socket = connectSocket()
         socketRef.current = socket
 
-        socket.on("newMessage", (msg) =>  msg?.id && dispatch(addMessage(msg)))
+        socket.on("newMessage", (msg) => msg?.id && dispatch(addMessage(msg)))
+        
         socket.on("newChannel", (channel) => {
             dispatch(addChannel(channel))
+            setCurrentChannelId(channel.id); 
             toast.success(t('chat.toastify.createChannel'), { draggable: true })
         })
+        
         socket.on("removeChannel", (channelId) => {
             dispatch(deleteChannel(channelId))
             if(currentChannelId === channelId.id) {
-                setCurrentChannelId(defaultChannelId)
+                setCurrentChannelId(channels.length > 0 ? channels[0].id : null);
             }
             toast.success(t('chat.toastify.deleteChannel'), { draggable: true })
         })
+        
         socket.on("renameChannel", (channel) => {
             dispatch(renameChannel(channel))
             toast.success(t('chat.toastify.renameChannel'), { draggable: true })
@@ -79,15 +80,7 @@ const Chat = () => {
             socket.off("renameChannel")
         }
 
-    }, [dispatch, currentChannelId, defaultChannelId, t])
-
-    useEffect(() => {
-        if(channels.length > 0) {
-            setCurrentChannelId((prev) => {
-                return channels.find(ch => ch.id === prev) ? prev : channels[0].id
-            })
-        }
-    }, [channels])
+    }, [dispatch, currentChannelId, channels, t])
 
     useEffect(() => {
       if(channelEndRef.current) {
@@ -95,16 +88,37 @@ const Chat = () => {
       }
     }, [channels])
 
-    useEffect(() => {
-        if(messageEndRef.current) {
-            messageEndRef.current.scrollIntoView({ behavior: "smooth" })
-        }
-    }, [messages])
+    const isLoading = channelsStatus === 'loading'; 
+    const isError = channelsStatus === 'failed';
 
+    if (isLoading) {
+        return (
+            <div className="d-flex justify-content-center align-items-center h-100">
+                <div className="spinner-border text-primary" role="status">
+                    <span className="visually-hidden">{t('chat.loading')}...</span>
+                </div>
+            </div>
+        )
+    }
+
+    if (isError) {
+        const errorMessage = typeof channelsError === 'object' && channelsError?.message
+            ? channelsError.message
+            : channelsError || t('chat.unknownError');
+
+        return (
+            <div className="d-flex justify-content-center align-items-center h-100">
+                <div className="text-danger p-5">
+                    <strong>{t('chat.errorLoadingData')}</strong>: {errorMessage}
+                </div>
+            </div>
+        )
+    }
+    
     const handleChannelClick = (channelId) => {
         setCurrentChannelId(channelId)
     }
-
+    
     const builderChannel = (channel) => {
         return (
             <li key={channel.id} className="nav-item w-100">
@@ -115,7 +129,6 @@ const Chat = () => {
                             channel.id === currentChannelId ? 'btn-secondary' : ''
                         }`}
                         onClick={() => handleChannelClick(channel.id)}
-                        data-testid={`channel-${channel.name}`}
                         >
                         <span className="me-1" aria-hidden="true">#</span>{channel.name}
                     </button>
@@ -130,8 +143,7 @@ const Chat = () => {
                             onClick={() => handleChannelClick(channel.id)}
                             aria-label={`Канал ${channel.name}`}
                             >
-                            <span className="me-1" aria-hidden="true">#</span>
-                            {channel.name}
+                            <span className="me-1" aria-hidden="true">#</span>{channel.name}
                         </button>
                         <button 
                             type="button" 
@@ -144,8 +156,8 @@ const Chat = () => {
                             <span className="visually-hidden" aria-label={t('chat.channelManagement')}>Управление каналом</span>
                         </button>
                         <div className="dropdown-menu">
-                            <a className="dropdown-item" href="#" data-bs-target="#exampleModalDelete" data-bs-toggle="modal" onClick={() => setChannelToDelete(channel)}>Удалить</a>
-                            <a className="dropdown-item" href="#" data-bs-target="#exampleModalEdit" data-bs-toggle="modal" onClick={() => setChannelToUpdate(channel)}>Переименовать</a>
+                            <a className="dropdown-item" href="#" data-bs-target="#exampleModalDelete" data-bs-toggle="modal" onClick={() => setChannelToDelete(channel)}>{t('chat.delete')}</a>
+                            <a className="dropdown-item" href="#" data-bs-target="#exampleModalEdit" data-bs-toggle="modal" onClick={() => setChannelToUpdate(channel)}>{t('chat.rename')}</a>
                         </div>
                     </div>
                 )}
@@ -153,42 +165,21 @@ const Chat = () => {
         )
     }
 
-    const handleSendMessage = async (e) => {
-        e.preventDefault()
-        const formData = new FormData(e.target)
-        const body = formData.get("body").trim()
-        if(!body || !currentChannelId) return
-
-        const cleanBody = filter.clean(body)
-        const msg = { id: uniqueId(), body: cleanBody, channelId: currentChannelId, username }
-
-        try {
-            await sendMessage(msg)
-        } catch (err) {
-            console.error(err)
-            toast.error(t('chat.toastify.connectionError'))
-            setErrorMSg(t('chat.errors.connectionError'))
-            setTimeout(() => setErrorMSg(""), 5000)
-        }
-
-        setNewMessage("")
-        e.target.reset()
-    }
-
     const handleLogout = () => {
         navigate("/signin")
         localStorage.clear()
     }
-
-    const currentMessages = messages.filter(msg => msg.channelId === currentChannelId)
-    const currentChannel = channels.find((ch) => ch.id === currentChannelId)
-    const totalMessages = currentMessages.length
-
     return (
         <>
             <ModalAddChannel onChannelCreated={(newChannel) => setCurrentChannelId(newChannel.id)} />
-            <ModalDeleteChannel channel={channelToDelete} onChannelDefault={() => setCurrentChannelId(defaultChannelId)} />
+            <ModalDeleteChannel 
+                channel={channelToDelete} 
+                onChannelDefault={() => {
+                    setCurrentChannelId(channels.length > 0 ? channels[0].id : null)
+                }} 
+            />
             <ModalEditChannel channel={channelToUpdate} onChannelEdited={(updatedChannel) => setChannelToUpdate(updatedChannel)} />
+            
             <div className="d-flex flex-column h-100">
                 <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
                     <div className="container">
@@ -211,59 +202,12 @@ const Chat = () => {
                                 </button>
                             </div>
                             <ul id="channels-box" className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
-                                {renderedChannels.map(channel => builderChannel(channel))}
+                                {channels.map(channel => builderChannel(channel))}
                                 <div ref={channelEndRef} />
                             </ul>
                         </div>
 
-                        <div className="col p-0 h-100">
-                            <div className="d-flex flex-column h-100">
-                                <div className="bg-light mb-4 p-3 shadow-sm small">
-                                    <p className="m-0">
-                                        <b>{`# ${currentChannel ? currentChannel.name : placeholderChannels[0].name}`}</b>
-                                    </p>
-                                    <span className="text-muted">{totalMessages} {t('chat.messages')}</span>
-                                </div>
-                                <div id="messages-box" className="chat-messages overflow-auto px-5 ">
-                                    {currentMessages.map((message) => (
-                                        <div key={message.id} className="text-break mb-2 text-container">
-                                            <div><b>{message.username}</b>: {message.body}</div>
-                                            <i className="bi bi-check2-all text-success"></i>
-                                        </div>
-                                    ))}
-                                    <div ref={messageEndRef} />
-                                </div>
-                                <div className="mt-auto px-5 py-3">
-                                    {errorMsg && ( 
-                                        <div className="alert alert-danger alert-dismissible fade show text-center py-2 mb-2" role="alert">{errorMsg}</div>)
-                                    }
-                                    <form noValidate="" onSubmit={handleSendMessage} className="py-1 border rounded-2">
-                                        <div className={`input-group ${(newMessage.trim().length <= 0) ? "has-validation" : ""}`}>
-                                            <input 
-                                                name="body" 
-                                                aria-label='Новое сообщение'
-                                                placeholder={t('chat.inputMess')}
-                                                className="border-0 p-0 ps-2 form-control"
-                                                value={newMessage}
-                                                onChange={(e) => setNewMessage(e.target.value)}
-                                                />
-                                            <button type="submit" className="btn btn-group-vertical" disabled={(newMessage.trim().length <= 0)}>
-                                                <svg xmlns="http://www.w3.org/2000/svg" 
-                                                    viewBox="0 0 16 16" width="20" height="20" 
-                                                    fill="currentColor" className="bi bi-arrow-right-square" 
-                                                    data-darkreader-inline-fill="" 
-                                                    >
-                                                    <path fillRule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"></path>
-                                                </svg>
-                                                <span className="visually-hidden">
-                                                    {t('chat.send')}
-                                                </span>
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
+                        <MessagesBox currentChannelId={currentChannelId} t={t} /> 
 
                     </div>
                 </div>

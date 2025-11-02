@@ -26,44 +26,69 @@ export const fetchMessages = createAsyncThunk(
 )
 
 const initialState = {
-    channels: [],
-    messages: [],
+    channels: {
+        items: [],
+        status: 'idle',
+        error: null,
+    },
+    messages: {
+        items: [],
+        status: 'idle',
+        error: null,
+    },
 }
 
 const chatSlice = createSlice({
     name: 'chat',
     initialState,
     reducers: {
-        clearError: (state) => { state.error = null},
         addMessage: (state, action) => {
             const msg = action.payload
-            if (!state.messages.find(m => m.id === msg.id)) {
-                state.messages.push(msg)
+            if (!state.messages.items.find(m => m.id === msg.id)) {
+                state.messages.items.push(msg)
             }
         },
         addChannel: (state, action) => {
             const newChannel = action.payload
-            if(!state.channels.find(ch => ch.id === newChannel.id)) {
-                state.channels.push(newChannel)
+            if(!state.channels.items.find(ch => ch.id === newChannel.id)) {
+                state.channels.items.push(newChannel)
             }
         },
         deleteChannel: (state, action) => {
             const delChannelId = action.payload.id
-            state.channels = state.channels.filter(chan => chan.id !== delChannelId)
+            state.channels.items = state.channels.items.filter(chan => chan.id !== delChannelId)
         },
         renameChannel: (state, action) => {
             const { id, name } = action.payload
-            const channel = state.channels.find(ch => ch.id === id)
+            const channel = state.channels.items.find(ch => ch.id === id)
             if (channel) channel.name = name
         }
     },
     extraReducers: (builder) => {
         builder
+            .addCase(fetchChannels.pending, (state) => {
+                state.channels.status = 'loading',
+                state.channels.error = null
+            })
             .addCase(fetchChannels.fulfilled, (state, action) => {
-                state.channels = action.payload
+                state.channels.status = 'succeeded'
+                state.channels.items = action.payload
+            })
+            .addCase(fetchChannels.rejected, (state, aciton) => {
+                state.channels.status = 'failed',
+                state.channels.error = aciton.payload.message
+            })
+            .addCase(fetchMessages.pending, (state) => {
+                state.messages.status = 'loading',
+                state.messages.error = null
             })
             .addCase(fetchMessages.fulfilled, (state, action) => {
-                state.messages = action.payload
+                state.messages.status = 'succeeded'
+                state.messages.items = action.payload
+            })
+            .addCase(fetchMessages.rejected, (state, action) => {
+                state.messages.status = 'failed',
+                state.messages.error = action.payload.message
             })
     }
 })

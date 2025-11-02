@@ -36,9 +36,14 @@ export default {
                 buttonExit: 'Выйти',
                 messages: 'сообщений',
                 inputMess: 'Введите сообщение...',
+                loading: 'Загрузка данных',
                 channelManagement: 'Управление каналом',
+                delete: 'Удалить',
+                rename: 'Переименовать',
                 errors: {
                     connectionError: 'Не удалось отправить сообщение. Проверьте соединение.',
+                    unknownError: 'неизвестная ошибка',
+                    errorLoadingData: 'ошибка при загрузке данных'
                 },
                 addChannelModal: {
                     title: 'Добавить канал',

@@ -13,7 +13,7 @@ export const ModalAddChannel = ({ onChannelCreated }) => {
     const inputRef = useRef(null)
     const { t } = useTranslation()
 
-    const channels = useSelector((state) => state.chat.channels)
+    const channels = useSelector((state) => state.chat.channels.items)
     const existingNames = channels.map((ch) => ch.name)
     const validationSchema = chanelValidationSchema(t, existingNames)
 

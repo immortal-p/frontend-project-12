@@ -11,7 +11,7 @@ export const ModalEditChannel = ({ channel, onChannelEdited }) => {
     const inputRef = useRef(null);
     const { t } = useTranslation()
 
-    const channels = useSelector((state) => state.chat.channels);
+    const channels = useSelector((state) => state.chat.channels.items);
     const existingNames = channels
       .map((ch) => ch.name)
       .filter((name) => name !== channel?.name);
