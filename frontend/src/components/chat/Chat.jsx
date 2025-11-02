@@ -15,7 +15,7 @@ import filter from 'leo-profanity'
 
 const Chat = () => {
     const navigate = useNavigate()
-    const dispath = useDispatch()
+    const dispatch = useDispatch()
     const { channels, messages } = useSelector((state) => state.chat)
     const { username, token } = useSelector((state) => state.auth)
     
@@ -39,8 +39,8 @@ const Chat = () => {
         const loadData = async () => {
             if (!token) return
             try { 
-                await dispath(fetchChannels()).unwrap()
-                await dispath(fetchMessages()).unwrap()
+                await dispatch(fetchChannels()).unwrap()
+                await dispatch(fetchMessages()).unwrap()
             }
             catch (err) {
                 console.error(err)
@@ -49,26 +49,26 @@ const Chat = () => {
         }
 
         loadData()
-    }, [token, dispath, t])
+    }, [token, dispatch, t])
 
     useEffect(() => {
         const socket = connectSocket()
         socketRef.current = socket
 
-        socket.on("newMessage", (msg) =>  msg?.id && dispath(addMessage(msg)))
+        socket.on("newMessage", (msg) =>  msg?.id && dispatch(addMessage(msg)))
         socket.on("newChannel", (channel) => {
-            dispath(addChannel(channel))
+            dispatch(addChannel(channel))
             toast.success(t('chat.toastify.createChannel'), { draggable: true })
         })
         socket.on("removeChannel", (channelId) => {
-            dispath(deleteChannel(channelId))
+            dispatch(deleteChannel(channelId))
             if(currentChannelId === channelId.id) {
                 setCurrentChannelId(defaultChannelId)
             }
             toast.success(t('chat.toastify.deleteChannel'), { draggable: true })
         })
         socket.on("renameChannel", (channel) => {
-            dispath(renameChannel(channel))
+            dispatch(renameChannel(channel))
             toast.success(t('chat.toastify.renameChannel'), { draggable: true })
         })
 
@@ -79,7 +79,7 @@ const Chat = () => {
             socket.off("renameChannel")
         }
 
-    }, [dispath, currentChannelId, defaultChannelId, t])
+    }, [dispatch, currentChannelId, defaultChannelId, t])
 
     useEffect(() => {
         if(channels.length > 0) {
@@ -115,13 +115,9 @@ const Chat = () => {
                             channel.id === currentChannelId ? 'btn-secondary' : ''
                         }`}
                         onClick={() => handleChannelClick(channel.id)}
-                        aria-label={channel.name}
+                        data-testid={`channel-${channel.name}`}
                         >
-                        <span className="me-1" aria-hidden="true">#</span>
-                        {channel.name}
-                        {channel.name === 'general' && (
-                            <span className="visually-hidden">general</span>
-                        )}
+                        <span className="me-1" aria-hidden="true">#</span>{channel.name}
                     </button>
                 )
                 :
