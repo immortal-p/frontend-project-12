@@ -26,7 +26,7 @@ const Chat = () => {
     const channelEndRef = useRef(null)
     const messageEndRef = useRef(null)
     const socketRef = useRef(null)
-    const defaultChannel = channels.length > 0 ? channels[0].id : { id: '1', name: 'general', removable: false }
+    const defaultChannel = channels.length > 0 ? channels[0].id : null
     const { t } = useTranslation()
 
     useEffect(() => {
@@ -177,8 +177,6 @@ const Chat = () => {
     const currentChannel = channels.find((ch) => ch.id === currentChannelId)
     const totalMessages = currentMessages.length
 
-    console.log(channels)
-
     return (
         <>
             <ModalAddChannel
@@ -214,9 +212,11 @@ const Chat = () => {
                                 </button>
                             </div>
                             <ul id="channels-box" className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
-                                {channels.map((channel) => (
-                                    builderChannel(channel)
-                                ))}
+                                {channels.length > 0 ? (
+                                    channels.map(channel => builderChannel(channel))
+                                ): 
+                                    builderChannel({ id: '1', name: 'general', removable: false })
+                                }
                                 <div ref={channelEndRef} />
                             </ul>
                         </div>

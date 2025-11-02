@@ -4,7 +4,7 @@ let socket = null
 
 export const connectSocket = () => {
   if (!socket) {
-    socket = io('ws://localhost:5001', { transports: ['websocket']})
+    socket = io('/socket.io', { transports: ['websocket']})
   }
   return socket
 }
