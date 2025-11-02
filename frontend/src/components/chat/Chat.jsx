@@ -31,7 +31,7 @@ const Chat = () => {
 
     useEffect(() => {
         const loadData = async () => {
-            if(!token) return
+            if (!token) return
             try { 
                 await dispath(fetchChannels()).unwrap()
                 await dispath(fetchMessages()).unwrap()
@@ -44,6 +44,12 @@ const Chat = () => {
 
         loadData()
     }, [token, dispath, t])
+
+    useEffect(() => {
+        if (channels.length > 0 && currentChannelId === null) {
+            setCurrentChannelId(channels[0].id)
+        }
+    }, [channels, currentChannelId])
 
     useEffect(() => {
         const socket = connectSocket()
@@ -212,11 +218,9 @@ const Chat = () => {
                                 </button>
                             </div>
                             <ul id="channels-box" className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
-                                {channels.length > 0 ? (
+                                {channels.length > 0 && (
                                     channels.map(channel => builderChannel(channel))
-                                ): 
-                                    builderChannel({ id: '1', name: 'general', removable: false })
-                                }
+                                )}
                                 <div ref={channelEndRef} />
                             </ul>
                         </div>
