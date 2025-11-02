@@ -26,19 +26,10 @@ const Chat = () => {
     const channelEndRef = useRef(null)
     const messageEndRef = useRef(null)
     const socketRef = useRef(null)
-    const defaultChannel = channels.length > 0 ? channels[0].id : null
     const { t } = useTranslation()
     const placeholderChannels = [{ id: '1', name: 'general', removable: false }, {id: '2', name: 'random', removable: false }]
-
-    useEffect(()  => {
-        if (channels.length > 0) {
-            setCurrentChannelId(channels[0].id)
-        }
-        else {
-            setCurrentChannelId(placeholderChannels[0].id)
-        }
-    }, [channels, currentChannelId, placeholderChannels])
-
+    const defaultChannel = channels.length > 0 ? channels[0].id : placeholderChannels[0].id
+    
     useEffect(() => {
         const loadData = async () => {
             if (!token) return
@@ -47,7 +38,7 @@ const Chat = () => {
                 await dispath(fetchMessages()).unwrap()
             }
             catch (err) {
-                console.error("Ошибка загрузки данных", err)
+                console.error(err)
                 toast.error(t('chat.toastify.loadingDataError'))
             }
         }
@@ -88,7 +79,7 @@ const Chat = () => {
     }, [dispath, defaultChannel, t, currentChannelId])
 
     useEffect(() => {
-        if (channels.length > 0 && currentChannelId === null) {
+        if (currentChannelId === null) {
             setCurrentChannelId(defaultChannel)
         }
     }, [channels, currentChannelId, defaultChannel])
@@ -119,6 +110,7 @@ const Chat = () => {
                             channel.id === currentChannelId ? 'btn-secondary' : ''
                         }`}
                         onClick={() => handleChannelClick(channel.id)}
+                        aria-label={channel.name}
                         >
                         <span className="me-1" aria-hidden="true">#</span>
                         {channel.name}
@@ -132,8 +124,9 @@ const Chat = () => {
                             className={`w-100 rounded-0 text-start btn 
                             ${channel.id === currentChannelId ? 'btn-secondary' : ''}`}
                             onClick={() => handleChannelClick(channel.id)}
+                            aria-label={channel.name}
                             >
-                            <span className="me-1">#</span>
+                            <span className="me-1" aria-hidden="true">#</span>
                             {channel.name}
                         </button>
                         <button 
@@ -185,7 +178,6 @@ const Chat = () => {
     const currentChannel = channels.find((ch) => ch.id === currentChannelId)
     const totalMessages = currentMessages.length
     const renderedChannels = channels.length > 0 ? channels : placeholderChannels
-    console.log(channels)
 
     return (
         <>
