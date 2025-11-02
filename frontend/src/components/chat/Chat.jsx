@@ -22,21 +22,10 @@ const Chat = () => {
     const [currentChannelId, setCurrentChannelId] = useState(null) 
     const [channelToDelete, setChannelToDelete] = useState(null)
     const [channelToUpdate, setChannelToUpdate] = useState(null)
-    const [reanderReady, setRenderReady] = useState(false)
 
     const channelEndRef = useRef(null)
     const socketRef = useRef(null)
 
-    useEffect(() => {
-        if(channelsStatus === 'succeeded' && channels.length > 0) {
-            const timer = setTimeout(() => {
-                setRenderReady(true)
-            }, 3000)
-            return () => clearTimeout(timer)
-        }
-        setRenderReady(false)
-    }, [channelsStatus, channels.length])
-    
     useEffect(() => {
         const loadData = async () => {
             if (!token) return
@@ -57,7 +46,7 @@ const Chat = () => {
             const generalChannel = channels.find(ch => ch.name === 'general');
             setCurrentChannelId(generalChannel?.id ?? channels[0].id);
         }
-    }, [channels, currentChannelId, channelsStatus]); 
+    }, [channels, currentChannelId, channelsStatus]);
 
     useEffect(() => {
         const socket = connectSocket()
@@ -102,7 +91,9 @@ const Chat = () => {
     const isLoading = channelsStatus === 'loading'; 
     const isError = channelsStatus === 'failed';
 
-    if (isLoading || !reanderReady) {
+    const shouldRenderChat = channelsStatus === 'succeeded' && channels.length > 0;
+
+    if (isLoading || !shouldRenderChat) {
         return (
             <div className="d-flex justify-content-center align-items-center h-100">
                 <div className="spinner-border text-primary" role="status">
