@@ -40,6 +40,7 @@ export default {
                 channelManagement: 'Управление каналом',
                 delete: 'Удалить',
                 rename: 'Переименовать',
+                newMessage: 'Новое сообщение',
                 errors: {
                     connectionError: 'Не удалось отправить сообщение. Проверьте соединение.',
                     unknownError: 'неизвестная ошибка',
