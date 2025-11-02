@@ -22,7 +22,7 @@ const Chat = () => {
     const placeholderChannels = [{ id: '1', name: 'general', removable: false }, {id: '2', name: 'random', removable: false }]
     const defaultChannelId = channels.length > 0 ? channels[0].id : placeholderChannels[0].id
     
-    const [currentChannelId, setCurrentChannelId] = useState(defaultChannelId)
+    const [currentChannelId, setCurrentChannelId] = useState(placeholderChannels[0].id)
     const [channelToDelete, setChannelToDelete] = useState(null)
     const [channelToUpdate, setChannelToUpdate] = useState(null)
     const [newMessage, setNewMessage] = useState("")
@@ -80,6 +80,14 @@ const Chat = () => {
         }
 
     }, [dispath, currentChannelId, defaultChannelId, t])
+
+    useEffect(() => {
+        if(channels.length > 0) {
+            setCurrentChannelId((prev) => {
+                return channels.find(ch => ch.id === prev) ? prev : channels[0].id
+            })
+        }
+    }, [channels])
 
     useEffect(() => {
       if(channelEndRef.current) {
