@@ -17,19 +17,24 @@ const Chat = () => {
     const navigate = useNavigate()
     const dispath = useDispatch()
     const { channels, messages } = useSelector((state) => state.chat)
-    const [currentChannelId, setCurrentChannelId] = useState(null)
+    const { username, token } = useSelector((state) => state.auth)
+    
+    const placeholderChannels = [{ id: '1', name: 'general', removable: false }, {id: '2', name: 'random', removable: false }]
+    const defaultChannelId = channels.length > 0 ? channels[0].id : placeholderChannels[0].id
+    
+    const [currentChannelId, setCurrentChannelId] = useState(defaultChannelId)
     const [channelToDelete, setChannelToDelete] = useState(null)
     const [channelToUpdate, setChannelToUpdate] = useState(null)
     const [newMessage, setNewMessage] = useState("")
     const [errorMsg, setErrorMSg] = useState("")
-    const { username, token } = useSelector((state) => state.auth)
+
     const channelEndRef = useRef(null)
     const messageEndRef = useRef(null)
     const socketRef = useRef(null)
     const { t } = useTranslation()
-    const placeholderChannels = [{ id: '1', name: 'general', removable: false }, {id: '2', name: 'random', removable: false }]
-    const defaultChannel = channels.length > 0 ? channels[0].id : placeholderChannels[0].id
     
+    const renderedChannels = channels.length > 0 ? channels : placeholderChannels
+
     useEffect(() => {
         const loadData = async () => {
             if (!token) return
@@ -50,9 +55,7 @@ const Chat = () => {
         const socket = connectSocket()
         socketRef.current = socket
 
-        socket.on("newMessage", (msg) =>  {
-            if(msg && msg.id) dispath(addMessage(msg))
-        })
+        socket.on("newMessage", (msg) =>  msg?.id && dispath(addMessage(msg)))
         socket.on("newChannel", (channel) => {
             dispath(addChannel(channel))
             toast.success(t('chat.toastify.createChannel'), { draggable: true })
@@ -60,7 +63,7 @@ const Chat = () => {
         socket.on("removeChannel", (channelId) => {
             dispath(deleteChannel(channelId))
             if(currentChannelId === channelId.id) {
-                setCurrentChannelId(defaultChannel)
+                setCurrentChannelId(defaultChannelId)
             }
             toast.success(t('chat.toastify.deleteChannel'), { draggable: true })
         })
@@ -76,13 +79,7 @@ const Chat = () => {
             socket.off("renameChannel")
         }
 
-    }, [dispath, defaultChannel, t, currentChannelId])
-
-    useEffect(() => {
-        if (currentChannelId === null) {
-            setCurrentChannelId(defaultChannel)
-        }
-    }, [channels, currentChannelId, defaultChannel])
+    }, [dispath, currentChannelId, defaultChannelId, t])
 
     useEffect(() => {
       if(channelEndRef.current) {
@@ -177,21 +174,12 @@ const Chat = () => {
     const currentMessages = messages.filter(msg => msg.channelId === currentChannelId)
     const currentChannel = channels.find((ch) => ch.id === currentChannelId)
     const totalMessages = currentMessages.length
-    const renderedChannels = channels.length > 0 ? channels : placeholderChannels
 
     return (
         <>
-            <ModalAddChannel
-                onChannelCreated={(newChannel) => setCurrentChannelId(newChannel.id)} 
-            />
-            <ModalDeleteChannel
-                channel={channelToDelete}
-                onChannelDefault={() => setCurrentChannelId(defaultChannel)}
-            />
-            <ModalEditChannel 
-                channel={channelToUpdate}
-                onChannelEdited={(updatedChannel) => setChannelToUpdate(updatedChannel)}
-                />
+            <ModalAddChannel onChannelCreated={(newChannel) => setCurrentChannelId(newChannel.id)} />
+            <ModalDeleteChannel channel={channelToDelete} onChannelDefault={() => setCurrentChannelId(defaultChannelId)} />
+            <ModalEditChannel channel={channelToUpdate} onChannelEdited={(updatedChannel) => setChannelToUpdate(updatedChannel)} />
             <div className="d-flex flex-column h-100">
                 <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
                     <div className="container">
