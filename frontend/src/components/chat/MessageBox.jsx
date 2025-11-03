@@ -1,13 +1,15 @@
 import React,{ useState, useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { uniqueId } from 'lodash';
 import filter from 'leo-profanity'
 import {toast} from 'react-toastify'
 import sendMessage from './sendMessage';
 import { BsArrowRightSquare } from 'react-icons/bs';
 import { Form, Button } from 'react-bootstrap'
+import { fetchMessages } from '../../slices/chatSlice';
 
 const MessagesBox = ({ currentChannelId, t }) => { 
+    const dispath = useDispatch()
     const { items: messages } = useSelector((state) => state.chat.messages);
     const currentChannel = useSelector((state) => 
         state.chat.channels.items.find((ch) => ch.id === currentChannelId)
@@ -21,10 +23,18 @@ const MessagesBox = ({ currentChannelId, t }) => {
     const totalMessages = currentMessages.length;
 
     useEffect(() => {
-        if(messageEndRef.current) {
-            messageEndRef.current.scrollIntoView({ behavior: "smooth" });
+        if(currentChannelId) {
+            dispath(fetchMessages(currentChannelId))
         }
-    }, [messages]);
+    }, [currentChannelId, dispath])
+
+    useEffect(() => {
+      if (!currentMessages.length) return;
+
+      if (messageEndRef.current) {
+        messageEndRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+      }
+    }, [currentMessages, username]);
 
     if (!currentChannel) {
         return (
@@ -88,7 +98,6 @@ const MessagesBox = ({ currentChannelId, t }) => {
                         <Form.Group className={"input-group"}>
                             <Form.Control 
                                 name="body"
-                                ref={messageEndRef}
                                 aria-label={t('chat.newMessage')}
                                 placeholder={t('chat.inputMess')}
                                 className="border-0 p-0 ps-2"

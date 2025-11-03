@@ -31,18 +31,25 @@ const Chat = () => {
 
     useEffect(() => {
         const loadData = async () => {
-            if (!token) return
+            if (!token) {
+                navigate('/signin')
+            }
             if (channelsStatus === 'idle') {
                 try { 
                     await dispatch(fetchChannels()).unwrap()
                 }
                 catch (err) {
-                    console.error(err)
+                    if (err?.status === 401 || err.response?.status === 401){
+                        localStorage.clear()
+                        navigate('/signin')
+                    } else {
+                        toast.error(t('chat.toastify.connectionError'))
+                    }
                 }
             }
         }
         loadData()
-    }, [token, dispatch, channelsStatus]) 
+    }, [token, navigate, dispatch, channelsStatus, t]) 
 
     useEffect(() => {
         if (channelsStatus === 'succeeded' && currentChannelId === null && channels.length > 0) {
