@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, Outlet } from 'react-router-dom'
 
@@ -11,7 +11,7 @@ const ProtectedRoute = () => {
       navigate('/signin')
     }
   }),
-    [token, navigate])
+  [token, navigate])
 
   if (!token) return null
 

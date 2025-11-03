@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import {
@@ -47,7 +47,8 @@ const Chat = () => {
       if (channelsStatus === 'idle') {
         try {
           await dispatch(fetchChannels()).unwrap()
-        } catch (err) {
+        } 
+        catch (err) {
           console.err(err)
           toast.error(t('chat.toastify.connectionError'))
         }
@@ -69,7 +70,7 @@ const Chat = () => {
 
     socket.on('newMessage', msg => msg?.id && dispatch(addMessage(msg)))
 
-    socket.on('newChannel', channel => {
+    socket.on('newChannel', (channel) => {
       dispatch(addChannel(channel))
       if (currentChannelId === channel.id) {
         setCurrentChannelId(channel.id)
@@ -77,7 +78,7 @@ const Chat = () => {
       toast.success(t('chat.toastify.createChannel'), { draggable: true })
     })
 
-    socket.on('removeChannel', channelId => {
+    socket.on('removeChannel', (channelId) => {
       dispatch(deleteChannel(channelId))
       if (currentChannelId === channelId.id) {
         setCurrentChannelId(channels.length > 0 ? channels[0].id : null)
@@ -85,7 +86,7 @@ const Chat = () => {
       toast.success(t('chat.toastify.deleteChannel'), { draggable: true })
     })
 
-    socket.on('renameChannel', channel => {
+    socket.on('renameChannel', (channel) => {
       dispatch(renameChannel(channel))
       toast.success(t('chat.toastify.renameChannel'), { draggable: true })
     })
@@ -111,32 +112,39 @@ const Chat = () => {
     return (
       <div className="d-flex justify-content-center align-items-center h-100">
         <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">{t('chat.loading')}...</span>
+          <span className="visually-hidden">
+            {t('chat.loading')}
+            ...
+          </span>
         </div>
       </div>
     )
   }
 
   if (isError) {
-    const errorMessage =
+    const errorMessage 
+      =
       typeof channelsError === 'object' && channelsError?.message
         ? channelsError.message
-        : channelsError || t('chat.unknownError')
+        : 
+        channelsError || t('chat.unknownError')
 
     return (
       <div className="d-flex justify-content-center align-items-center h-100">
         <div className="text-danger p-5">
-          <strong>{t('chat.errorLoadingData')}</strong>: {errorMessage}
+          <strong>{t('chat.errorLoadingData')}</strong>
+          : 
+          {errorMessage}
         </div>
       </div>
     )
   }
 
-  const handleChannelClick = channelId => {
+  const handleChannelClick = (channelId) => {
     setCurrentChannelId(channelId)
   }
 
-  const builderChannel = channel => {
+  const builderChannel = (channel) => {
     return (
       <Nav.Item key={channel.id} className="w-100" as="li">
         {!channel.removable ? (
@@ -156,7 +164,10 @@ const Chat = () => {
           <Dropdown className="d-flex btn-group" as={ButtonGroup}>
             <Button
               style={{ border: 'none' }}
-              variant={channel.id === currentChannelId ? 'secondary' : 'light'}
+              variant={channel.id === currentChannelId 
+                ? 'secondary' 
+                : 
+                'light'}
               className={'w-100 rounded-0 text-start text-truncate'}
               onClick={() => handleChannelClick(channel.id)}
               aria-label={`Канал ${channel.name}`}

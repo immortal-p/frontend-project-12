@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { uniqueId } from 'lodash'
 import filter from 'leo-profanity'
@@ -12,7 +12,7 @@ const MessagesBox = ({ currentChannelId, t }) => {
   const dispath = useDispatch()
   const { items: messages } = useSelector(state => state.chat.messages)
   const currentChannel = useSelector(state =>
-    state.chat.channels.items.find(ch => ch.id === currentChannelId)
+    state.chat.channels.items.find(ch => ch.id === currentChannelId),
   )
 
   const { username } = useSelector(state => state.auth)
@@ -55,7 +55,8 @@ const MessagesBox = ({ currentChannelId, t }) => {
 
     try {
       await sendMessage(msg)
-    } catch (err) {
+    } 
+    catch (err) {
       console.error(err)
       toast.error(t('chat.toastify.connectionError'))
       setErrorMSg(t('chat.errors.connectionError'))

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { useDispatch } from 'react-redux'
@@ -35,14 +35,16 @@ const SignUpForm = () => {
         const { token, username } = response.data
         dispath(setCredentials({ token, username }))
         navigate('/')
-      } else {
+      } 
+      else {
         setStatus(t('auth.errors.noToken'))
       }
     } catch (err) {
       console.error('Login error:', err)
       if (err.response?.status === 409) {
         setStatus(t('auth.errors.userExists'))
-      } else {
+      } 
+      else {
         setStatus(t('auth.errors.connectionError'))
       }
     }
@@ -124,7 +126,9 @@ const SignUpForm = () => {
                               />
                             )}
                           </Field>
-                          <FormLabel htmlFor="username">{t('auth.register.name')}</FormLabel>
+                          <FormLabel htmlFor="username">
+                            {t('auth.register.name')}
+                          </FormLabel>
                           <ErrorMessage
                             name="username"
                             component="div"

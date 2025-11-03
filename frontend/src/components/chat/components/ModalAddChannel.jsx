@@ -28,7 +28,8 @@ export const ModalAddChannel = ({ onChannelCreated, show, onHide }) => {
       onHide()
 
       onChannelCreated?.(createdChannel)
-    } catch (err) {
+    } 
+    catch (err) {
       console.error('Ошибка при создании канала:', err)
     }
   }

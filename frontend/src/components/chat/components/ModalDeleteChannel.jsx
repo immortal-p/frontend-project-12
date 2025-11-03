@@ -16,7 +16,8 @@ const ModalDeleteChannel = ({ channel, onChannelDefault, show, onHide }) => {
         onChannelDefault()
       }
       onHide()
-    } catch (err) {
+    } 
+    catch (err) {
       console.error('Ошибка при удалении канала:', err)
       onHide()
     }
