@@ -1,10 +1,10 @@
-import React, { lazy, Suspense } from 'react';
+import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ProtectedRoute from './components/ProtenctedRoute.jsx';
 import SignInForm from './components/SingIn.jsx';
 import SignUpForm from './components/SignUp.jsx';
 import filter from 'leo-profanity';
-const Chat = lazy(() => import('./components/chat/Chat.jsx'));
+import Chat from './components/chat/Chat.jsx';
 
 const App = () => {
     filter.loadDictionary('ru');
@@ -16,14 +16,7 @@ const App = () => {
                 <Route path='/signin' element={<SignInForm />} />
                 <Route path='/signup' element={<SignUpForm />} />
                 <Route element={<ProtectedRoute />}>
-                    <Route 
-                        path='/' 
-                        element={
-                            <Suspense fallback={<div>Loading...</div>}>
-                                <Chat />
-                            </Suspense>
-                        } 
-                    />
+                    <Route path='/' element={<Chat />} />
                 </Route>
             </Routes>
         </BrowserRouter>

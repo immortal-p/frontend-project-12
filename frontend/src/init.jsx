@@ -8,7 +8,8 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import './index.css'
 import store from './slices/store.js'
 import { Provider } from 'react-redux'
-import { setupAxios } from './config/axios.js'
+import setupAxios from './config/axios.js'
+import rollbarConfig from './config/rollbar.js'
 import { Provider as Prov, ErrorBoundary } from "@rollbar/react"
 
 const init = async () => {
@@ -24,11 +25,6 @@ const init = async () => {
         escapeValue: false,
       }
     });
-
-  const rollbarConfig = {
-    accessToken: '58a3d7eaf9c34ad49ae373243c35ad4d',
-    environment: 'testenv'
-  }
 
 
   return (

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const setupAxios = () => {
+const setupAxios = () => {
     axios.interceptors.request.use(
         (config) => {
             const token = localStorage.getItem('token')
@@ -11,3 +11,5 @@ export const setupAxios = () => {
         }
     )
 }
+
+export default setupAxios
