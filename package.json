@@ -16,7 +16,4 @@
     "url": "https://github.com/immortal-p/frontend-project-12/issues"
   },
   "homepage": "https://github.com/immortal-p/frontend-project-12#readme",
-  "dependencies": {
-    "react-icons": "^5.5.0"
-  }
 }
