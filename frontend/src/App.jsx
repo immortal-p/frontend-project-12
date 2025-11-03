@@ -1,7 +1,7 @@
 import React, { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import ProtectedRoute from './components/ProtectedRoute.jsx';
-import SignInForm from './components/SignIn.jsx';
+import ProtectedRoute from './components/ProtenctedRoute.jsx';
+import SignInForm from './components/SingIn.jsx';
 import SignUpForm from './components/SignUp.jsx';
 import filter from 'leo-profanity';
 const Chat = lazy(() => import('./components/chat/Chat.jsx'));
