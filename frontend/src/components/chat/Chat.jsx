@@ -39,12 +39,8 @@ const Chat = () => {
                     await dispatch(fetchChannels()).unwrap()
                 }
                 catch (err) {
-                    if (err?.status === 401 || err.response?.status === 401){
-                        localStorage.clear()
-                        navigate('/signin')
-                    } else {
-                        toast.error(t('chat.toastify.connectionError'))
-                    }
+                    console.err(err)
+                    toast.error(t('chat.toastify.connectionError'))
                 }
             }
         }
@@ -56,7 +52,7 @@ const Chat = () => {
             const generalChannel = channels.find(ch => ch.name === 'general');
             setCurrentChannelId(generalChannel?.id ?? channels[0].id);
         }
-    }, [channels, currentChannelId, channelsStatus]);
+    }, [channels, currentChannelId]);
 
     useEffect(() => {
         const socket = connectSocket()
@@ -66,7 +62,9 @@ const Chat = () => {
         
         socket.on("newChannel", (channel) => {
             dispatch(addChannel(channel))
-            setCurrentChannelId(channel.id); 
+            if(currentChannelId === channel.id) {
+                setCurrentChannelId(channel.id)
+            }
             toast.success(t('chat.toastify.createChannel'), { draggable: true })
         })
         
@@ -98,18 +96,16 @@ const Chat = () => {
       }
     }, [channels])
 
-    const isLoading = channelsStatus === 'loading'; 
     const isError = channelsStatus === 'failed';
-
     const shouldRenderChat = channelsStatus === 'succeeded' && channels.length > 0;
 
-    if (isLoading || !shouldRenderChat) {
+    if (!shouldRenderChat) {
         return (
-            <Container className="h-100 my-4 overflow-hidden rounded shadow">
+            <div className="d-flex justify-content-center align-items-center h-100">
                 <div className="spinner-border text-primary" role="status">
                     <span className="visually-hidden">{t('chat.loading')}...</span>
                 </div>
-            </Container>
+            </div>
         )
     }
 
