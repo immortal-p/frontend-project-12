@@ -13,7 +13,7 @@ const LogInForm = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { t } = useTranslation()
-
+  
   const handleSubmit = async (values, { setStatus }) => {
     setStatus("")
 
@@ -106,7 +106,9 @@ const LogInForm = () => {
                               )}
                             </Field>
                             <FormLabel htmlFor="password">{t('auth.login.password')}</FormLabel>
-                          {status && <div className="invalid-feedback d-block">{status}</div>}
+                              {status && (
+                                <div className="invalid-tooltip d-block">{status}</div>
+                              )}
                         </FormGroup>
 
                         <Button type="submit" className="w-100 mb-3" variant="outline-primary">

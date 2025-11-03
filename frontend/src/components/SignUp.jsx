@@ -24,8 +24,8 @@ const SignUpForm = () => {
             .min(6, t('auth.errors.passwordLength'))
             .required(t('errors.required')),
         confirmPassword: Yup.string()
-            .oneOf([Yup.ref("password"), null], t('auth.errors.confirmPasswordRequired'))
-            .required(t('auth.errors.passwordsMustMatch'))
+            .oneOf([Yup.ref('password'), null], t('auth.errors.passwordsMustMatch'))
+            .required(t('auth.errors.confirmPasswordRequired')),
             
     })
 
