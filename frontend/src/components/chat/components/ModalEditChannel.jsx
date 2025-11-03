@@ -14,7 +14,6 @@ export const ModalEditChannel = ({ channel, onChannelEdited, show, onHide }) => 
     const channels = useSelector((state) => state.chat.channels.items);
     const existingNames = channels
       .map((ch) => ch.name)
-      .filter((name) => name !== channel?.name);
     const validationSchema = chanelValidationSchema(t, existingNames);
 
     const handleSubmit = async (values, { resetForm }) => {
@@ -73,9 +72,6 @@ export const ModalEditChannel = ({ channel, onChannelEdited, show, onHide }) => 
                 <Form>
 
                   <FormGroup className="mb-2">
-                    <FormLabel htmlFor="channelName" visuallyHidden>
-                      {t("chat.channelNameLabel")}
-                    </FormLabel>
                     <Field name="channelName">
                       {({ field }) => (
                         <FormControl
@@ -87,6 +83,9 @@ export const ModalEditChannel = ({ channel, onChannelEdited, show, onHide }) => 
                         />
                       )}
                     </Field>
+                    <FormLabel htmlFor="channelName" visuallyHidden>
+                      {t('chat.nameLabel')}
+                    </FormLabel>
                     <ErrorMessage name="channelName">
                       {(msg) =>
                         submitCount > 0 && <div className="invalid-feedback d-block">{msg}</div>

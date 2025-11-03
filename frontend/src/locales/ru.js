@@ -44,6 +44,7 @@ export default {
                 delete: 'Удалить',
                 rename: 'Переименовать',
                 channelNameLabel: 'Название канала',
+                nameLabel: 'Имя канала', 
                 errors: {
                     connectionError: 'Не удалось отправить сообщение. Проверьте соединение.',
                     unknownError: 'неизвестная ошибка',
@@ -51,7 +52,6 @@ export default {
                 },
                 addChannelModal: {
                     title: 'Добавить канал',
-                    nameLabel: 'Название канала', 
                     confirm: 'Отправить',
                     cancel: 'Отменить',
                     placeholderMessage: 'Название канала'

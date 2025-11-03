@@ -69,20 +69,20 @@ export const ModalAddChannel = ({ onChannelCreated, show, onHide }) => {
                 {({ errors, submitCount, resetForm }) => (
                   <Form>
                     <FormGroup className="mb-2">
-                      <FormLabel htmlFor="channelName" visuallyHidden>
-                        {t('chat.channelNameLabel')}
-                      </FormLabel>
                       <Field name="channelName">
                         {({ field }) => (
                           <FormControl
                             {...field}
+                            className="mb-2"
                             ref={inputRef}
-                            type="text"
                             isInvalid={!!(errors.channelName && submitCount > 0)}
                             placeholder={t("chat.addChannelModal.placeholderMessage")}
                           />
                         )}
                       </Field>
+                      <FormLabel htmlFor="channelName" visuallyHidden>
+                        {t('chat.nameLabel')}
+                      </FormLabel>
                       <ErrorMessage name="channelName">
                         {msg => submitCount > 0 && <div className="invalid-feedback d-block">{msg}</div>}
                       </ErrorMessage>
