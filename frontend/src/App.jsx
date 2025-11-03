@@ -1,25 +1,33 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import ProtectedRoute from './components/ProtenctedRoute.jsx';
-import Chat from "./components/chat/Chat.jsx";
-import SignInForm from './components/SingIn.jsx';
+import React, { lazy, Suspense } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import ProtectedRoute from './components/ProtectedRoute.jsx';
+import SignInForm from './components/SignIn.jsx';
 import SignUpForm from './components/SignUp.jsx';
-import filter from 'leo-profanity'
+import filter from 'leo-profanity';
+const Chat = lazy(() => import('./components/chat/Chat.jsx'));
 
 const App = () => {
     filter.loadDictionary('ru');
-    filter.add(filter.getDictionary('en'))
+    filter.add(filter.getDictionary('en'));
+    
     return (
         <BrowserRouter>
             <Routes>
                 <Route path='/signin' element={<SignInForm />} />
-                <Route path='/signup' element={<SignUpForm />}></Route>
+                <Route path='/signup' element={<SignUpForm />} />
                 <Route element={<ProtectedRoute />}>
-                    <Route path='/' element={<Chat />} />
+                    <Route 
+                        path='/' 
+                        element={
+                            <Suspense fallback={<div>Loading...</div>}>
+                                <Chat />
+                            </Suspense>
+                        } 
+                    />
                 </Route>
             </Routes>
         </BrowserRouter>
-    )
-}
+    );
+};
 
-export default App
+export default App;

@@ -98,11 +98,11 @@ const Chat = () => {
 
     if (isLoading || !shouldRenderChat) {
         return (
-            <div className="d-flex justify-content-center align-items-center h-100">
+            <Container className="h-100 my-4 overflow-hidden rounded shadow">
                 <div className="spinner-border text-primary" role="status">
                     <span className="visually-hidden">{t('chat.loading')}...</span>
                 </div>
-            </div>
+            </Container>
         )
     }
 
