@@ -1,21 +1,21 @@
-import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useNavigate, Outlet } from 'react-router-dom';
+import React, { useEffect } from "react"
+import { useSelector } from "react-redux"
+import { useNavigate, Outlet } from "react-router-dom"
 
 const ProtectedRoute = () => {
-  const { token } = useSelector(state => state.auth);
-  const navigate = useNavigate();
+  const { token } = useSelector(state => state.auth)
+  const navigate = useNavigate()
 
-  (useEffect(() => {
+  ;(useEffect(() => {
     if (!token) {
-      navigate('/signin');
+      navigate("/signin")
     }
   }),
-    [token, navigate]);
+    [token, navigate])
 
-  if (!token) return null;
+  if (!token) return null
 
-  return <Outlet />;
-};
+  return <Outlet />
+}
 
-export default ProtectedRoute;
+export default ProtectedRoute

@@ -1,10 +1,10 @@
-import { io } from 'socket.io-client';
+import { io } from "socket.io-client"
 
-let socket = null;
+let socket = null
 
 export const connectSocket = () => {
   if (!socket) {
-    socket = io('ws://localhost:5001', { transports: ['websocket'] });
+    socket = io("ws://localhost:5001", { transports: ["websocket"] })
   }
-  return socket;
-};
+  return socket
+}

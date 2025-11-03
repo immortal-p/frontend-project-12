@@ -1,70 +1,70 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { uniqueId } from 'lodash';
-import filter from 'leo-profanity';
-import { toast } from 'react-toastify';
-import sendMessage from './sendMessage';
-import { BsArrowRightSquare } from 'react-icons/bs';
-import { Form, Button } from 'react-bootstrap';
-import { fetchMessages } from '../../slices/chatSlice';
+import React, { useState, useEffect, useRef } from "react"
+import { useSelector, useDispatch } from "react-redux"
+import { uniqueId } from "lodash"
+import filter from "leo-profanity"
+import { toast } from "react-toastify"
+import sendMessage from "./sendMessage"
+import { BsArrowRightSquare } from "react-icons/bs"
+import { Form, Button } from "react-bootstrap"
+import { fetchMessages } from "../../slices/chatSlice"
 
 const MessagesBox = ({ currentChannelId, t }) => {
-  const dispath = useDispatch();
-  const { items: messages } = useSelector(state => state.chat.messages);
+  const dispath = useDispatch()
+  const { items: messages } = useSelector(state => state.chat.messages)
   const currentChannel = useSelector(state =>
     state.chat.channels.items.find(ch => ch.id === currentChannelId)
-  );
+  )
 
-  const { username } = useSelector(state => state.auth);
-  const [newMessage, setNewMessage] = useState('');
-  const [errorMsg, setErrorMSg] = useState('');
-  const messageEndRef = useRef(null);
-  const currentMessages = messages.filter(msg => msg.channelId === currentChannelId);
-  const totalMessages = currentMessages.length;
+  const { username } = useSelector(state => state.auth)
+  const [newMessage, setNewMessage] = useState("")
+  const [errorMsg, setErrorMSg] = useState("")
+  const messageEndRef = useRef(null)
+  const currentMessages = messages.filter(msg => msg.channelId === currentChannelId)
+  const totalMessages = currentMessages.length
 
   useEffect(() => {
     if (currentChannelId) {
-      dispath(fetchMessages(currentChannelId));
+      dispath(fetchMessages(currentChannelId))
     }
-  }, [currentChannelId, dispath]);
+  }, [currentChannelId, dispath])
 
   useEffect(() => {
-    if (!currentMessages.length) return;
+    if (!currentMessages.length) return
 
     if (messageEndRef.current) {
-      messageEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      messageEndRef.current.scrollIntoView({ behavior: "smooth", block: "end" })
     }
-  }, [currentMessages, username]);
+  }, [currentMessages, username])
 
   if (!currentChannel) {
     return (
       <div className='d-flex justify-content-center align-items-center h-100'>
-        <p className='text-muted'>{t('chat.selectChannel') || 'Выберите канал'}</p>
+        <p className='text-muted'>{t("chat.selectChannel") || "Выберите канал"}</p>
       </div>
-    );
+    )
   }
 
   const handleSendMessage = async e => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const body = formData.get('body').trim();
-    if (!body || !currentChannelId) return;
+    e.preventDefault()
+    const formData = new FormData(e.target)
+    const body = formData.get("body").trim()
+    if (!body || !currentChannelId) return
 
-    const cleanBody = filter.clean(body);
-    const msg = { id: uniqueId(), body: cleanBody, channelId: currentChannelId, username };
+    const cleanBody = filter.clean(body)
+    const msg = { id: uniqueId(), body: cleanBody, channelId: currentChannelId, username }
 
     try {
-      await sendMessage(msg);
+      await sendMessage(msg)
     } catch (err) {
-      console.error(err);
-      toast.error(t('chat.toastify.connectionError'));
-      setErrorMSg(t('chat.errors.connectionError'));
-      setTimeout(() => setErrorMSg(''), 5000);
+      console.error(err)
+      toast.error(t("chat.toastify.connectionError"))
+      setErrorMSg(t("chat.errors.connectionError"))
+      setTimeout(() => setErrorMSg(""), 5000)
     }
 
-    setNewMessage('');
-    e.target.reset();
-  };
+    setNewMessage("")
+    e.target.reset()
+  }
 
   return (
     <div className='col p-0 h-100'>
@@ -73,7 +73,7 @@ const MessagesBox = ({ currentChannelId, t }) => {
           <p className='m-0'>
             <b>{`# ${currentChannel.name}`}</b>
           </p>
-          <span className='text-muted'>{t('chat.messages', { count: totalMessages })}</span>
+          <span className='text-muted'>{t("chat.messages", { count: totalMessages })}</span>
         </div>
 
         <div id='messages-box' className='chat-messages overflow-auto px-5 '>
@@ -98,31 +98,31 @@ const MessagesBox = ({ currentChannelId, t }) => {
             </div>
           )}
           <Form noValidate onSubmit={handleSendMessage} className='py-1 border rounded-2'>
-            <Form.Group className={'input-group'}>
+            <Form.Group className={"input-group"}>
               <Form.Control
                 name='body'
-                aria-label={t('chat.newMessage')}
-                placeholder={t('chat.inputMess')}
+                aria-label={t("chat.newMessage")}
+                placeholder={t("chat.inputMess")}
                 className='border-0 p-0 ps-2'
                 value={newMessage}
                 onChange={e => setNewMessage(e.target.value)}
               />
               <Button
-                style={{ border: 'none' }}
+                style={{ border: "none" }}
                 type='submit'
                 variant='group-vertical'
                 className='btn'
                 disabled={newMessage.trim().length <= 0}
               >
                 <BsArrowRightSquare size={20} />
-                <span className='visually-hidden'>{t('chat.send')}</span>
+                <span className='visually-hidden'>{t("chat.send")}</span>
               </Button>
             </Form.Group>
           </Form>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default MessagesBox;
+export default MessagesBox

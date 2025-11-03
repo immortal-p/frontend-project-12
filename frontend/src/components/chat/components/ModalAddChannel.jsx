@@ -1,51 +1,51 @@
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { chanelValidationSchema } from '../validation.js';
-import { Modal, FormGroup, FormControl, FormLabel, Button } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
-import { useRef, useEffect } from 'react';
-import axios from 'axios';
-import { uniqueId } from 'lodash';
-import { useTranslation } from 'react-i18next';
-import filter from 'leo-profanity';
+import { Formik, Form, Field, ErrorMessage } from "formik"
+import { chanelValidationSchema } from "../validation.js"
+import { Modal, FormGroup, FormControl, FormLabel, Button } from "react-bootstrap"
+import { useSelector } from "react-redux"
+import { useRef, useEffect } from "react"
+import axios from "axios"
+import { uniqueId } from "lodash"
+import { useTranslation } from "react-i18next"
+import filter from "leo-profanity"
 
 export const ModalAddChannel = ({ onChannelCreated, show, onHide }) => {
-  const formikRef = useRef(null);
-  const inputRef = useRef(null);
-  const { t } = useTranslation();
+  const formikRef = useRef(null)
+  const inputRef = useRef(null)
+  const { t } = useTranslation()
 
-  const channels = useSelector(state => state.chat.channels.items);
-  const existingNames = channels.map(ch => ch.name);
-  const validationSchema = chanelValidationSchema(t, existingNames);
+  const channels = useSelector(state => state.chat.channels.items)
+  const existingNames = channels.map(ch => ch.name)
+  const validationSchema = chanelValidationSchema(t, existingNames)
 
   const handleSubmit = async (values, { resetForm }) => {
-    const cleanValues = filter.clean(values.channelName);
-    const newChannel = { id: uniqueId(), name: cleanValues };
+    const cleanValues = filter.clean(values.channelName)
+    const newChannel = { id: uniqueId(), name: cleanValues }
 
     try {
-      const response = await axios.post('/api/v1/channels', newChannel);
-      const createdChannel = response.data;
-      resetForm();
-      onHide();
+      const response = await axios.post("/api/v1/channels", newChannel)
+      const createdChannel = response.data
+      resetForm()
+      onHide()
 
-      onChannelCreated?.(createdChannel);
+      onChannelCreated?.(createdChannel)
     } catch (err) {
-      console.error('Ошибка при создании канала:', err);
+      console.error("Ошибка при создании канала:", err)
     }
-  };
+  }
 
   useEffect(() => {
     if (show) {
-      inputRef.current?.focus();
+      inputRef.current?.focus()
     }
     if (!show) {
-      formikRef.current?.resetForm();
+      formikRef.current?.resetForm()
     }
-  }, [show]);
+  }, [show])
 
   return (
     <Modal show={show} onHide={onHide} centered id='modalAdd' aria-labelledby='modalToggleLabel'>
       <Modal.Header closeButton>
-        <Modal.Title id='modalToggleLabel'>{t('chat.addChannelModal.title')}</Modal.Title>
+        <Modal.Title id='modalToggleLabel'>{t("chat.addChannelModal.title")}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -53,7 +53,7 @@ export const ModalAddChannel = ({ onChannelCreated, show, onHide }) => {
           validateOnBlur={false}
           validateOnChange={false}
           innerRef={formikRef}
-          initialValues={{ channelName: '' }}
+          initialValues={{ channelName: "" }}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
@@ -66,14 +66,14 @@ export const ModalAddChannel = ({ onChannelCreated, show, onHide }) => {
                       {...field}
                       id='channelName'
                       ref={inputRef}
-                      aria-label={t('chat.nameLabel')}
+                      aria-label={t("chat.nameLabel")}
                       isInvalid={!!(errors.channelName && submitCount > 0)}
-                      placeholder={t('chat.addChannelModal.placeholderMessage')}
+                      placeholder={t("chat.addChannelModal.placeholderMessage")}
                     />
                   )}
                 </Field>
                 <FormLabel htmlFor='channelName' visuallyHidden>
-                  {t('chat.nameLabel')}
+                  {t("chat.nameLabel")}
                 </FormLabel>
                 <ErrorMessage name='channelName'>
                   {msg => submitCount > 0 && <div className='invalid-feedback d-block'>{msg}</div>}
@@ -85,14 +85,14 @@ export const ModalAddChannel = ({ onChannelCreated, show, onHide }) => {
                   variant='secondary'
                   className='me-2'
                   onClick={() => {
-                    resetForm();
-                    onHide();
+                    resetForm()
+                    onHide()
                   }}
                 >
-                  {t('chat.addChannelModal.cancel')}
+                  {t("chat.addChannelModal.cancel")}
                 </Button>
                 <Button type='submit' variant='primary'>
-                  {t('chat.addChannelModal.confirm')}
+                  {t("chat.addChannelModal.confirm")}
                 </Button>
               </div>
             </Form>
@@ -100,5 +100,5 @@ export const ModalAddChannel = ({ onChannelCreated, show, onHide }) => {
         </Formik>
       </Modal.Body>
     </Modal>
-  );
-};
+  )
+}
