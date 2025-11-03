@@ -76,7 +76,9 @@ export const ModalEditChannel = ({ channel, onChannelEdited, show, onHide }) => 
                       {({ field }) => (
                         <FormControl
                           {...field}
+                          id="channelName"
                           ref={inputRef}
+                          aria-label={t('chat.channelName')}
                           type="text"
                           isInvalid={!!(errors.channelName && submitCount > 0)}
                           placeholder={t('chat.editChannelModal.placeholderMessage')}
