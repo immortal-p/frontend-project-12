@@ -3,6 +3,6 @@ const rollbarConfig = {
   environment: 'development',
   captureUncaught: true,
   captureUnhandledRejections: true,
-}
+};
 
-export default rollbarConfig
+export default rollbarConfig;
