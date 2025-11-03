@@ -135,7 +135,7 @@ const Chat = () => {
                                 className={'w-100 rounded-0 text-start text-truncate'}
                                 onClick={() => handleChannelClick(channel.id)}
                             >
-                                <span className="me-1">#</span>
+                                <span className="me-1" aria-hidden="true">#</span>
                                 {channel.name}
                             </Button>
                     )
@@ -149,7 +149,8 @@ const Chat = () => {
                                 onClick={() => handleChannelClick(channel.id)}
                                 aria-label={`Канал ${channel.name}`}
                                 >
-                                <span className="me-1" aria-hidden="true">#</span>{channel.name}
+                                <span className="me-1" aria-hidden="true">#</span>
+                                {channel.name}
                             </Button>
                             <Dropdown.Toggle
                                 style={{border: 'none'}}
