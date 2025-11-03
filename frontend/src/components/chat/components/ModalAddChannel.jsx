@@ -73,10 +73,9 @@ export const ModalAddChannel = ({ onChannelCreated, show, onHide }) => {
                         {({ field }) => (
                           <FormControl
                             {...field}
-                            className="mb-2"
                             id="channelName"
                             ref={inputRef}
-                            aria-label={t('chat.addChannelModal.nameLabel')}
+                            aria-label={t('chat.nameLabel')}
                             isInvalid={!!(errors.channelName && submitCount > 0)}
                             placeholder={t("chat.addChannelModal.placeholderMessage")}
                           />
