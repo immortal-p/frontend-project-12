@@ -28,8 +28,8 @@ const Chat = () => {
     items: channels,
     status: channelsStatus,
     error: channelsError,
-  } = useSelector((state) => state.chat.channels);
-  const { token } = useSelector((state) => state.auth);
+  } = useSelector(state => state.chat.channels);
+  const { token } = useSelector(state => state.auth);
 
   const [currentChannelId, setCurrentChannelId] = useState(null);
   const [channelToDelete, setChannelToDelete] = useState(null);
@@ -58,7 +58,7 @@ const Chat = () => {
 
   useEffect(() => {
     if (currentChannelId === null && channels.length > 0) {
-      const generalChannel = channels.find((ch) => ch.name === 'general');
+      const generalChannel = channels.find(ch => ch.name === 'general');
       setCurrentChannelId(generalChannel?.id ?? channels[0].id);
     }
   }, [channels, currentChannelId]);
@@ -67,9 +67,9 @@ const Chat = () => {
     const socket = connectSocket();
     socketRef.current = socket;
 
-    socket.on('newMessage', (msg) => msg?.id && dispatch(addMessage(msg)));
+    socket.on('newMessage', msg => msg?.id && dispatch(addMessage(msg)));
 
-    socket.on('newChannel', (channel) => {
+    socket.on('newChannel', channel => {
       dispatch(addChannel(channel));
       if (currentChannelId === channel.id) {
         setCurrentChannelId(channel.id);
@@ -77,7 +77,7 @@ const Chat = () => {
       toast.success(t('chat.toastify.createChannel'), { draggable: true });
     });
 
-    socket.on('removeChannel', (channelId) => {
+    socket.on('removeChannel', channelId => {
       dispatch(deleteChannel(channelId));
       if (currentChannelId === channelId.id) {
         setCurrentChannelId(channels.length > 0 ? channels[0].id : null);
@@ -85,7 +85,7 @@ const Chat = () => {
       toast.success(t('chat.toastify.deleteChannel'), { draggable: true });
     });
 
-    socket.on('renameChannel', (channel) => {
+    socket.on('renameChannel', channel => {
       dispatch(renameChannel(channel));
       toast.success(t('chat.toastify.renameChannel'), { draggable: true });
     });
@@ -109,9 +109,9 @@ const Chat = () => {
 
   if (!shouldRenderChat) {
     return (
-      <div className="d-flex justify-content-center align-items-center h-100">
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">{t('chat.loading')}...</span>
+      <div className='d-flex justify-content-center align-items-center h-100'>
+        <div className='spinner-border text-primary' role='status'>
+          <span className='visually-hidden'>{t('chat.loading')}...</span>
         </div>
       </div>
     );
@@ -124,36 +124,36 @@ const Chat = () => {
         : channelsError || t('chat.unknownError');
 
     return (
-      <div className="d-flex justify-content-center align-items-center h-100">
-        <div className="text-danger p-5">
+      <div className='d-flex justify-content-center align-items-center h-100'>
+        <div className='text-danger p-5'>
           <strong>{t('chat.errorLoadingData')}</strong>: {errorMessage}
         </div>
       </div>
     );
   }
 
-  const handleChannelClick = (channelId) => {
+  const handleChannelClick = channelId => {
     setCurrentChannelId(channelId);
   };
 
-  const builderChannel = (channel) => {
+  const builderChannel = channel => {
     return (
-      <Nav.Item key={channel.id} className="w-100" as="li">
+      <Nav.Item key={channel.id} className='w-100' as='li'>
         {!channel.removable ? (
           <Button
             style={{ border: 'none' }}
             variant={channel.id === currentChannelId ? 'secondary' : 'light'}
-            type="button"
+            type='button'
             className={'w-100 rounded-0 text-start text-truncate'}
             onClick={() => handleChannelClick(channel.id)}
           >
-            <span className="me-1" aria-hidden="true">
+            <span className='me-1' aria-hidden='true'>
               #
             </span>
             {channel.name}
           </Button>
         ) : (
-          <Dropdown className="d-flex btn-group" as={ButtonGroup}>
+          <Dropdown className='d-flex btn-group' as={ButtonGroup}>
             <Button
               style={{ border: 'none' }}
               variant={channel.id === currentChannelId ? 'secondary' : 'light'}
@@ -161,7 +161,7 @@ const Chat = () => {
               onClick={() => handleChannelClick(channel.id)}
               aria-label={`Канал ${channel.name}`}
             >
-              <span className="me-1" aria-hidden="true">
+              <span className='me-1' aria-hidden='true'>
                 #
               </span>
               {channel.name}
@@ -171,7 +171,7 @@ const Chat = () => {
               variant={channel.id === currentChannelId ? 'secondary' : 'light'}
               className={'flex-grow-0 dropdown-toggle-split'}
             >
-              <span className="visually-hidden">{t('chat.channelManagement')}</span>
+              <span className='visually-hidden'>{t('chat.channelManagement')}</span>
             </Dropdown.Toggle>
             <Dropdown.Menu>
               <Dropdown.Item onClick={() => setChannelToDelete(channel)}>
@@ -196,7 +196,7 @@ const Chat = () => {
       <ModalAddChannel
         show={showAddModal}
         onHide={() => setShowAddModal(false)}
-        onChannelCreated={(newChannel) => setCurrentChannelId(newChannel.id)}
+        onChannelCreated={newChannel => setCurrentChannelId(newChannel.id)}
       />
       <ModalDeleteChannel
         show={!!channelToDelete}
@@ -210,37 +210,37 @@ const Chat = () => {
         show={!!channelToUpdate}
         onHide={() => setChannelToUpdate(null)}
         channel={channelToUpdate}
-        onChannelEdited={(updatedChannel) => setChannelToUpdate(updatedChannel)}
+        onChannelEdited={updatedChannel => setChannelToUpdate(updatedChannel)}
       />
 
-      <div className="d-flex flex-column h-100">
-        <Navbar bg="white" extand="lg" className="shadow-sm">
+      <div className='d-flex flex-column h-100'>
+        <Navbar bg='white' extand='lg' className='shadow-sm'>
           <Container>
-            <Navbar.Brand as={Link} to={'/'} className="navbar-brand">
+            <Navbar.Brand as={Link} to={'/'} className='navbar-brand'>
               {t('nameChat')}
             </Navbar.Brand>
             <Button onClick={handleLogout}>{t('chat.buttonExit')}</Button>
           </Container>
         </Navbar>
-        <Container className="h-100 my-4 overflow-hidden rounded shadow">
-          <div className="row h-100 bg-white flex-md-row">
-            <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
-              <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
+        <Container className='h-100 my-4 overflow-hidden rounded shadow'>
+          <div className='row h-100 bg-white flex-md-row'>
+            <div className='col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex'>
+              <div className='d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4'>
                 <b>{t('chat.title')}</b>
                 <Button
-                  variant="group-vertical"
-                  className="p-0 text-primary"
+                  variant='group-vertical'
+                  className='p-0 text-primary'
                   onClick={() => setShowAddModal(true)}
                 >
                   <BsPlusSquare size={20} />
-                  <span className="visually-hidden">+</span>
+                  <span className='visually-hidden'>+</span>
                 </Button>
               </div>
               <Nav
-                className="flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block"
-                as="ul"
+                className='flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block'
+                as='ul'
               >
-                {channels.map((channel) => builderChannel(channel))}
+                {channels.map(channel => builderChannel(channel))}
                 <div ref={channelEndRef} />
               </Nav>
             </div>

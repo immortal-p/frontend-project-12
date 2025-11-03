@@ -8,7 +8,7 @@ export const chanelValidationSchema = (t, existingNames = []) => {
       .min(3, t('errors.nameLength'))
       .max(20, t('errors.nameLength'))
       .notOneOf(existingNames, t('errors.existingNames'))
-      .transform((value) => filter.clean(value))
+      .transform(value => filter.clean(value))
       .required(t('errors.required')),
   });
 };

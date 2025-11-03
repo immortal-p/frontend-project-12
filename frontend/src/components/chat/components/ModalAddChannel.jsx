@@ -13,8 +13,8 @@ export const ModalAddChannel = ({ onChannelCreated, show, onHide }) => {
   const inputRef = useRef(null);
   const { t } = useTranslation();
 
-  const channels = useSelector((state) => state.chat.channels.items);
-  const existingNames = channels.map((ch) => ch.name);
+  const channels = useSelector(state => state.chat.channels.items);
+  const existingNames = channels.map(ch => ch.name);
   const validationSchema = chanelValidationSchema(t, existingNames);
 
   const handleSubmit = async (values, { resetForm }) => {
@@ -43,9 +43,9 @@ export const ModalAddChannel = ({ onChannelCreated, show, onHide }) => {
   }, [show]);
 
   return (
-    <Modal show={show} onHide={onHide} centered id="modalAdd" aria-labelledby="modalToggleLabel">
+    <Modal show={show} onHide={onHide} centered id='modalAdd' aria-labelledby='modalToggleLabel'>
       <Modal.Header closeButton>
-        <Modal.Title id="modalToggleLabel">{t('chat.addChannelModal.title')}</Modal.Title>
+        <Modal.Title id='modalToggleLabel'>{t('chat.addChannelModal.title')}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -59,12 +59,12 @@ export const ModalAddChannel = ({ onChannelCreated, show, onHide }) => {
         >
           {({ errors, submitCount, resetForm }) => (
             <Form>
-              <FormGroup className="mb-2">
-                <Field name="channelName">
+              <FormGroup className='mb-2'>
+                <Field name='channelName'>
                   {({ field }) => (
                     <FormControl
                       {...field}
-                      id="channelName"
+                      id='channelName'
                       ref={inputRef}
                       aria-label={t('chat.nameLabel')}
                       isInvalid={!!(errors.channelName && submitCount > 0)}
@@ -72,20 +72,18 @@ export const ModalAddChannel = ({ onChannelCreated, show, onHide }) => {
                     />
                   )}
                 </Field>
-                <FormLabel htmlFor="channelName" visuallyHidden>
+                <FormLabel htmlFor='channelName' visuallyHidden>
                   {t('chat.nameLabel')}
                 </FormLabel>
-                <ErrorMessage name="channelName">
-                  {(msg) =>
-                    submitCount > 0 && <div className="invalid-feedback d-block">{msg}</div>
-                  }
+                <ErrorMessage name='channelName'>
+                  {msg => submitCount > 0 && <div className='invalid-feedback d-block'>{msg}</div>}
                 </ErrorMessage>
               </FormGroup>
 
-              <div className="d-flex justify-content-end mt-3">
+              <div className='d-flex justify-content-end mt-3'>
                 <Button
-                  variant="secondary"
-                  className="me-2"
+                  variant='secondary'
+                  className='me-2'
                   onClick={() => {
                     resetForm();
                     onHide();
@@ -93,7 +91,7 @@ export const ModalAddChannel = ({ onChannelCreated, show, onHide }) => {
                 >
                   {t('chat.addChannelModal.cancel')}
                 </Button>
-                <Button type="submit" variant="primary">
+                <Button type='submit' variant='primary'>
                   {t('chat.addChannelModal.confirm')}
                 </Button>
               </div>

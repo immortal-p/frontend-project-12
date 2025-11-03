@@ -44,29 +44,29 @@ const chatSlice = createSlice({
   reducers: {
     addMessage: (state, action) => {
       const msg = action.payload;
-      if (!state.messages.items.find((m) => m.id === msg.id)) {
+      if (!state.messages.items.find(m => m.id === msg.id)) {
         state.messages.items.push(msg);
       }
     },
     addChannel: (state, action) => {
       const newChannel = action.payload;
-      if (!state.channels.items.find((ch) => ch.id === newChannel.id)) {
+      if (!state.channels.items.find(ch => ch.id === newChannel.id)) {
         state.channels.items.push(newChannel);
       }
     },
     deleteChannel: (state, action) => {
       const delChannelId = action.payload.id;
-      state.channels.items = state.channels.items.filter((chan) => chan.id !== delChannelId);
+      state.channels.items = state.channels.items.filter(chan => chan.id !== delChannelId);
     },
     renameChannel: (state, action) => {
       const { id, name } = action.payload;
-      const channel = state.channels.items.find((ch) => ch.id === id);
+      const channel = state.channels.items.find(ch => ch.id === id);
       if (channel) channel.name = name;
     },
   },
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder
-      .addCase(fetchChannels.pending, (state) => {
+      .addCase(fetchChannels.pending, state => {
         ((state.channels.status = 'loading'), (state.channels.error = null));
       })
       .addCase(fetchChannels.fulfilled, (state, action) => {
@@ -76,7 +76,7 @@ const chatSlice = createSlice({
       .addCase(fetchChannels.rejected, (state, aciton) => {
         ((state.channels.status = 'failed'), (state.channels.error = aciton.payload.message));
       })
-      .addCase(fetchMessages.pending, (state) => {
+      .addCase(fetchMessages.pending, state => {
         ((state.messages.status = 'loading'), (state.messages.error = null));
       })
       .addCase(fetchMessages.fulfilled, (state, action) => {

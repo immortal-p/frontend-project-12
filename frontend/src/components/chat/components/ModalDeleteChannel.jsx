@@ -25,21 +25,21 @@ const ModalDeleteChannel = ({ channel, onChannelDefault, show, onHide }) => {
     <Modal
       show={show}
       onHide={onHide}
-      className="fade"
-      id="modalDelete"
+      className='fade'
+      id='modalDelete'
       centered
-      aria-labelledby="modalToggleLabel"
+      aria-labelledby='modalToggleLabel'
     >
       <Modal.Header closeButton>
-        <Modal.Title id="modalToggleLabel">{t('chat.deleteChannelModal.title')}</Modal.Title>
+        <Modal.Title id='modalToggleLabel'>{t('chat.deleteChannelModal.title')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p className="lead">{t('chat.deleteChannelModal.confirmMessage')}</p>
-        <div className="d-flex justify-content-end">
-          <Button variant="secondary" className="me-2" onClick={onHide}>
+        <p className='lead'>{t('chat.deleteChannelModal.confirmMessage')}</p>
+        <div className='d-flex justify-content-end'>
+          <Button variant='secondary' className='me-2' onClick={onHide}>
             {t('chat.deleteChannelModal.cancel')}
           </Button>
-          <Button variant="danger" onClick={handleDelete}>
+          <Button variant='danger' onClick={handleDelete}>
             {t('chat.deleteChannelModal.confirm')}
           </Button>
         </div>
