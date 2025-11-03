@@ -12,10 +12,10 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/signin' element={<SignInForm />} />
-        <Route path='/signup' element={<SignUpForm />} />
+        <Route path="/signin" element={<SignInForm />} />
+        <Route path="/signup" element={<SignUpForm />} />
         <Route element={<ProtectedRoute />}>
-          <Route path='/' element={<Chat />} />
+          <Route path="/" element={<Chat />} />
         </Route>
       </Routes>
     </BrowserRouter>

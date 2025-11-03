@@ -53,21 +53,21 @@ const SignUpForm = () => {
   })
 
   return (
-    <div className='h-100' id='chat'>
-      <div className='d-flex flex-column h-100'>
-        <Navbar className='shadow-sm navbar navbar-expand-lg navbar-light bg-white'>
+    <div className="h-100" id="chat">
+      <div className="d-flex flex-column h-100">
+        <Navbar className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
           <Container>
-            <Navbar.Brand href='/'>{t('nameChat')}</Navbar.Brand>
+            <Navbar.Brand href="/">{t('nameChat')}</Navbar.Brand>
           </Container>
         </Navbar>
 
-        <Container fluid className='h-100'>
-          <div className='row justify-content-center align-content-center h-100'>
-            <div className='col-12 col-md-8 col-xxl-6'>
-              <Card className='shadow-sm'>
-                <Card.Body className='card-body d-flex flex-column flex-md-row justify-content-around align-items-center p-5'>
+        <Container fluid className="h-100">
+          <div className="row justify-content-center align-content-center h-100">
+            <div className="col-12 col-md-8 col-xxl-6">
+              <Card className="shadow-sm">
+                <Card.Body className="card-body d-flex flex-column flex-md-row justify-content-around align-items-center p-5">
                   <div>
-                    <img src={avatar_1} className='rounded-circle' alt='Войти' />
+                    <img src={avatar_1} className="rounded-circle" alt="Войти" />
                   </div>
 
                   <Formik
@@ -87,7 +87,7 @@ const SignUpForm = () => {
                       isSubmitting,
                     }) => (
                       <Form
-                        className='col-12 col-md-6 mt-3 mt-md-0'
+                        className="col-12 col-md-6 mt-3 mt-md-0"
                         onSubmit={e => {
                           e.preventDefault()
 
@@ -107,86 +107,86 @@ const SignUpForm = () => {
                           submitForm()
                         }}
                       >
-                        <h1 className='text-center mb-4'>{t('auth.register.title')}</h1>
+                        <h1 className="text-center mb-4">{t('auth.register.title')}</h1>
 
-                        <FormGroup className='form-floating mb-3'>
-                          <Field name='username'>
+                        <FormGroup className="form-floating mb-3">
+                          <Field name="username">
                             {({ field }) => (
                               <FormControl
                                 {...field}
-                                autoComplete='username'
+                                autoComplete="username"
                                 required
-                                type='text'
+                                type="text"
                                 ref={inputRef}
                                 isInvalid={touched.username && errors.username}
                                 placeholder={t('register.name')}
-                                id='username'
+                                id="username"
                               />
                             )}
                           </Field>
-                          <FormLabel htmlFor='username'>{t('auth.register.name')}</FormLabel>
+                          <FormLabel htmlFor="username">{t('auth.register.name')}</FormLabel>
                           <ErrorMessage
-                            name='username'
-                            component='div'
-                            placement='right'
-                            className='invalid-tooltip'
+                            name="username"
+                            component="div"
+                            placement="right"
+                            className="invalid-tooltip"
                           />
                         </FormGroup>
 
-                        <FormGroup className='form-floating mb-3'>
-                          <Field name='password'>
+                        <FormGroup className="form-floating mb-3">
+                          <Field name="password">
                             {({ field }) => (
                               <FormControl
                                 {...field}
-                                autoComplete='password'
+                                autoComplete="password"
                                 required
-                                type='password'
+                                type="password"
                                 isInvalid={touched.password && errors.password}
                                 placeholder={t('register.password')}
-                                id='password'
+                                id="password"
                               />
                             )}
                           </Field>
-                          <FormLabel htmlFor='password'>{t('auth.register.password')}</FormLabel>
+                          <FormLabel htmlFor="password">{t('auth.register.password')}</FormLabel>
                           <ErrorMessage
-                            name='password'
-                            component='div'
-                            placement='right'
-                            className='invalid-tooltip'
+                            name="password"
+                            component="div"
+                            placement="right"
+                            className="invalid-tooltip"
                           />
                         </FormGroup>
 
-                        <FormGroup className='form-floating mb-4'>
-                          <Field name='confirmPassword'>
+                        <FormGroup className="form-floating mb-4">
+                          <Field name="confirmPassword">
                             {({ field }) => (
                               <FormControl
                                 {...field}
-                                autoComplete='confirmPassword'
+                                autoComplete="confirmPassword"
                                 required
-                                type='password'
+                                type="password"
                                 isInvalid={touched.confirmPassword && errors.confirmPassword}
                                 placeholder={t('register.confirmPassword')}
-                                id='confirmPassword'
+                                id="confirmPassword"
                               />
                             )}
                           </Field>
-                          <FormLabel htmlFor='confirmPassword'>
+                          <FormLabel htmlFor="confirmPassword">
                             {t('auth.register.confirmPassword')}
                           </FormLabel>
                           <ErrorMessage
-                            name='confirmPassword'
-                            component='div'
-                            placement='right'
-                            className='invalid-tooltip'
+                            name="confirmPassword"
+                            component="div"
+                            placement="right"
+                            className="invalid-tooltip"
                           />
                         </FormGroup>
 
                         {status && (
-                          <div className='alert alert-danger text-center py-2'>{status}</div>
+                          <div className="alert alert-danger text-center py-2">{status}</div>
                         )}
                         <button
-                          type='submit'
-                          className='w-100 mb-3 btn btn-outline-primary'
+                          type="submit"
+                          className="w-100 mb-3 btn btn-outline-primary"
                           disabled={isSubmitting}
                         >
                           {t('auth.register.button')}

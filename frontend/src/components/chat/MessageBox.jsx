@@ -38,8 +38,8 @@ const MessagesBox = ({ currentChannelId, t }) => {
 
   if (!currentChannel) {
     return (
-      <div className='d-flex justify-content-center align-items-center h-100'>
-        <p className='text-muted'>{t('chat.selectChannel') || 'Выберите канал'}</p>
+      <div className="d-flex justify-content-center align-items-center h-100">
+        <p className="text-muted">{t('chat.selectChannel') || 'Выберите канал'}</p>
       </div>
     )
   }
@@ -67,55 +67,55 @@ const MessagesBox = ({ currentChannelId, t }) => {
   }
 
   return (
-    <div className='col p-0 h-100'>
-      <div className='d-flex flex-column h-100'>
-        <div className='bg-light mb-4 p-3 shadow-sm small'>
-          <p className='m-0'>
+    <div className="col p-0 h-100">
+      <div className="d-flex flex-column h-100">
+        <div className="bg-light mb-4 p-3 shadow-sm small">
+          <p className="m-0">
             <b>{`# ${currentChannel.name}`}</b>
           </p>
-          <span className='text-muted'>{t('chat.messages', { count: totalMessages })}</span>
+          <span className="text-muted">{t('chat.messages', { count: totalMessages })}</span>
         </div>
 
-        <div id='messages-box' className='chat-messages overflow-auto px-5 '>
+        <div id="messages-box" className="chat-messages overflow-auto px-5 ">
           {currentMessages.map(message => (
-            <div key={message.id} className='text-break mb-2 text-container'>
+            <div key={message.id} className="text-break mb-2 text-container">
               <div>
                 <b>{message.username}</b>: {message.body}
               </div>
-              <i className='bi bi-check2-all text-success'></i>
+              <i className="bi bi-check2-all text-success"></i>
             </div>
           ))}
           <div ref={messageEndRef} />
         </div>
 
-        <div className='mt-auto px-5 py-3'>
+        <div className="mt-auto px-5 py-3">
           {errorMsg && (
             <div
-              className='alert alert-danger alert-dismissible fade show text-center py-2 mb-2'
-              role='alert'
+              className="alert alert-danger alert-dismissible fade show text-center py-2 mb-2"
+              role="alert"
             >
               {errorMsg}
             </div>
           )}
-          <Form noValidate onSubmit={handleSendMessage} className='py-1 border rounded-2'>
+          <Form noValidate onSubmit={handleSendMessage} className="py-1 border rounded-2">
             <Form.Group className={'input-group'}>
               <Form.Control
-                name='body'
+                name="body"
                 aria-label={t('chat.newMessage')}
                 placeholder={t('chat.inputMess')}
-                className='border-0 p-0 ps-2'
+                className="border-0 p-0 ps-2"
                 value={newMessage}
                 onChange={e => setNewMessage(e.target.value)}
               />
               <Button
                 style={{ border: 'none' }}
-                type='submit'
-                variant='group-vertical'
-                className='btn'
+                type="submit"
+                variant="group-vertical"
+                className="btn"
                 disabled={newMessage.trim().length <= 0}
               >
                 <BsArrowRightSquare size={20} />
-                <span className='visually-hidden'>{t('chat.send')}</span>
+                <span className="visually-hidden">{t('chat.send')}</span>
               </Button>
             </Form.Group>
           </Form>
