@@ -1,11 +1,11 @@
-import React, { useEffect, useRef } from "react"
-import { useNavigate } from "react-router-dom"
-import { Formik, Form, Field, ErrorMessage } from "formik"
-import { useDispatch } from "react-redux"
-import { setCredentials } from "../slices/authSlice"
-import avatar from "../assets/avatar.jpg"
-import axios from "axios"
-import { useTranslation } from "react-i18next"
+import React, { useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { Formik, Form, Field, ErrorMessage } from 'formik'
+import { useDispatch } from 'react-redux'
+import { setCredentials } from '../slices/authSlice'
+import avatar from '../assets/avatar.jpg'
+import axios from 'axios'
+import { useTranslation } from 'react-i18next'
 import {
   Container,
   Row,
@@ -16,7 +16,7 @@ import {
   FormControl,
   FormLabel,
   Button,
-} from "react-bootstrap"
+} from 'react-bootstrap'
 
 const LogInForm = () => {
   const inputRef = useRef(null)
@@ -25,32 +25,32 @@ const LogInForm = () => {
   const { t } = useTranslation()
 
   const handleSubmit = async (values, { setStatus }) => {
-    setStatus("")
+    setStatus('')
 
     try {
-      const response = await axios.post("/api/v1/login", values)
+      const response = await axios.post('/api/v1/login', values)
 
       if (response.data.token) {
         const { token, username } = response.data
         dispatch(setCredentials({ token, username }))
-        navigate("/")
+        navigate('/')
       } else {
-        setStatus(t("auth.errors.noToken"))
+        setStatus(t('auth.errors.noToken'))
       }
     } catch (err) {
-      console.error("Login error:", err)
+      console.error('Login error:', err)
 
       if (err.response?.status === 401) {
-        setStatus(t("auth.errors.invalidCredentials"))
+        setStatus(t('auth.errors.invalidCredentials'))
       } else {
-        setStatus(t("auth.errors.connectionError"))
+        setStatus(t('auth.errors.connectionError'))
       }
     }
   }
 
   const handleSignUp = e => {
     e.preventDefault()
-    navigate("/signup")
+    navigate('/signup')
   }
 
   useEffect(() => {
@@ -62,7 +62,7 @@ const LogInForm = () => {
       <div className='d-flex flex-column h-100'>
         <Navbar className='shadow-sm navbar navbar-expand-lg navbar-light bg-white'>
           <Container>
-            <Navbar.Brand href='/'>{t("nameChat")}</Navbar.Brand>
+            <Navbar.Brand href='/'>{t('nameChat')}</Navbar.Brand>
           </Container>
         </Navbar>
 
@@ -79,10 +79,10 @@ const LogInForm = () => {
                     <img src={avatar} className='rounded-circle' alt='Войти' />
                   </Col>
 
-                  <Formik initialValues={{ username: "", password: "" }} onSubmit={handleSubmit}>
+                  <Formik initialValues={{ username: '', password: '' }} onSubmit={handleSubmit}>
                     {({ status }) => (
                       <Form className='col-12 col-md-6 mt-3 mt-md-0'>
-                        <h1 className='text-center mb-4'>{t("auth.login.title")}</h1>
+                        <h1 className='text-center mb-4'>{t('auth.login.title')}</h1>
 
                         <FormGroup className='form-floating mb-3'>
                           <Field name='username'>
@@ -92,14 +92,14 @@ const LogInForm = () => {
                                 required
                                 type='text'
                                 ref={inputRef}
-                                placeholder={t("auth.login.name")}
+                                placeholder={t('auth.login.name')}
                                 isInvalid={!!status}
                                 autoComplete='username'
                                 id='username'
                               />
                             )}
                           </Field>
-                          <FormLabel htmlFor='username'>{t("auth.login.name")}</FormLabel>
+                          <FormLabel htmlFor='username'>{t('auth.login.name')}</FormLabel>
                         </FormGroup>
 
                         <FormGroup className='form-floating mb-3'>
@@ -109,19 +109,19 @@ const LogInForm = () => {
                                 {...field}
                                 required
                                 type='password'
-                                placeholder={t("auth.login.password")}
+                                placeholder={t('auth.login.password')}
                                 isInvalid={!!status}
                                 autoComplete='current-password'
                                 id='password'
                               />
                             )}
                           </Field>
-                          <FormLabel htmlFor='password'>{t("auth.login.password")}</FormLabel>
+                          <FormLabel htmlFor='password'>{t('auth.login.password')}</FormLabel>
                           {status && <div className='invalid-tooltip d-block'>{status}</div>}
                         </FormGroup>
 
                         <Button type='submit' className='w-100 mb-3' variant='outline-primary'>
-                          {t("auth.login.button")}
+                          {t('auth.login.button')}
                         </Button>
                       </Form>
                     )}
@@ -129,9 +129,9 @@ const LogInForm = () => {
                 </Card.Body>
 
                 <Card.Footer className='p-4 text-center'>
-                  <span>{t("auth.login.noAccount")} </span>
+                  <span>{t('auth.login.noAccount')} </span>
                   <a href='' onClick={handleSignUp}>
-                    {t("auth.login.buttonSignUp")}
+                    {t('auth.login.buttonSignUp')}
                   </a>
                 </Card.Footer>
               </Card>

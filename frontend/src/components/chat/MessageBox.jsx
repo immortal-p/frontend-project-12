@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useRef } from "react"
-import { useSelector, useDispatch } from "react-redux"
-import { uniqueId } from "lodash"
-import filter from "leo-profanity"
-import { toast } from "react-toastify"
-import sendMessage from "./sendMessage"
-import { BsArrowRightSquare } from "react-icons/bs"
-import { Form, Button } from "react-bootstrap"
-import { fetchMessages } from "../../slices/chatSlice"
+import React, { useState, useEffect, useRef } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { uniqueId } from 'lodash'
+import filter from 'leo-profanity'
+import { toast } from 'react-toastify'
+import sendMessage from './sendMessage'
+import { BsArrowRightSquare } from 'react-icons/bs'
+import { Form, Button } from 'react-bootstrap'
+import { fetchMessages } from '../../slices/chatSlice'
 
 const MessagesBox = ({ currentChannelId, t }) => {
   const dispath = useDispatch()
@@ -16,8 +16,8 @@ const MessagesBox = ({ currentChannelId, t }) => {
   )
 
   const { username } = useSelector(state => state.auth)
-  const [newMessage, setNewMessage] = useState("")
-  const [errorMsg, setErrorMSg] = useState("")
+  const [newMessage, setNewMessage] = useState('')
+  const [errorMsg, setErrorMSg] = useState('')
   const messageEndRef = useRef(null)
   const currentMessages = messages.filter(msg => msg.channelId === currentChannelId)
   const totalMessages = currentMessages.length
@@ -32,14 +32,14 @@ const MessagesBox = ({ currentChannelId, t }) => {
     if (!currentMessages.length) return
 
     if (messageEndRef.current) {
-      messageEndRef.current.scrollIntoView({ behavior: "smooth", block: "end" })
+      messageEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' })
     }
   }, [currentMessages, username])
 
   if (!currentChannel) {
     return (
       <div className='d-flex justify-content-center align-items-center h-100'>
-        <p className='text-muted'>{t("chat.selectChannel") || "Выберите канал"}</p>
+        <p className='text-muted'>{t('chat.selectChannel') || 'Выберите канал'}</p>
       </div>
     )
   }
@@ -47,7 +47,7 @@ const MessagesBox = ({ currentChannelId, t }) => {
   const handleSendMessage = async e => {
     e.preventDefault()
     const formData = new FormData(e.target)
-    const body = formData.get("body").trim()
+    const body = formData.get('body').trim()
     if (!body || !currentChannelId) return
 
     const cleanBody = filter.clean(body)
@@ -57,12 +57,12 @@ const MessagesBox = ({ currentChannelId, t }) => {
       await sendMessage(msg)
     } catch (err) {
       console.error(err)
-      toast.error(t("chat.toastify.connectionError"))
-      setErrorMSg(t("chat.errors.connectionError"))
-      setTimeout(() => setErrorMSg(""), 5000)
+      toast.error(t('chat.toastify.connectionError'))
+      setErrorMSg(t('chat.errors.connectionError'))
+      setTimeout(() => setErrorMSg(''), 5000)
     }
 
-    setNewMessage("")
+    setNewMessage('')
     e.target.reset()
   }
 
@@ -73,7 +73,7 @@ const MessagesBox = ({ currentChannelId, t }) => {
           <p className='m-0'>
             <b>{`# ${currentChannel.name}`}</b>
           </p>
-          <span className='text-muted'>{t("chat.messages", { count: totalMessages })}</span>
+          <span className='text-muted'>{t('chat.messages', { count: totalMessages })}</span>
         </div>
 
         <div id='messages-box' className='chat-messages overflow-auto px-5 '>
@@ -98,24 +98,24 @@ const MessagesBox = ({ currentChannelId, t }) => {
             </div>
           )}
           <Form noValidate onSubmit={handleSendMessage} className='py-1 border rounded-2'>
-            <Form.Group className={"input-group"}>
+            <Form.Group className={'input-group'}>
               <Form.Control
                 name='body'
-                aria-label={t("chat.newMessage")}
-                placeholder={t("chat.inputMess")}
+                aria-label={t('chat.newMessage')}
+                placeholder={t('chat.inputMess')}
                 className='border-0 p-0 ps-2'
                 value={newMessage}
                 onChange={e => setNewMessage(e.target.value)}
               />
               <Button
-                style={{ border: "none" }}
+                style={{ border: 'none' }}
                 type='submit'
                 variant='group-vertical'
                 className='btn'
                 disabled={newMessage.trim().length <= 0}
               >
                 <BsArrowRightSquare size={20} />
-                <span className='visually-hidden'>{t("chat.send")}</span>
+                <span className='visually-hidden'>{t('chat.send')}</span>
               </Button>
             </Form.Group>
           </Form>

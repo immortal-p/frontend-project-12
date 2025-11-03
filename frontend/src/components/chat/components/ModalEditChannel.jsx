@@ -1,10 +1,10 @@
-import { Formik, Form, Field, ErrorMessage } from "formik"
-import { chanelValidationSchema } from "../validation.js"
-import { Modal, FormGroup, FormControl, FormLabel, Button } from "react-bootstrap"
-import { useSelector } from "react-redux"
-import { useRef, useEffect } from "react"
-import axios from "axios"
-import { useTranslation } from "react-i18next"
+import { Formik, Form, Field, ErrorMessage } from 'formik'
+import { chanelValidationSchema } from '../validation.js'
+import { Modal, FormGroup, FormControl, FormLabel, Button } from 'react-bootstrap'
+import { useSelector } from 'react-redux'
+import { useRef, useEffect } from 'react'
+import axios from 'axios'
+import { useTranslation } from 'react-i18next'
 
 export const ModalEditChannel = ({ channel, onChannelEdited, show, onHide }) => {
   const formikRef = useRef(null)
@@ -23,7 +23,7 @@ export const ModalEditChannel = ({ channel, onChannelEdited, show, onHide }) => 
       const editedChannel = response.data
       onChannelEdited?.(editedChannel)
     } catch (err) {
-      console.error("Ошибка при редактировании канала:", err)
+      console.error('Ошибка при редактировании канала:', err)
     } finally {
       resetForm()
       onHide()
@@ -52,7 +52,7 @@ export const ModalEditChannel = ({ channel, onChannelEdited, show, onHide }) => 
       aria-labelleby='modalToggleLabel'
     >
       <Modal.Header closeButton>
-        <Modal.Title id='modalToggleLabel'>{t("chat.editChannelModal.title")}</Modal.Title>
+        <Modal.Title id='modalToggleLabel'>{t('chat.editChannelModal.title')}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -60,7 +60,7 @@ export const ModalEditChannel = ({ channel, onChannelEdited, show, onHide }) => 
           validateOnBlur={false}
           validateOnChange={false}
           innerRef={formikRef}
-          initialValues={{ channelName: channel?.name || "" }}
+          initialValues={{ channelName: channel?.name || '' }}
           validationSchema={channel ? validationSchema : null}
           onSubmit={handleSubmit}
           enableReinitialize
@@ -74,15 +74,15 @@ export const ModalEditChannel = ({ channel, onChannelEdited, show, onHide }) => 
                       {...field}
                       id='channelName'
                       ref={inputRef}
-                      aria-label={t("chat.nameLabel")}
+                      aria-label={t('chat.nameLabel')}
                       type='text'
                       isInvalid={!!(errors.channelName && submitCount > 0)}
-                      placeholder={t("chat.editChannelModal.placeholderMessage")}
+                      placeholder={t('chat.editChannelModal.placeholderMessage')}
                     />
                   )}
                 </Field>
                 <FormLabel htmlFor='channelName' visuallyHidden>
-                  {t("chat.nameLabel")}
+                  {t('chat.nameLabel')}
                 </FormLabel>
                 <ErrorMessage name='channelName'>
                   {msg => submitCount > 0 && <div className='invalid-feedback d-block'>{msg}</div>}
@@ -98,10 +98,10 @@ export const ModalEditChannel = ({ channel, onChannelEdited, show, onHide }) => 
                     onHide()
                   }}
                 >
-                  {t("chat.editChannelModal.cancel")}
+                  {t('chat.editChannelModal.cancel')}
                 </Button>
                 <Button type='submit' variant='primary'>
-                  {t("chat.editChannelModal.confirm")}
+                  {t('chat.editChannelModal.confirm')}
                 </Button>
               </div>
             </Form>

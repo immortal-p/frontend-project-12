@@ -1,26 +1,26 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
-import axios from "axios"
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import axios from 'axios'
 
 export const fetchChannels = createAsyncThunk(
-  "chat/fetchChannels",
+  'chat/fetchChannels',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get("/api/v1/channels")
+      const response = await axios.get('/api/v1/channels')
       return response.data
     } catch (error) {
-      return rejectWithValue(error.response?.data || "Ошибка загрузки каналов")
+      return rejectWithValue(error.response?.data || 'Ошибка загрузки каналов')
     }
   }
 )
 
 export const fetchMessages = createAsyncThunk(
-  "chat/fetchMessages",
+  'chat/fetchMessages',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get("/api/v1/messages")
+      const response = await axios.get('/api/v1/messages')
       return response.data
     } catch (error) {
-      return rejectWithValue(error.response?.data || "Ошибка загрузки сообщений")
+      return rejectWithValue(error.response?.data || 'Ошибка загрузки сообщений')
     }
   }
 )
@@ -28,18 +28,18 @@ export const fetchMessages = createAsyncThunk(
 const initialState = {
   channels: {
     items: [],
-    status: "idle",
+    status: 'idle',
     error: null,
   },
   messages: {
     items: [],
-    status: "idle",
+    status: 'idle',
     error: null,
   },
 }
 
 const chatSlice = createSlice({
-  name: "chat",
+  name: 'chat',
   initialState,
   reducers: {
     addMessage: (state, action) => {
@@ -67,24 +67,24 @@ const chatSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(fetchChannels.pending, state => {
-        ;((state.channels.status = "loading"), (state.channels.error = null))
+        ;((state.channels.status = 'loading'), (state.channels.error = null))
       })
       .addCase(fetchChannels.fulfilled, (state, action) => {
-        state.channels.status = "succeeded"
+        state.channels.status = 'succeeded'
         state.channels.items = action.payload
       })
       .addCase(fetchChannels.rejected, (state, aciton) => {
-        ;((state.channels.status = "failed"), (state.channels.error = aciton.payload.message))
+        ;((state.channels.status = 'failed'), (state.channels.error = aciton.payload.message))
       })
       .addCase(fetchMessages.pending, state => {
-        ;((state.messages.status = "loading"), (state.messages.error = null))
+        ;((state.messages.status = 'loading'), (state.messages.error = null))
       })
       .addCase(fetchMessages.fulfilled, (state, action) => {
-        state.messages.status = "succeeded"
+        state.messages.status = 'succeeded'
         state.messages.items = action.payload
       })
       .addCase(fetchMessages.rejected, (state, action) => {
-        ;((state.messages.status = "failed"), (state.messages.error = action.payload.message))
+        ;((state.messages.status = 'failed'), (state.messages.error = action.payload.message))
       })
   },
 })
