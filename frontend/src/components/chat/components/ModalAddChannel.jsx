@@ -1,6 +1,6 @@
 import { Formik, Form, Field, ErrorMessage } from "formik"
 import { chanelValidationSchema } from "../validation.js"
-import * as bootstrap from "bootstrap"
+import { Modal, FormGroup, FormControl, FormLabel, Button } from 'react-bootstrap'
 import { useSelector } from "react-redux"
 import { useRef, useEffect } from "react"
 import axios from "axios"
@@ -8,12 +8,12 @@ import { uniqueId } from "lodash"
 import { useTranslation } from "react-i18next"
 import filter from 'leo-profanity'
 
-export const ModalAddChannel = ({ onChannelCreated }) => {
+export const ModalAddChannel = ({ onChannelCreated, show, onHide }) => {
     const formikRef = useRef(null)
     const inputRef = useRef(null)
     const { t } = useTranslation()
 
-    const channels = useSelector((state) => state.chat.channels.items)
+    const channels = useSelector(state => state.chat.channels.items)
     const existingNames = channels.map((ch) => ch.name)
     const validationSchema = chanelValidationSchema(t, existingNames)
 
@@ -25,11 +25,7 @@ export const ModalAddChannel = ({ onChannelCreated }) => {
         const response = await axios.post("/api/v1/channels", newChannel)
         const createdChannel = response.data
         resetForm()
-      
-        const modalEl = document.getElementById("exampleModalToggle")
-        const modal = bootstrap.Modal.getInstance(modalEl)
-        document.querySelectorAll(".modal-backdrop").forEach((el) => el.remove())
-        modal.hide()
+        onHide()
       
         onChannelCreated?.(createdChannel)
       } 
@@ -39,42 +35,29 @@ export const ModalAddChannel = ({ onChannelCreated }) => {
   }
 
     useEffect(() => {
-        const modalEl = document.getElementById("exampleModalToggle")
-        if (!modalEl) return
-
-        const handleShown = () => inputRef.current?.focus()
-        const handleHidden = () => formikRef.current?.resetForm()
-
-        modalEl.addEventListener("shown.bs.modal", handleShown)
-        modalEl.addEventListener("hidden.bs.modal", handleHidden)
-
-        return () => {
-          modalEl.removeEventListener("shown.bs.modal", handleShown)
-          modalEl.removeEventListener("hidden.bs.modal", handleHidden)
-        }
-    }, [])
+      if(show) {
+        inputRef.current?.focus()
+      }
+      if(!show) {
+        formikRef.current?.resetForm()
+      }
+    }, [show])
 
     return (
-        <div
-          className="modal fade"
-          id="exampleModalToggle"
-          aria-hidden="true"
-          aria-labelledby="exampleModalToggleLabel"
-          tabIndex="-1"
+        <Modal
+          show={show}
+          onHide={onHide}
+          centered
+          id="modalAdd"
+          aria-labelledby="modalToggleLabel"
         >
-        <div className="modal-dialog modal-dialog-centered">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">{t('chat.addChannelModal.title')}</h5>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
+            <Modal.Header closeButton>
+              <Modal.Title id="modalToggleLabel">
+                {t('chat.addChannelModal.title')}
+              </Modal.Title>
+            </Modal.Header>
 
-            <div className="modal-body">
+            <Modal.Body>
               <Formik
                 validateOnBlur={false}
                 validateOnChange={false}
@@ -85,40 +68,45 @@ export const ModalAddChannel = ({ onChannelCreated }) => {
               >
                 {({ errors, submitCount, resetForm }) => (
                   <Form>
-                    <Field name="channelName">
-                      {({ field }) => (
-                        <input
-                          {...field}
-                          ref={inputRef}
-                          type="text"
-                          className={`mb-2 form-control ${ (errors.channelName && submitCount > 0) && "is-invalid"}`}
-                          placeholder="Название канала"
-                        />
-                      )}
-                    </Field>
-                    <ErrorMessage name="channelName">
-                      {msg => submitCount > 0 && <div className="invalid-feedback d-block">{msg}</div>}
-                    </ErrorMessage>
+                    <FormGroup className="mb-2">
+                      <FormLabel htmlFor="channelName" visuallyHidden>
+                        {t('chat.channelNameLabel')}
+                      </FormLabel>
+                      <Field name="channelName">
+                        {({ field }) => (
+                          <FormControl
+                            {...field}
+                            ref={inputRef}
+                            type="text"
+                            isInvalid={!!(errors.channelName && submitCount > 0)}
+                            placeholder={t("chat.addChannelModal.placeholderMessage")}
+                          />
+                        )}
+                      </Field>
+                      <ErrorMessage name="channelName">
+                        {msg => submitCount > 0 && <div className="invalid-feedback d-block">{msg}</div>}
+                      </ErrorMessage>
+                    </FormGroup>
 
                     <div className="d-flex justify-content-end mt-3">
-                      <button
-                        type="button"
-                        className="me-2 btn btn-secondary"
-                        data-bs-dismiss="modal"
-                        onClick={() => resetForm()}
+                      <Button
+                        variant="secondary"
+                        className="me-2"
+                        onClick={() => {
+                          resetForm()
+                          onHide()
+                        }}
                       >
                         {t('chat.addChannelModal.cancel')}
-                      </button>
-                      <button type="submit" className="btn btn-primary">
+                      </Button>
+                      <Button type="submit" variant="primary">
                         {t('chat.addChannelModal.confirm')}
-                      </button>
+                      </Button>
                     </div>
                   </Form>
                 )}
               </Formik>
-            </div>
-          </div>
-        </div>
-    </div>
+            </Modal.Body>
+      </Modal>
     )
 }

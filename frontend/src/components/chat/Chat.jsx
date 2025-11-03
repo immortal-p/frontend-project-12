@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useRef } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { fetchChannels, addMessage, addChannel, deleteChannel, renameChannel } from "../../slices/chatSlice" 
 import { connectSocket } from "../../socket.js"
 import "./chat.css"
-import { Container, Button, Nav, ButtonGroup, Dropdown } from "react-bootstrap"
+import { Container, Button, Nav, ButtonGroup, Dropdown, Navbar } from "react-bootstrap"
 import { BsPlusSquare } from 'react-icons/bs'
 import { ModalAddChannel } from "./components/ModalAddChannel.jsx"
 import { ModalDeleteChannel } from "./components/ModalDeleteChannel.jsx"
@@ -126,9 +126,8 @@ const Chat = () => {
     
     const builderChannel = (channel) => {
         return (
-            <>
+            <Nav.Item key={channel.id} className="w-100" as="li">
                 {(!channel.removable) ? (
-                        <Nav.Item key={channel.id} className="w-100" as="li">
                             <Button
                                 style={{border: 'none'}}
                                 variant={channel.id === currentChannelId ? 'secondary' : 'light'}
@@ -139,36 +138,33 @@ const Chat = () => {
                                 <span className="me-1">#</span>
                                 {channel.name}
                             </Button>
-                        </Nav.Item>
                     )
                     :
                     (
-                        <Nav.Item key={channel.id} className="w-100" as="li">
-                            <Dropdown className="d-flex btn-group" as={ButtonGroup}>
-                                <Button 
-                                    style={{border: 'none'}}
-                                    variant={channel.id === currentChannelId ? 'secondary' : 'light'}
-                                    className={"w-100 rounded-0 text-start text-truncate"}
-                                    onClick={() => handleChannelClick(channel.id)}
-                                    aria-label={`Канал ${channel.name}`}
-                                    >
-                                    <span className="me-1" aria-hidden="true">#</span>{channel.name}
-                                </Button>
-                                <Dropdown.Toggle
-                                    style={{border: 'none'}}
-                                    variant={channel.id === currentChannelId ? 'secondary' : 'light'}
-                                    className={"flex-grow-0 dropdown-toggle-split"}
+                        <Dropdown className="d-flex btn-group" as={ButtonGroup}>
+                            <Button 
+                                style={{border: 'none'}}
+                                variant={channel.id === currentChannelId ? 'secondary' : 'light'}
+                                className={"w-100 rounded-0 text-start text-truncate"}
+                                onClick={() => handleChannelClick(channel.id)}
+                                aria-label={`Канал ${channel.name}`}
                                 >
-                                    <span className="visually-hidden">{t('chat.channelManagement')}</span>
-                                </Dropdown.Toggle>
-                                <Dropdown.Menu>
-                                    <Dropdown.Item onClick={() => setChannelToDelete(channel)}>{t('chat.delete')}</Dropdown.Item>
-                                    <Dropdown.Item onClick={() => setChannelToUpdate(channel)}>{t('chat.rename')}</Dropdown.Item>
-                                </Dropdown.Menu>
-                            </Dropdown>
-                        </Nav.Item>
+                                <span className="me-1" aria-hidden="true">#</span>{channel.name}
+                            </Button>
+                            <Dropdown.Toggle
+                                style={{border: 'none'}}
+                                variant={channel.id === currentChannelId ? 'secondary' : 'light'}
+                                className={"flex-grow-0 dropdown-toggle-split"}
+                            >
+                                <span className="visually-hidden">{t('chat.channelManagement')}</span>
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu>
+                                <Dropdown.Item onClick={() => setChannelToDelete(channel)}>{t('chat.delete')}</Dropdown.Item>
+                                <Dropdown.Item onClick={() => setChannelToUpdate(channel)}>{t('chat.rename')}</Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
                     )}
-            </>
+            </Nav.Item>
         )
     }
 
@@ -190,12 +186,12 @@ const Chat = () => {
             <ModalEditChannel show={!!channelToUpdate} onHide={() => setChannelToUpdate(null)} channel={channelToUpdate} onChannelEdited={(updatedChannel) => setChannelToUpdate(updatedChannel)} />
             
             <div className="d-flex flex-column h-100">
-                <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
+                <Navbar bg="white" extand="lg" className="shadow-sm">
                     <Container>
-                        <a className="navbar-brand" href="/">{t('nameChat')}</a>
-                        <button type="button" className="btn btn-primary" onClick={handleLogout}>{t('chat.buttonExit')}</button>
+                        <Navbar.Brand as={Link} to={"/"} className="navbar-brand">{t("nameChat")}</Navbar.Brand>
+                        <Button onClick={handleLogout}>{t('chat.buttonExit')}</Button>
                     </Container>
-                </nav>
+                </Navbar>
                 <Container className="h-100 my-4 overflow-hidden rounded shadow">
                     <div className="row h-100 bg-white flex-md-row">
 

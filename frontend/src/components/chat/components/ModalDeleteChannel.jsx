@@ -1,52 +1,47 @@
 import axios from "axios"
-import * as bootstrap from "bootstrap"
+import { Modal, Button } from "react-bootstrap"
 import { useTranslation } from "react-i18next"
 
-const ModalDeleteChannel = ({ channel, onChannelDefault}) => {
+const ModalDeleteChannel = ({ channel, onChannelDefault, show, onHide}) => {
     const { t } = useTranslation()
-    const deleteChannel = async () => {
+
+    const handleDelete = async () => {
         if (!channel) return
         const activeElement = document.querySelector("li .btn-secondary").textContent.trim().slice(1)
         
         try {
             await axios.delete(`/api/v1/channels/${channel.id}`)
-
-            const modalEl = document.getElementById("exampleModalDelete")
-            const modal = bootstrap.Modal.getInstance(modalEl)
-            modal.hide()
-
             const isDeletedActive = activeElement === channel.name
             if (isDeletedActive) {
                 onChannelDefault()
             }
-            document.querySelectorAll(".modal-backdrop").forEach((el) => el.remove())
+            onHide()
         } catch (err) {
             console.error("Ошибка при удалении канала:", err)
+            onHide()
         }
     }
     return (
-        <div 
-            className="modal fade" 
-            id="exampleModalDelete"
-            aria-hidden="true"
-            aria-labelledby="exampleModalToggleLabel"
-            tab-index="-1">
-            <div className="modal-dialog modal-dialog-centered">
-                <div className="modal-content">
-                    <div className="modal-header">
-                        <div className="modal-title h4">{t('chat.deleteChannelModal.title')}</div>
-                        <button type="button" aria-label="Close" data-bs-dismiss="modal" className="btn btn-close"></button>
+        <Modal
+            show={show}
+            onHide={onHide}
+            className="fade" 
+            id="modalDelete"
+            centered
+            aria-labelledby="modalToggleLabel">
+                <Modal.Header closeButton>
+                    <Modal.Title id="modalToggleLabel">{t('chat.deleteChannelModal.title')}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p className="lead">{t('chat.deleteChannelModal.confirmMessage')}</p>
+                    <div className="d-flex justify-content-end">
+                        <Button variant="secondary" className="me-2" onClick={onHide}>{t('chat.deleteChannelModal.cancel')}</Button>
+                        <Button variant="danger" onClick={handleDelete}>
+                            {t('chat.deleteChannelModal.confirm')}
+                        </Button>
                     </div>
-                    <div className="modal-body">
-                        <p className="lead">{t('chat.deleteChannelModal.confirmMessage')}</p>
-                        <div className="d-flex justify-content-end">
-                            <button type="button" className="me-2 btn btn-secondary" data-bs-dismiss="modal">{t('chat.deleteChannelModal.cancel')}</button>
-                            <button type="button" className="btn btn-danger" onClick={deleteChannel}>{t('chat.deleteChannelModal.confirm')}</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                </Modal.Body>
+        </Modal>
     )
 }
 

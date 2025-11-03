@@ -65,7 +65,9 @@ const MessagesBox = ({ currentChannelId, t }) => {
                     <p className="m-0">
                         <b>{`# ${currentChannel.name}`}</b>
                     </p>
-                    <span className="text-muted">{totalMessages} {t('chat.messages')}</span>
+                    <span className="text-muted">
+                        {t('chat.messages', { count: totalMessages })}
+                    </span>
                 </div>
                 
                 <div id="messages-box" className="chat-messages overflow-auto px-5 ">

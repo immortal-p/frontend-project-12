@@ -34,13 +34,16 @@ export default {
             chat: {
                 title: 'Каналы',
                 buttonExit: 'Выйти',
-                messages: 'сообщений',
+                messages_one: '{{count}} сообщение',
+                messages_few: '{{count}} сообщения',
+                messages_many: '{{count}} сообщений',
+                newMessage: 'Новое сообщение',
                 inputMess: 'Введите сообщение...',
                 loading: 'Загрузка данных',
                 channelManagement: 'Управление каналом',
                 delete: 'Удалить',
                 rename: 'Переименовать',
-                newMessage: 'Новое сообщение',
+                channelNameLabel: 'Название канала',
                 errors: {
                     connectionError: 'Не удалось отправить сообщение. Проверьте соединение.',
                     unknownError: 'неизвестная ошибка',
@@ -50,16 +53,18 @@ export default {
                     title: 'Добавить канал',
                     nameLabel: 'Название канала', 
                     confirm: 'Отправить',
-                    cancel: 'Отменить'
+                    cancel: 'Отменить',
+                    placeholderMessage: 'Название канала'
                 },
                 editChannelModal: {
                     title: 'Переименовать канал',
                     confirm: 'Отправить',
-                    cancel: 'Отменить'
+                    cancel: 'Отменить',
+                    placeholderMessage: 'Новое имя канала'
                 },
                 deleteChannelModal: {
                     title: 'Удалить канал',
-                    confirmMessage: 'Уверены',
+                    confirmMessage: 'Уверены ?',
                     confirm: 'Удалить',
                     cancel: 'Отменить'
                 },
