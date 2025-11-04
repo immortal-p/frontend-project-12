@@ -123,14 +123,15 @@ const Chat = () => {
 
   if (isError) {
     const errorMessage = typeof channelsError === 'object' && channelsError?.message
-        ? channelsError.message
-        : channelsError || t('chat.unknownError')
+      ? channelsError.message
+      : channelsError || t('chat.unknownError')
 
     return (
       <div className="d-flex justify-content-center align-items-center h-100">
         <div className="text-danger p-5">
           <strong>{t('chat.errorLoadingData')}</strong>
-          : {errorMessage}
+          :
+          {errorMessage}
         </div>
       </div>
     )
@@ -144,8 +145,7 @@ const Chat = () => {
     return (
       <Nav.Item key={channel.id} className="w-100" as="li">
         {!channel.removable
-          ?
-          (
+          ? (
               <Button
                 style={{ border: 'none' }}
                 variant={channel.id === currentChannelId ? 'secondary' : 'light'}
@@ -158,12 +158,15 @@ const Chat = () => {
                 </span>
                 {channel.name}
               </Button>
-              ) : (
+            ) 
+          : (
               <Dropdown className="d-flex btn-group" as={ButtonGroup}>
                 <Button
                   style={{ border: 'none' }}
-                  variant={channel.id === currentChannelId 
-                  ? 'secondary' : 'light'}
+                  variant={channel.id === currentChannelId
+                  ? 'secondary'
+                  : 'light'
+                }
                   className="w-100 rounded-0 text-start text-truncate"
                   onClick={() => handleChannelClick(channel.id)}
                   aria-label={`Канал ${channel.name}`}
