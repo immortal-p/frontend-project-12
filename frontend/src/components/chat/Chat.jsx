@@ -165,8 +165,7 @@ const Chat = () => {
                   style={{ border: 'none' }}
                   variant={channel.id === currentChannelId
                     ? 'secondary'
-                    : 'light'
-                  }
+                    : 'light'}
                   className="w-100 rounded-0 text-start text-truncate"
                   onClick={() => handleChannelClick(channel.id)}
                   aria-label={`Канал ${channel.name}`}
