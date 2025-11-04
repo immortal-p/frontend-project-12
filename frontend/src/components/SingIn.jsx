@@ -38,7 +38,8 @@ const LogInForm = () => {
       else {
         setStatus(t('auth.errors.noToken'))
       }
-    } catch (err) {
+    }
+    catch (err) {
       console.error('Login error:', err)
 
       if (err.response?.status === 401) {

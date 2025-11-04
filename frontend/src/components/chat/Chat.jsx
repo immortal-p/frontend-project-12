@@ -122,8 +122,7 @@ const Chat = () => {
   }
 
   if (isError) {
-    const errorMessage =
-      typeof channelsError === 'object' && channelsError?.message
+    const errorMessage = typeof channelsError === 'object' && channelsError?.message
         ? channelsError.message
         : channelsError || t('chat.unknownError')
 
@@ -144,7 +143,9 @@ const Chat = () => {
   const builderChannel = (channel) => {
     return (
       <Nav.Item key={channel.id} className="w-100" as="li">
-        {!channel.removable ? (
+        {!channel.removable
+          ?
+          (
               <Button
                 style={{ border: 'none' }}
                 variant={channel.id === currentChannelId ? 'secondary' : 'light'}
@@ -162,7 +163,7 @@ const Chat = () => {
                 <Button
                   style={{ border: 'none' }}
                   variant={channel.id === currentChannelId 
-                    ? 'secondary' : 'light'}
+                  ? 'secondary' : 'light'}
                   className="w-100 rounded-0 text-start text-truncate"
                   onClick={() => handleChannelClick(channel.id)}
                   aria-label={`Канал ${channel.name}`}
@@ -222,7 +223,7 @@ const Chat = () => {
       <div className="d-flex flex-column h-100">
         <Navbar bg="white" extand="lg" className="shadow-sm">
           <Container>
-            <Navbar.Brand as={Link} to='/' className="navbar-brand">
+            <Navbar.Brand as={Link} to="/" className="navbar-brand">
               {t('nameChat')}
             </Navbar.Brand>
             <Button onClick={handleLogout}>{t('chat.buttonExit')}</Button>
