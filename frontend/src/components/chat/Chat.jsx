@@ -158,15 +158,15 @@ const Chat = () => {
                 </span>
                 {channel.name}
               </Button>
-            ) 
+            )
           : (
               <Dropdown className="d-flex btn-group" as={ButtonGroup}>
                 <Button
                   style={{ border: 'none' }}
                   variant={channel.id === currentChannelId
-                  ? 'secondary'
-                  : 'light'
-                }
+                    ? 'secondary'
+                    : 'light'
+                  }
                   className="w-100 rounded-0 text-start text-truncate"
                   onClick={() => handleChannelClick(channel.id)}
                   aria-label={`Канал ${channel.name}`}
