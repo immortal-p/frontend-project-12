@@ -91,6 +91,6 @@ const chatSlice = createSlice({
   },
 })
 
-export const { clearError, addMessage, addChannel, deleteChannel, renameChannel } 
+export const { clearError, addMessage, addChannel, deleteChannel, renameChannel }
   = chatSlice.actions
 export default chatSlice.reducer

@@ -101,14 +101,14 @@ const MessagesBox = ({ currentChannelId, t }) => {
             </div>
           )}
           <Form noValidate onSubmit={handleSendMessage} className="py-1 border rounded-2">
-            <Form.Group className={'input-group'}>
+            <Form.Group className='input-group'>
               <Form.Control
                 name="body"
                 aria-label={t('chat.newMessage')}
                 placeholder={t('chat.inputMess')}
                 className="border-0 p-0 ps-2"
                 value={newMessage}
-                onChange={e => setNewMessage(e.target.value)}
+                onChange={(e) => setNewMessage(e.target.value)}
               />
               <Button
                 style={{ border: 'none' }}

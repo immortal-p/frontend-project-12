@@ -146,12 +146,13 @@ const Chat = () => {
   const builderChannel = (channel) => {
     return (
       <Nav.Item key={channel.id} className="w-100" as="li">
-        {!channel.removable ? (
+        {!channel.removable ?
+        (
           <Button
             style={{ border: 'none' }}
             variant={channel.id === currentChannelId ? 'secondary' : 'light'}
             type="button"
-            className={'w-100 rounded-0 text-start text-truncate'}
+            className='w-100 rounded-0 text-start text-truncate'
             onClick={() => handleChannelClick(channel.id)}
           >
             <span className="me-1" aria-hidden="true">
@@ -160,40 +161,38 @@ const Chat = () => {
             {channel.name}
           </Button>
         )
-        : 
+        :
         (
-          <Dropdown className="d-flex btn-group" as={ButtonGroup}>
-            <Button
-              style={{ border: 'none' }}
-              variant={channel.id === currentChannelId 
-                ? 'secondary'
-                :
-                'light'}
-              className={'w-100 rounded-0 text-start text-truncate'}
-              onClick={() => handleChannelClick(channel.id)}
-              aria-label={`Канал ${channel.name}`}
-            >
-              <span className="me-1" aria-hidden="true">
-                #
-              </span>
-              {channel.name}
-            </Button>
-            <Dropdown.Toggle
-              style={{ border: 'none' }}
-              variant={channel.id === currentChannelId ? 'secondary' : 'light'}
-              className={'flex-grow-0 dropdown-toggle-split'}
-            >
-              <span className="visually-hidden">{t('chat.channelManagement')}</span>
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Dropdown.Item onClick={() => setChannelToDelete(channel)}>
-                {t('chat.delete')}
-              </Dropdown.Item>
-              <Dropdown.Item onClick={() => setChannelToUpdate(channel)}>
-                {t('chat.rename')}
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
+            <Dropdown className="d-flex btn-group" as={ButtonGroup}>
+              <Button
+                style={{ border: 'none' }}
+                variant={channel.id === currentChannelId 
+                  ? 'secondary' : 'light'}
+                className={'w-100 rounded-0 text-start text-truncate'}
+                onClick={() => handleChannelClick(channel.id)}
+                aria-label={`Канал ${channel.name}`}
+              >
+                <span className="me-1" aria-hidden="true">
+                  #
+                </span>
+                {channel.name}
+              </Button>
+              <Dropdown.Toggle
+                style={{ border: 'none' }}
+                variant={channel.id === currentChannelId ? 'secondary' : 'light'}
+                className={'flex-grow-0 dropdown-toggle-split'}
+              >
+                <span className="visually-hidden">{t('chat.channelManagement')}</span>
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                <Dropdown.Item onClick={() => setChannelToDelete(channel)}>
+                  {t('chat.delete')}
+                </Dropdown.Item>
+                <Dropdown.Item onClick={() => setChannelToUpdate(channel)}>
+                  {t('chat.rename')}
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
         )}
       </Nav.Item>
     )
@@ -208,7 +207,7 @@ const Chat = () => {
       <ModalAddChannel
         show={showAddModal}
         onHide={() => setShowAddModal(false)}
-        onChannelCreated={(newChannel) => setCurrentChannelId(newChannel.id)}
+        onChannelCreated={newChannel => setCurrentChannelId(newChannel.id)}
       />
       <ModalDeleteChannel
         show={!!channelToDelete}
@@ -222,7 +221,7 @@ const Chat = () => {
         show={!!channelToUpdate}
         onHide={() => setChannelToUpdate(null)}
         channel={channelToUpdate}
-        onChannelEdited={(updatedChannel) => setChannelToUpdate(updatedChannel)}
+        onChannelEdited={updatedChannel => setChannelToUpdate(updatedChannel)}
       />
 
       <div className="d-flex flex-column h-100">
@@ -252,7 +251,7 @@ const Chat = () => {
                 className="flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block"
                 as="ul"
               >
-                {channels.map((channel) => builderChannel(channel))}
+                {channels.map(channel => builderChannel(channel))}
                 <div ref={channelEndRef} />
               </Nav>
             </div>

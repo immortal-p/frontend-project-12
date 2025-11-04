@@ -39,7 +39,7 @@ const SignUpForm = () => {
       else {
         setStatus(t('auth.errors.noToken'))
       }
-    } 
+    }
     catch (err) {
       console.error('Login error:', err)
       if (err.response?.status === 409) {
@@ -91,7 +91,7 @@ const SignUpForm = () => {
                     }) => (
                       <Form
                         className="col-12 col-md-6 mt-3 mt-md-0"
-                        onSubmit={(e)=> {
+                        onSubmit={(e) => {
                           e.preventDefault()
 
                           if (!values.username) {
