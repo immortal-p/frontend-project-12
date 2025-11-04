@@ -7,10 +7,11 @@ export const fetchChannels = createAsyncThunk(
     try {
       const response = await axios.get('/api/v1/channels')
       return response.data
-    } catch (error) {
+    }
+    catch (error) {
       return rejectWithValue(error.response?.data || 'Ошибка загрузки каналов')
     }
-  }
+  },
 )
 
 export const fetchMessages = createAsyncThunk(
@@ -19,10 +20,11 @@ export const fetchMessages = createAsyncThunk(
     try {
       const response = await axios.get('/api/v1/messages')
       return response.data
-    } catch (error) {
+    }
+    catch (error) {
       return rejectWithValue(error.response?.data || 'Ошибка загрузки сообщений')
     }
-  }
+  },
 )
 
 const initialState = {
@@ -64,9 +66,9 @@ const chatSlice = createSlice({
       if (channel) channel.name = name
     },
   },
-  extraReducers: builder => {
+  extraReducers: (builder) => {
     builder
-      .addCase(fetchChannels.pending, state => {
+      .addCase(fetchChannels.pending, (state) => {
         ;((state.channels.status = 'loading'), (state.channels.error = null))
       })
       .addCase(fetchChannels.fulfilled, (state, action) => {
@@ -76,7 +78,7 @@ const chatSlice = createSlice({
       .addCase(fetchChannels.rejected, (state, aciton) => {
         ;((state.channels.status = 'failed'), (state.channels.error = aciton.payload.message))
       })
-      .addCase(fetchMessages.pending, state => {
+      .addCase(fetchMessages.pending, (state) => {
         ;((state.messages.status = 'loading'), (state.messages.error = null))
       })
       .addCase(fetchMessages.fulfilled, (state, action) => {
@@ -89,6 +91,6 @@ const chatSlice = createSlice({
   },
 })
 
-export const { clearError, addMessage, addChannel, deleteChannel, renameChannel } =
-  chatSlice.actions
+export const { clearError, addMessage, addChannel, deleteChannel, renameChannel } 
+  = chatSlice.actions
 export default chatSlice.reducer

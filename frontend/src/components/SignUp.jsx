@@ -7,7 +7,7 @@ import avatar_1 from '../assets/avatar_1.jpg'
 import axios from 'axios'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
-import { Container, Card, Navbar, FormGroup, FormControl, FormLabel, Button } from 'react-bootstrap'
+import { Container, Card, Navbar, FormGroup, FormControl, FormLabel } from 'react-bootstrap'
 
 const SignUpForm = () => {
   const inputRef = useRef(null)
@@ -35,15 +35,16 @@ const SignUpForm = () => {
         const { token, username } = response.data
         dispath(setCredentials({ token, username }))
         navigate('/')
-      } 
+      }
       else {
         setStatus(t('auth.errors.noToken'))
       }
-    } catch (err) {
+    } 
+    catch (err) {
       console.error('Login error:', err)
       if (err.response?.status === 409) {
         setStatus(t('auth.errors.userExists'))
-      } 
+      }
       else {
         setStatus(t('auth.errors.connectionError'))
       }
@@ -90,7 +91,7 @@ const SignUpForm = () => {
                     }) => (
                       <Form
                         className="col-12 col-md-6 mt-3 mt-md-0"
-                        onSubmit={e => {
+                        onSubmit={(e)=> {
                           e.preventDefault()
 
                           if (!values.username) {

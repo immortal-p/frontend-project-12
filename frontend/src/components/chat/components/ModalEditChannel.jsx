@@ -22,10 +22,10 @@ export const ModalEditChannel = ({ channel, onChannelEdited, show, onHide }) => 
       const response = await axios.patch(`/api/v1/channels/${channel.id}`, updatedChannel)
       const editedChannel = response.data
       onChannelEdited?.(editedChannel)
-    } 
+    }
     catch (err) {
       console.error('Ошибка при редактировании канала:', err)
-    } 
+    }
     finally {
       resetForm()
       onHide()

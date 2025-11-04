@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Formik, Form, Field, ErrorMessage } from 'formik'
+import { Formik, Form, Field } from 'formik'
 import { useDispatch } from 'react-redux'
 import { setCredentials } from '../slices/authSlice'
 import avatar from '../assets/avatar.jpg'
@@ -34,7 +34,8 @@ const LogInForm = () => {
         const { token, username } = response.data
         dispatch(setCredentials({ token, username }))
         navigate('/')
-      } else {
+      }
+      else {
         setStatus(t('auth.errors.noToken'))
       }
     } catch (err) {
@@ -42,13 +43,14 @@ const LogInForm = () => {
 
       if (err.response?.status === 401) {
         setStatus(t('auth.errors.invalidCredentials'))
-      } else {
+      }
+      else {
         setStatus(t('auth.errors.connectionError'))
       }
     }
   }
 
-  const handleSignUp = e => {
+  const handleSignUp = (e) => {
     e.preventDefault()
     navigate('/signup')
   }
@@ -129,7 +131,9 @@ const LogInForm = () => {
                 </Card.Body>
 
                 <Card.Footer className="p-4 text-center">
-                  <span>{t('auth.login.noAccount')} </span>
+                  <span>
+                    {t('auth.login.noAccount')}
+                  </span>
                   <a href="" onClick={handleSignUp}>
                     {t('auth.login.buttonSignUp')}
                   </a>

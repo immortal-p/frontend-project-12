@@ -44,7 +44,7 @@ const MessagesBox = ({ currentChannelId, t }) => {
     )
   }
 
-  const handleSendMessage = async e => {
+  const handleSendMessage = async (e) => {
     e.preventDefault()
     const formData = new FormData(e.target)
     const body = formData.get('body').trim()
@@ -55,7 +55,7 @@ const MessagesBox = ({ currentChannelId, t }) => {
 
     try {
       await sendMessage(msg)
-    } 
+    }
     catch (err) {
       console.error(err)
       toast.error(t('chat.toastify.connectionError'))
@@ -81,7 +81,9 @@ const MessagesBox = ({ currentChannelId, t }) => {
           {currentMessages.map(message => (
             <div key={message.id} className="text-break mb-2 text-container">
               <div>
-                <b>{message.username}</b>: {message.body}
+                <b>{message.username}</b>
+                :
+                {message.body}
               </div>
               <i className="bi bi-check2-all text-success"></i>
             </div>

@@ -33,7 +33,6 @@ export const ModalAddChannel = ({ onChannelCreated, show, onHide }) => {
       console.error('Ошибка при создании канала:', err)
     }
   }
-
   useEffect(() => {
     if (show) {
       inputRef.current?.focus()

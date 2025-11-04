@@ -47,7 +47,7 @@ const Chat = () => {
       if (channelsStatus === 'idle') {
         try {
           await dispatch(fetchChannels()).unwrap()
-        } 
+        }
         catch (err) {
           console.err(err)
           toast.error(t('chat.toastify.connectionError'))
@@ -122,18 +122,17 @@ const Chat = () => {
   }
 
   if (isError) {
-    const errorMessage 
-      =
+    const errorMessage =
       typeof channelsError === 'object' && channelsError?.message
         ? channelsError.message
-        : 
+        :
         channelsError || t('chat.unknownError')
 
     return (
       <div className="d-flex justify-content-center align-items-center h-100">
         <div className="text-danger p-5">
           <strong>{t('chat.errorLoadingData')}</strong>
-          : 
+          :
           {errorMessage}
         </div>
       </div>
@@ -160,13 +159,15 @@ const Chat = () => {
             </span>
             {channel.name}
           </Button>
-        ) : (
+        )
+        : 
+        (
           <Dropdown className="d-flex btn-group" as={ButtonGroup}>
             <Button
               style={{ border: 'none' }}
               variant={channel.id === currentChannelId 
-                ? 'secondary' 
-                : 
+                ? 'secondary'
+                :
                 'light'}
               className={'w-100 rounded-0 text-start text-truncate'}
               onClick={() => handleChannelClick(channel.id)}
@@ -207,7 +208,7 @@ const Chat = () => {
       <ModalAddChannel
         show={showAddModal}
         onHide={() => setShowAddModal(false)}
-        onChannelCreated={newChannel => setCurrentChannelId(newChannel.id)}
+        onChannelCreated={(newChannel) => setCurrentChannelId(newChannel.id)}
       />
       <ModalDeleteChannel
         show={!!channelToDelete}
@@ -221,7 +222,7 @@ const Chat = () => {
         show={!!channelToUpdate}
         onHide={() => setChannelToUpdate(null)}
         channel={channelToUpdate}
-        onChannelEdited={updatedChannel => setChannelToUpdate(updatedChannel)}
+        onChannelEdited={(updatedChannel) => setChannelToUpdate(updatedChannel)}
       />
 
       <div className="d-flex flex-column h-100">
@@ -251,7 +252,7 @@ const Chat = () => {
                 className="flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block"
                 as="ul"
               >
-                {channels.map(channel => builderChannel(channel))}
+                {channels.map((channel) => builderChannel(channel))}
                 <div ref={channelEndRef} />
               </Nav>
             </div>
