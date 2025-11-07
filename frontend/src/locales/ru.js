@@ -40,6 +40,7 @@ export default {
         newMessage: 'Новое сообщение',
         inputMess: 'Введите сообщение...',
         loading: 'Загрузка данных',
+        selectChannel: 'Выберите канал',
         channelManagement: 'Управление каналом',
         delete: 'Удалить',
         rename: 'Переименовать',

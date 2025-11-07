@@ -28,3 +28,11 @@
 .Toastify__toast {
   cursor: pointer;
 }
+
+.doneCheck {
+  color: #28a745
+}
+
+.noneCheck {
+  color: #dc3545
+}

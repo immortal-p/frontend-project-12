@@ -5,6 +5,7 @@ import filter from 'leo-profanity'
 import { toast } from 'react-toastify'
 import sendMessage from './sendMessage'
 import { BsArrowRightSquare } from 'react-icons/bs'
+import { IoCheckmarkDoneOutline, IoCheckmarkOutline } from 'react-icons/io5'
 import { Form, Button } from 'react-bootstrap'
 import { fetchMessages } from '../../slices/chatSlice'
 
@@ -17,9 +18,9 @@ const MessagesBox = ({ currentChannelId, t }) => {
 
   const { username } = useSelector(state => state.auth)
   const [newMessage, setNewMessage] = useState('')
-  const [errorMsg, setErrorMSg] = useState('')
+  const [localMessages, setLocalMessages] = useState([])
   const messageEndRef = useRef(null)
-  const currentMessages = messages.filter(msg => msg.channelId === currentChannelId)
+  const currentMessages = messages.filter(msg => msg.channelId === currentChannelId).concat(localMessages).sort((a, b) => a.timestamp - b.timestamp)
   const totalMessages = currentMessages.length
 
   useEffect(() => {
@@ -31,7 +32,9 @@ const MessagesBox = ({ currentChannelId, t }) => {
   useEffect(() => {
     if (!currentMessages.length) return
 
-    if (messageEndRef.current) {
+    const lastMessage = currentMessages.at(-1)
+
+    if (lastMessage.username === username && messageEndRef.current) {
       messageEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' })
     }
   }, [currentMessages, username])
@@ -39,7 +42,7 @@ const MessagesBox = ({ currentChannelId, t }) => {
   if (!currentChannel) {
     return (
       <div className="d-flex justify-content-center align-items-center h-100">
-        <p className="text-muted">{t('chat.selectChannel') || 'Выберите канал'}</p>
+        <p className="text-muted">{t('chat.selectChannel')}</p>
       </div>
     )
   }
@@ -51,21 +54,34 @@ const MessagesBox = ({ currentChannelId, t }) => {
     if (!body || !currentChannelId) return
 
     const cleanBody = filter.clean(body)
-    const msg = { id: uniqueId(), body: cleanBody, channelId: currentChannelId, username }
-
+    const msg = { id: uniqueId(), body: cleanBody, channelId: currentChannelId, username, timestamp: Date.now()}
     try {
       await sendMessage(msg)
     }
     catch (err) {
       console.error(err)
+      setLocalMessages(prev => [...prev, msg])
       toast.error(t('chat.toastify.connectionError'))
-      setErrorMSg(t('chat.errors.connectionError'))
-      setTimeout(() => setErrorMSg(''), 5000)
     }
 
     setNewMessage('')
     e.target.reset()
   }
+
+  const builderMessage = (message, status=200) => (
+    <div key={message.id} className="text-brak mb-2 text-container">
+      <div>
+        <b>{message.username}</b>
+        :
+        {message.body}
+      </div>
+      {status === 200 ? 
+        <IoCheckmarkDoneOutline size={20} className="doneCheck" /> 
+        :
+        <IoCheckmarkOutline size={20} className="noneCheck" />
+      }
+    </div>
+  )
 
   return (
     <div className="col p-0 h-100">
@@ -79,27 +95,14 @@ const MessagesBox = ({ currentChannelId, t }) => {
 
         <div id="messages-box" className="chat-messages overflow-auto px-5 ">
           {currentMessages.map(message => (
-            <div key={message.id} className="text-break mb-2 text-container">
-              <div>
-                <b>{message.username}</b>
-                :
-                {message.body}
-              </div>
-              <i className="bi bi-check2-all text-success"></i>
-            </div>
+            localMessages.includes(message)
+              ? builderMessage(message, 400)
+              : builderMessage(message)
           ))}
           <div ref={messageEndRef} />
         </div>
 
         <div className="mt-auto px-5 py-3">
-          {errorMsg && (
-            <div
-              className="alert alert-danger alert-dismissible fade show text-center py-2 mb-2"
-              role="alert"
-            >
-              {errorMsg}
-            </div>
-          )}
           <Form noValidate onSubmit={handleSendMessage} className="py-1 border rounded-2">
             <Form.Group className="input-group">
               <Form.Control

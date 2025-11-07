@@ -49,7 +49,7 @@ const Chat = () => {
           await dispatch(fetchChannels()).unwrap()
         }
         catch (err) {
-          console.err(err)
+          console.error(err)
           toast.error(t('chat.toastify.connectionError'))
         }
       }
@@ -92,12 +92,9 @@ const Chat = () => {
     })
 
     return () => {
-      socket.off('newMessage')
-      socket.off('newChannel')
-      socket.off('removeChannel')
-      socket.off('renameChannel')
+      socket.disconnect()
     }
-  }, [dispatch, currentChannelId, channels, t])
+  }, [])
 
   useEffect(() => {
     if (channelEndRef.current) {
