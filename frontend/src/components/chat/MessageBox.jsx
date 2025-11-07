@@ -76,9 +76,8 @@ const MessagesBox = ({ currentChannelId, t }) => {
         {message.body}
       </div>
       {status === 200
-        ? <IoCheckmarkDoneOutline size={20} className="doneCheck" /> 
-        : <IoCheckmarkOutline size={20} className="noneCheck" />
-      }
+        ? <IoCheckmarkDoneOutline size={20} className="doneCheck" />
+        : <IoCheckmarkOutline size={20} className="noneCheck" />}
     </div>
   )
 
