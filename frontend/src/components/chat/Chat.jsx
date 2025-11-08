@@ -127,6 +127,7 @@ const Chat = () => {
                     : 'light'}
                   className="w-100 rounded-0 text-start text-truncate"
                   onClick={() => handleChannelClick(channel.id)}
+                  aria-label={`Канал ${channel.name}`}
                 >
                   <span className="me-1" aria-hidden="true">
                     #

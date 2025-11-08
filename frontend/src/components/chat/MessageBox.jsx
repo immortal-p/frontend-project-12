@@ -105,6 +105,7 @@ const MessagesBox = ({ currentChannelId, t }) => {
             <Form.Group className="input-group">
               <Form.Control
                 name="body"
+                aria-label={t('chat.newMessage')}
                 placeholder={t('chat.inputMess')}
                 className="border-0 p-0 ps-2"
                 value={newMessage}
