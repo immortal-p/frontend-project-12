@@ -1,10 +1,18 @@
 import { io } from 'socket.io-client'
 
-let socket = null
+export const createSocket = (() => {
+  let socket = null
 
-export const connectSocket = () => {
-  if (!socket) {
-    socket = io('ws://localhost:5001', { transports: ['websocket'] })
+  return () => {
+    if (!socket) {
+      socket = io('ws://localhost:5001', { transports: ['websocket'] })
+    }
+    const disconnect = () => {
+      if (socket) {
+        socket.disconnect()
+        socket = null
+      }
+    }
+    return { socket, disconnect }
   }
-  return socket
-}
+})()

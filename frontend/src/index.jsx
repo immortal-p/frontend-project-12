@@ -1,9 +1,9 @@
 import ReactDOM from 'react-dom/client'
-import init from './init.jsx'
+import AppInit from './AppInit.jsx'
 
-const app = async () => {
+const app = () => {
   const root = ReactDOM.createRoot(document.querySelector('#chat'))
-  root.render(await init())
+  root.render(<AppInit />)
 }
 
 app()
