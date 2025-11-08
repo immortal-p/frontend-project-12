@@ -6,22 +6,22 @@ import { setCredentials } from './authSlice'
 import { useTranslation } from 'react-i18next'
 
 export const useAuth = () => {
-    const dispath = useDispatch()
+    const dispatch = useDispatch()
     const navigate = useNavigate()
     const { t } = useTranslation()
     const [status, setStatus] = useState(null)
 
-    const signup = async (username, password) => {
+    const extended = async (url, username, password) => {
         setStatus(null)
 
         try {
-            const response = await axios.post('/api/v1/signup', { username, password })
-            const { token, username: user } = response.data
-
+            const response = await axios.post(url, { username, password })
+            console.log(response)
+            const { token, userN  } = response.data
             if (token) {
-                dispath(setCredentials({ token, username: user }))
+                dispatch(setCredentials({ token, username: userN }))
                 localStorage.setItem('token', token)
-                localStorage.setItem('username', user)
+                localStorage.setItem('username', userN)
                 navigate('/')
             }
             else {
@@ -32,10 +32,13 @@ export const useAuth = () => {
             if (err.response?.status === 409) {
                 setStatus(t('auth.errors.userExists'))
             }
+            else if (err.response?.status === 401) {
+                setStatus(t('auth.errors.invalidCredentials'))
+            }
             else {
                 setStatus(t('auth.errors.connectionError'))
             }
         }
     }
-    return { signup, status }
+    return { extended, status }
 }

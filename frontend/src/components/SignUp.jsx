@@ -9,7 +9,7 @@ import { useAuth } from '../slices/useAuth.js'
 const SignUpForm = () => {
   const inputRef = useRef(null)
   const { t } = useTranslation()
-  const { signup, status: authStatus } = useAuth()
+  const { extended: signup, status: authStatus } = useAuth()
 
   const validationSchema = Yup.object().shape({
     username: Yup.string()
@@ -24,7 +24,8 @@ const SignUpForm = () => {
 
   const handleSubmit = async (values) => {
     const { username, password } = values
-    signup(username, password)
+    const url = '/api/v1/signup'
+    signup(url, username, password)
   }
 
   useEffect(() => {
@@ -62,7 +63,6 @@ const SignUpForm = () => {
                       touched,
                       setTouched,
                       submitForm,
-                      status,
                       isSubmitting,
                     }) => (
                       <Form

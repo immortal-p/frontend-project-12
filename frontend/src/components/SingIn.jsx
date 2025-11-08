@@ -1,10 +1,7 @@
 import { useEffect, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { Formik, Form, Field } from 'formik'
-import { useDispatch } from 'react-redux'
-import { setCredentials } from '../slices/authSlice'
 import avatar from '../assets/avatar.jpg'
-import axios from 'axios'
+import { Navigate, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import {
   Container,
@@ -17,38 +14,18 @@ import {
   FormLabel,
   Button,
 } from 'react-bootstrap'
+import { useAuth } from '../slices/useAuth.js'
 
 const LogInForm = () => {
-  const inputRef = useRef(null)
   const navigate = useNavigate()
-  const dispatch = useDispatch()
+  const inputRef = useRef(null)
   const { t } = useTranslation()
+  const { extended: signin, status: authStatus } = useAuth()
 
-  const handleSubmit = async (values, { setStatus }) => {
-    setStatus('')
-
-    try {
-      const response = await axios.post('/api/v1/login', values)
-
-      if (response.data.token) {
-        const { token, username } = response.data
-        dispatch(setCredentials({ token, username }))
-        navigate('/')
-      }
-      else {
-        setStatus(t('auth.errors.noToken'))
-      }
-    }
-    catch (err) {
-      console.error('Login error:', err)
-
-      if (err.response?.status === 401) {
-        setStatus(t('auth.errors.invalidCredentials'))
-      }
-      else {
-        setStatus(t('auth.errors.connectionError'))
-      }
-    }
+  const handleSubmit = async (values) => {
+    const { username, password } = values
+    const url = '/api/v1/login'
+    signin(url, username, password)
   }
 
   const handleSignUp = (e) => {
@@ -113,14 +90,14 @@ const LogInForm = () => {
                                 required
                                 type="password"
                                 placeholder={t('auth.login.password')}
-                                isInvalid={!!status}
+                                isInvalid={!!authStatus}
                                 autoComplete="current-password"
                                 id="password"
                               />
                             )}
                           </Field>
                           <FormLabel htmlFor="password">{t('auth.login.password')}</FormLabel>
-                          {status && <div className="invalid-tooltip d-block">{status}</div>}
+                          {authStatus && <div className="invalid-tooltip d-block">{authStatus}</div>}
                         </FormGroup>
 
                         <Button type="submit" className="w-100 mb-3" variant="outline-primary">
