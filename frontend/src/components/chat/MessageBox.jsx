@@ -67,7 +67,6 @@ const MessagesBox = ({ currentChannelId, t }) => {
     setNewMessage('')
     e.target.reset()
   }
-
   const builderMessage = (message, status = 200) => (
     <div key={message.id} className="text-brak mb-2 text-container">
       <div>

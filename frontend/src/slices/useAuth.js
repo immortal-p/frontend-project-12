@@ -16,12 +16,11 @@ export const useAuth = () => {
 
         try {
             const response = await axios.post(url, { username, password })
-            console.log(response)
-            const { token, userN  } = response.data
+            const { token } = response.data
             if (token) {
-                dispatch(setCredentials({ token, username: userN }))
+                dispatch(setCredentials({ token, username }))
                 localStorage.setItem('token', token)
-                localStorage.setItem('username', userN)
+                localStorage.setItem('username', username)
                 navigate('/')
             }
             else {
