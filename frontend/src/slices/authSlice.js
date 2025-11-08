@@ -12,12 +12,14 @@ const authSlice = createSlice({
     setCredentials: (state, action) => {
       const { token, username } = action.payload
       if (token) {
-        ;((state.token = token), (state.username = username), localStorage.setItem('token', token))
-        localStorage.setItem('username', username)
+        state.token = token
+        state.username = username
       }
     },
     logout: (state) => {
-      ;((state.token = null), (state.username = null), localStorage.removeItem('token'))
+      state.token = null
+      state.username = null
+      localStorage.removeItem('token')
       localStorage.removeItem('username')
     },
   },

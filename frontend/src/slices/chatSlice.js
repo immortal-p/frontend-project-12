@@ -46,15 +46,11 @@ const chatSlice = createSlice({
   reducers: {
     addMessage: (state, action) => {
       const msg = action.payload
-      if (!state.messages.items.find(m => m.id === msg.id)) {
-        state.messages.items.push(msg)
-      }
+      state.messages.items.push(msg)
     },
     addChannel: (state, action) => {
       const newChannel = action.payload
-      if (!state.channels.items.find(ch => ch.id === newChannel.id)) {
-        state.channels.items.push(newChannel)
-      }
+      state.channels.items.push(newChannel)
     },
     deleteChannel: (state, action) => {
       const delChannelId = action.payload.id

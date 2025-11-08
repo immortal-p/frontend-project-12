@@ -1,19 +1,15 @@
 import { useEffect, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
-import { useDispatch } from 'react-redux'
-import { setCredentials } from '../slices/authSlice'
 import avatar_1 from '../assets/avatar_1.jpg'
-import axios from 'axios'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import { Container, Card, Navbar, FormGroup, FormControl, FormLabel } from 'react-bootstrap'
+import { useAuth } from '../slices/useAuth.js'
 
 const SignUpForm = () => {
   const inputRef = useRef(null)
-  const navigate = useNavigate()
-  const dispath = useDispatch()
   const { t } = useTranslation()
+  const { signup, status: authStatus } = useAuth()
 
   const validationSchema = Yup.object().shape({
     username: Yup.string()
@@ -26,34 +22,14 @@ const SignUpForm = () => {
       .required(t('auth.errors.confirmPasswordRequired')),
   })
 
-  const handleSubmit = async (values, { setStatus }) => {
-    setStatus('')
+  const handleSubmit = async (values) => {
     const { username, password } = values
-    try {
-      const response = await axios.post('/api/v1/signup', { username, password })
-      if (response.data.token) {
-        const { token, username } = response.data
-        dispath(setCredentials({ token, username }))
-        navigate('/')
-      }
-      else {
-        setStatus(t('auth.errors.noToken'))
-      }
-    }
-    catch (err) {
-      console.error('Login error:', err)
-      if (err.response?.status === 409) {
-        setStatus(t('auth.errors.userExists'))
-      }
-      else {
-        setStatus(t('auth.errors.connectionError'))
-      }
-    }
+    signup(username, password)
   }
 
   useEffect(() => {
     inputRef.current?.focus()
-  })
+  }, [])
 
   return (
     <div className="h-100" id="chat">
@@ -186,8 +162,8 @@ const SignUpForm = () => {
                           />
                         </FormGroup>
 
-                        {status && (
-                          <div className="alert alert-danger text-center py-2">{status}</div>
+                        {authStatus && (
+                          <div className="alert alert-danger text-center py-2">{authStatus}</div>
                         )}
                         <button
                           type="submit"
