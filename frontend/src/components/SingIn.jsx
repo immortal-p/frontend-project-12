@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { Formik, Form, Field } from 'formik'
 import avatar from '../assets/avatar.jpg'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import {
   Container,
