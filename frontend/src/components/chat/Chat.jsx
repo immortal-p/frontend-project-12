@@ -3,12 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import {
   fetchChannels,
-  addMessage,
-  addChannel,
-  deleteChannel,
-  renameChannel,
 } from '../../slices/chatSlice'
-import { connectSocket } from '../../socket.js'
 import './chat.css'
 import { Container, Button, Nav, ButtonGroup, Dropdown, Navbar } from 'react-bootstrap'
 import { BsPlusSquare } from 'react-icons/bs'
@@ -37,7 +32,6 @@ const Chat = () => {
   const [showAddModal, setShowAddModal] = useState(false)
 
   const channelEndRef = useRef(null)
-  const socketRef = useRef(null)
 
   useEffect(() => {
     const loadData = async () => {
@@ -55,7 +49,7 @@ const Chat = () => {
       }
     }
     loadData()
-  }, [token, navigate, dispatch, channelsStatus, t])
+  }, [token, navigate, dispatch, t])
 
   useEffect(() => {
     if (currentChannelId === null && channels.length > 0) {
@@ -63,38 +57,6 @@ const Chat = () => {
       setCurrentChannelId(generalChannel?.id ?? channels[0].id)
     }
   }, [channels, currentChannelId])
-
-  useEffect(() => {
-    const socket = connectSocket()
-    socketRef.current = socket
-
-    socket.on('newMessage', msg => msg?.id && dispatch(addMessage(msg)))
-
-    socket.on('newChannel', (channel) => {
-      dispatch(addChannel(channel))
-      if (currentChannelId === channel.id) {
-        setCurrentChannelId(channel.id)
-      }
-      toast.success(t('chat.toastify.createChannel'), { draggable: true })
-    })
-
-    socket.on('removeChannel', (channelId) => {
-      dispatch(deleteChannel(channelId))
-      if (currentChannelId === channelId.id) {
-        setCurrentChannelId(channels.length > 0 ? channels[0].id : null)
-      }
-      toast.success(t('chat.toastify.deleteChannel'), { draggable: true })
-    })
-
-    socket.on('renameChannel', (channel) => {
-      dispatch(renameChannel(channel))
-      toast.success(t('chat.toastify.renameChannel'), { draggable: true })
-    })
-
-    return () => {
-      socket.disconnect()
-    }
-  }, [])
 
   useEffect(() => {
     if (channelEndRef.current) {
@@ -165,7 +127,6 @@ const Chat = () => {
                     : 'light'}
                   className="w-100 rounded-0 text-start text-truncate"
                   onClick={() => handleChannelClick(channel.id)}
-                  aria-label={`Канал ${channel.name}`}
                 >
                   <span className="me-1" aria-hidden="true">
                     #

@@ -51,7 +51,6 @@ export const ModalEditChannel = ({ channel, onChannelEdited, show, onHide }) => 
       onHide={onHide}
       onEntered={hanleModalEntered}
       id="modalEdit"
-      aria-labelleby="modalToggleLabel"
     >
       <Modal.Header closeButton>
         <Modal.Title id="modalToggleLabel">{t('chat.editChannelModal.title')}</Modal.Title>
