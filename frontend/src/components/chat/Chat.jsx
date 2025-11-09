@@ -37,7 +37,7 @@ const Chat = () => {
       if (!token) {
         navigate('/signin')
       }
-      if (channelsStatus === 'succeeded') {
+      if (channelsStatus === 'idle') {
         try {
           await dispatch(fetchChannels()).unwrap()
         }
