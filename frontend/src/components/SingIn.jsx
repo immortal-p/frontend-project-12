@@ -21,6 +21,7 @@ const LogInForm = () => {
   const inputRef = useRef(null)
   const { t } = useTranslation()
   const { extended: signin, status: authStatus } = useAuth()
+  const values = { username: '', password: '' }
 
   const handleSubmit = async (values) => {
     const { username, password } = values
@@ -59,7 +60,7 @@ const LogInForm = () => {
                     <img src={avatar} className="rounded-circle" alt="Войти" />
                   </Col>
 
-                  <Formik initialValues={{ username: '', password: '' }} onSubmit={handleSubmit}>
+                  <Formik initialValues={values} onSubmit={handleSubmit}>
                     {({ status }) => (
                       <Form className="col-12 col-md-6 mt-3 mt-md-0">
                         <h1 className="text-center mb-4">{t('auth.login.title')}</h1>

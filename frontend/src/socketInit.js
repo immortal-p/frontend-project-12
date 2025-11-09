@@ -15,7 +15,7 @@ export const createSocketManager = () => {
     disconnectFn = disconnect
 
     socket.on('newMessage', (msg) => {
-      if (msg?.id) store.dispatch(addMessage(msg))
+      store.dispatch(addMessage(msg))
     })
 
     socket.on('newChannel', (channel) => {

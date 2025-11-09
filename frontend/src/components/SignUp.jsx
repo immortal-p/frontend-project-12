@@ -10,6 +10,7 @@ const SignUpForm = () => {
   const inputRef = useRef(null)
   const { t } = useTranslation()
   const { extended: signup, status: authStatus } = useAuth()
+  const values = { username: '', password: '', confirmPassword: '' }
 
   const validationSchema = Yup.object().shape({
     username: Yup.string()
@@ -26,6 +27,23 @@ const SignUpForm = () => {
     const { username, password } = values
     const url = '/api/v1/signup'
     signup(url, username, password)
+  }
+
+  const handleSubmitForm = (e, values, setTouched) => {
+    e.preventDefault()
+
+    if (!values.username) {
+      setTouched({ username: true })
+      return
+    }
+    if (!values.password) {
+      setTouched({ password: true })
+      return
+    }
+    if (!values.confirmPassword && values.password) {
+      setTouched({ confirmPassword: true })
+      return
+    }
   }
 
   useEffect(() => {
@@ -51,7 +69,7 @@ const SignUpForm = () => {
                   </div>
 
                   <Formik
-                    initialValues={{ username: '', password: '', confirmPassword: '' }}
+                    initialValues={values}
                     validationSchema={validationSchema}
                     validateOnBlur
                     validateOnChange
@@ -61,28 +79,14 @@ const SignUpForm = () => {
                       values,
                       errors,
                       touched,
-                      setTouched,
                       submitForm,
+                      setTouched,
                       isSubmitting,
                     }) => (
                       <Form
                         className="col-12 col-md-6 mt-3 mt-md-0"
                         onSubmit={(e) => {
-                          e.preventDefault()
-
-                          if (!values.username) {
-                            setTouched({ username: true })
-                            return
-                          }
-                          if (!values.password) {
-                            setTouched({ password: true })
-                            return
-                          }
-                          if (!values.confirmPassword) {
-                            setTouched({ confirmPassword: true })
-                            return
-                          }
-
+                          handleSubmitForm(e, values, setTouched)
                           submitForm()
                         }}
                       >
