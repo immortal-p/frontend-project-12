@@ -7,9 +7,8 @@ import {
 import './chat.css'
 import { Container, Button, Nav, ButtonGroup, Dropdown, Navbar } from 'react-bootstrap'
 import { BsPlusSquare } from 'react-icons/bs'
-import { ModalAddChannel } from './components/ModalAddChannel.jsx'
 import { ModalDeleteChannel } from './components/ModalDeleteChannel.jsx'
-import { ModalEditChannel } from './components/ModalEditChannel.jsx'
+import { ModalChannel } from './components/ModalChannel.jsx'
 import { useTranslation } from 'react-i18next'
 import { ToastContainer, toast } from 'react-toastify'
 import MessagesBox from './MessageBox.jsx'
@@ -29,7 +28,7 @@ const Chat = () => {
   const [currentChannelId, setCurrentChannelId] = useState(null)
   const [channelToDelete, setChannelToDelete] = useState(null)
   const [channelToUpdate, setChannelToUpdate] = useState(null)
-  const [showAddModal, setShowAddModal] = useState(false)
+  const [channelToAdd, setChannelToAdd] = useState(false)
 
   const channelEndRef = useRef(null)
 
@@ -45,6 +44,7 @@ const Chat = () => {
         catch (err) {
           console.error(err)
           toast.error(t('chat.toastify.connectionError'))
+          navigate('/signin')
         }
       }
     }
@@ -161,11 +161,19 @@ const Chat = () => {
   }
   return (
     <>
-      <ModalAddChannel
-        show={showAddModal}
-        onHide={() => setShowAddModal(false)}
-        onChannelCreated={newChannel => setCurrentChannelId(newChannel.id)}
+      <ModalChannel
+        show={!!channelToAdd}
+        onHide={() => setChannelToAdd(null)}
+        onSubmit={newChannel => setCurrentChannelId(newChannel.id)}
       />
+
+      <ModalChannel
+        show={!!channelToUpdate}
+        onHide={() => setChannelToUpdate(null)}
+        channel={channelToUpdate}
+        onSubmit={updatedChannel => setChannelToUpdate(updatedChannel)}
+      />
+      
       <ModalDeleteChannel
         show={!!channelToDelete}
         onHide={() => setChannelToDelete(null)}
@@ -173,12 +181,6 @@ const Chat = () => {
         onChannelDefault={() => {
           setCurrentChannelId(channels.length > 0 ? channels[0].id : null)
         }}
-      />
-      <ModalEditChannel
-        show={!!channelToUpdate}
-        onHide={() => setChannelToUpdate(null)}
-        channel={channelToUpdate}
-        onChannelEdited={updatedChannel => setChannelToUpdate(updatedChannel)}
       />
 
       <div className="d-flex flex-column h-100">
@@ -198,7 +200,7 @@ const Chat = () => {
                 <Button
                   variant="group-vertical"
                   className="p-0 text-primary"
-                  onClick={() => setShowAddModal(true)}
+                  onClick={() => setChannelToAdd(true)}
                 >
                   <BsPlusSquare size={20} />
                   <span className="visually-hidden">+</span>

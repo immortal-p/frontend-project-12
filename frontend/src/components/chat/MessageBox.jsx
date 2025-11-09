@@ -7,7 +7,7 @@ import sendMessage from './sendMessage'
 import { BsArrowRightSquare } from 'react-icons/bs'
 import { IoCheckmarkDoneOutline, IoCheckmarkOutline } from 'react-icons/io5'
 import { Form, Button } from 'react-bootstrap'
-import { fetchMessages } from '../../slices/chatSlice'
+import { addMessage, fetchMessages } from '../../slices/chatSlice'
 
 const MessagesBox = ({ currentChannelId, t }) => {
   const dispath = useDispatch()
@@ -18,9 +18,8 @@ const MessagesBox = ({ currentChannelId, t }) => {
 
   const { username } = useSelector(state => state.auth)
   const [newMessage, setNewMessage] = useState('')
-  const [localMessages, setLocalMessages] = useState([])
   const messageEndRef = useRef(null)
-  const currentMessages = messages.filter(msg => msg.channelId === currentChannelId).concat(localMessages).sort((a, b) => a.timestamp - b.timestamp)
+  const currentMessages = messages.filter(msg => msg.channelId === currentChannelId)
   const totalMessages = currentMessages.length
 
   useEffect(() => {
@@ -54,29 +53,29 @@ const MessagesBox = ({ currentChannelId, t }) => {
     if (!body || !currentChannelId) return
 
     const cleanBody = filter.clean(body)
-    const msg = { id: uniqueId(), body: cleanBody, channelId: currentChannelId, username, timestamp: Date.now() }
+    const msg = { id: uniqueId(), body: cleanBody, channelId: currentChannelId, username, status: 'sent' }
+    
     try {
       await sendMessage(msg)
     }
     catch (err) {
       console.error(err)
-      setLocalMessages(prev => [...prev, msg])
+      dispath(addMessage({ ...msg, status: 'error' }))
       toast.error(t('chat.toastify.connectionError'))
     }
 
     setNewMessage('')
     e.target.reset()
   }
-  const builderMessage = (message, status = 200) => (
+  const builderMessage = (message) => (
     <div key={message.id} className="text-brak mb-2 text-container">
       <div>
         <b>{message.username}</b>
         :
         {message.body}
       </div>
-      {status === 200
-        ? <IoCheckmarkDoneOutline size={20} className="doneCheck" />
-        : <IoCheckmarkOutline size={20} className="noneCheck" />}
+      {message.status === 'sent' && <IoCheckmarkDoneOutline size={20} className='doneCheck' />}
+      {message.status === 'error' && <IoCheckmarkOutline size={20} className='noneCheck' />}
     </div>
   )
 
@@ -92,9 +91,7 @@ const MessagesBox = ({ currentChannelId, t }) => {
 
         <div id="messages-box" className="chat-messages overflow-auto px-5 ">
           {currentMessages.map(message => (
-            localMessages.includes(message)
-              ? builderMessage(message, 400)
-              : builderMessage(message)
+            builderMessage(message)
           ))}
           <div ref={messageEndRef} />
         </div>
