@@ -46,7 +46,7 @@ const MessagesBox = ({ currentChannelId, t }) => {
 
     const cleanBody = filter.clean(body)
     const msg = { id: uniqueId(), body: cleanBody, channelId: currentChannelId, username, status: 'sent' }
-    
+
     try {
       await sendMessage(msg)
     }
@@ -59,15 +59,15 @@ const MessagesBox = ({ currentChannelId, t }) => {
     setNewMessage('')
     e.target.reset()
   }
-  const builderMessage = (message) => (
+  const builderMessage = message => (
     <div key={message.id} className="text-brak mb-2 text-container">
       <div>
         <b>{message.username}</b>
         :
         {message.body}
       </div>
-      {message.status === 'sent' && <IoCheckmarkDoneOutline size={20} className='doneCheck' />}
-      {message.status === 'error' && <IoCheckmarkOutline size={20} className='noneCheck' />}
+      {message.status === 'sent' && <IoCheckmarkDoneOutline size={20} className="doneCheck" />}
+      {message.status === 'error' && <IoCheckmarkOutline size={20} className="noneCheck" />}
     </div>
   )
 
