@@ -26,16 +26,16 @@ export const ModalChannel = ({ channel = null, onSubmit, show, onHide }) => {
       : `/api/v1/channels`
     const method = isEdit ? 'patch' : 'post'
     try {
-        const response = await axios[method](url, channelBody)
-        const resultChanel = response.data
-        onSubmit?.(resultChanel)
+      const response = await axios[method](url, channelBody)
+      const resultChanel = response.data
+      onSubmit?.(resultChanel)
     }
     catch (err) {
-        console.error(`Ошибка при ${isEdit ? 'редактировании' : 'создании'} канала:`, err)
+      console.error(`Ошибка при ${isEdit ? 'редактировании' : 'создании'} канала:`, err)
     }
     finally {
-        resetForm()
-        onHide()
+      resetForm()
+      onHide()
     }
   }
 
@@ -59,26 +59,26 @@ export const ModalChannel = ({ channel = null, onSubmit, show, onHide }) => {
       id={`modal-${isEdit ? 'edit' : 'add'}`}
     >
       <Modal.Header closeButton>
-          <Modal.Title>
-              {isEdit
-                  ? t('chat.editChannelModal.title')
-                  : t('chat.addChannelModal.title')}
-          </Modal.Title>
+        <Modal.Title>
+          {isEdit
+            ? t('chat.editChannelModal.title')
+            : t('chat.addChannelModal.title')}
+        </Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
-          <Formik
-              validateOnBlur={false}
-              validateOnChange={false}
-              innerRef={formikRef}
-              initialValues={{ channelName: channel?.name || '' }}
-              validationSchema={validationSchema}
-              onSubmit={handleSubmit}
-              enableReinitialize
-          >
-              {({ errors, submitCount, resetForm }) => (
-                  <Form>
-                      <FormGroup className="mb-2">
+        <Formik
+          validateOnBlur={false}
+          validateOnChange={false}
+          innerRef={formikRef}
+          initialValues={{ channelName: channel?.name || '' }}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}
+          enableReinitialize
+        >
+          {({ errors, submitCount, resetForm }) => (
+            <Form>
+              <FormGroup className="mb-2">
                 <Field name="channelName">
                   {({ field }) => (
                     <FormControl
@@ -89,16 +89,17 @@ export const ModalChannel = ({ channel = null, onSubmit, show, onHide }) => {
                       type="text"
                       isInvalid={!!(errors.channelName && submitCount > 0)}
                       placeholder={
-                          isEdit
-                            ? t('chat.editChannelModal.placeholderMessage')
-                            : t('chat.addChannelModal.placeholderMessage')
+                        isEdit
+                          ? t('chat.editChannelModal.placeholderMessage')
+                          : t('chat.addChannelModal.placeholderMessage')
                       }
-                    ></FormControl>
+                    >
+                    </FormControl>
                   )}
                 </Field>
 
                 <FormLabel htmlFor="channelName" visuallyHidden>
-                    {t('chat.nameLabel')}
+                  {t('chat.nameLabel')}
                 </FormLabel>
 
                 <ErrorMessage name="channelName">
