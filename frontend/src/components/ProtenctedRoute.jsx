@@ -11,7 +11,7 @@ const ProtectedRoute = () => {
       navigate('/signin')
     }
   }),
-  [token])
+  [token, navigate])
 
   if (!token) return null
 
