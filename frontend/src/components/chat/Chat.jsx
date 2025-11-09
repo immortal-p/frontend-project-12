@@ -44,7 +44,6 @@ const Chat = () => {
         catch (err) {
           console.error(err)
           toast.error(t('chat.toastify.connectionError'))
-          navigate('/signin')
         }
       }
     }
@@ -173,7 +172,7 @@ const Chat = () => {
         channel={channelToUpdate}
         onSubmit={updatedChannel => setChannelToUpdate(updatedChannel)}
       />
-      
+
       <ModalDeleteChannel
         show={!!channelToDelete}
         onHide={() => setChannelToDelete(null)}
