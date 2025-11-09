@@ -6,8 +6,14 @@ const ProtectedRoute = () => {
   const { token } = useSelector(state => state.auth)
   const navigate = useNavigate()
 
-  if (!token) navigate('/signin')
-    
+  useEffect(() => {
+    if (!token) {
+      navigate('/signin')
+    }
+  }),
+  [token, navigate]
+  
+  if(!token) return null
   return <Outlet />
 }
 

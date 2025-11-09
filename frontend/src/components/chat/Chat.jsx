@@ -12,7 +12,6 @@ import { ModalChannel } from './components/ModalChannel.jsx'
 import { useTranslation } from 'react-i18next'
 import { ToastContainer, toast } from 'react-toastify'
 import MessagesBox from './MessageBox.jsx'
-
 const Chat = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -54,6 +53,13 @@ const Chat = () => {
     if (currentChannelId === null && channels.length > 0) {
       const generalChannel = channels.find(ch => ch.name === 'general')
       setCurrentChannelId(generalChannel?.id ?? channels[0].id)
+    }
+  }, [channels, currentChannelId])
+
+  useEffect(() => {
+    const exists = channels.some(ch => ch.id === currentChannelId)
+    if (!exists) {
+      setCurrentChannelId(channels.length > 0 ? channels[0].id : null)
     }
   }, [channels, currentChannelId])
 

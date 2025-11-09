@@ -38,14 +38,6 @@ const MessagesBox = ({ currentChannelId, t }) => {
     }
   }, [currentMessages, username])
 
-  if (!currentChannel) {
-    return (
-      <div className="d-flex justify-content-center align-items-center h-100">
-        <p className="text-muted">{t('chat.selectChannel')}</p>
-      </div>
-    )
-  }
-
   const handleSendMessage = async (e) => {
     e.preventDefault()
     const formData = new FormData(e.target)
@@ -84,7 +76,7 @@ const MessagesBox = ({ currentChannelId, t }) => {
       <div className="d-flex flex-column h-100">
         <div className="bg-light mb-4 p-3 shadow-sm small">
           <p className="m-0">
-            <b>{`# ${currentChannel.name}`}</b>
+            <b>{`# ${currentChannel?.name || t('chat.selectChannel')}`}</b>
           </p>
           <span className="text-muted">{t('chat.messages', { count: totalMessages })}</span>
         </div>
