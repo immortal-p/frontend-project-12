@@ -11,7 +11,8 @@ import { ModalDeleteChannel } from './components/ModalDeleteChannel.jsx'
 import { ModalChannel } from './components/ModalChannel.jsx'
 import { useTranslation } from 'react-i18next'
 import { ToastContainer, toast } from 'react-toastify'
-import MessagesBox from './MessageBox.jsx'
+import MessagesBox from './components/MessageBox.jsx'
+
 const Chat = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
