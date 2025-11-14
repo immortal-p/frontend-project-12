@@ -3,11 +3,11 @@ import { useSelector, useDispatch } from 'react-redux'
 import { uniqueId } from 'lodash'
 import filter from 'leo-profanity'
 import { toast } from 'react-toastify'
-import sendMessage from './sendMessage'
+import sendMessage from '../utils/sendMessage.js'
 import { BsArrowRightSquare } from 'react-icons/bs'
 import { IoCheckmarkDoneOutline, IoCheckmarkOutline } from 'react-icons/io5'
 import { Form, Button } from 'react-bootstrap'
-import { addMessage, fetchMessages } from '../../slices/chatSlice'
+import { addMessage, fetchMessages } from '../../../slices/chatSlice'
 
 const MessagesBox = ({ currentChannelId, t }) => {
   const dispath = useDispatch()

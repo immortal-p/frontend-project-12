@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import {
   fetchChannels,
 } from '../../slices/chatSlice'
-import './chat.css'
+import './utils/chat.css'
 import { Container, Button, Nav, ButtonGroup, Dropdown, Navbar } from 'react-bootstrap'
 import { BsPlusSquare } from 'react-icons/bs'
 import { ModalDeleteChannel } from './components/ModalDeleteChannel.jsx'

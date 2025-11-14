@@ -65,7 +65,7 @@ const SignUpForm = () => {
               <Card className="shadow-sm">
                 <Card.Body className="card-body d-flex flex-column flex-md-row justify-content-around align-items-center p-5">
                   <div>
-                    <img src={avatar_1} className="rounded-circle" alt="Войти" />
+                    <img src={avatar_1} className="rounded-circle" alt="Регистрация" />
                   </div>
 
                   <Formik
