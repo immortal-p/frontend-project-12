@@ -18,19 +18,22 @@ import 'react-toastify/dist/ReactToastify.css'
 const AppInit = () => {
   const [i18n, setI18n] = useState(null)
   const { initSocket } = createSocketManager()
-
+  const savedLng = localStorage.getItem('lng') || 'ru'
   useEffect(() => {
     const initApp = async () => {
-      const i18nInstance = i18next.createInstance()
-      await i18nInstance.use(initReactI18next).init({
-        resources: resources.ru,
+      await i18next.use(initReactI18next).init({
+        resources: {
+          ru: resources.ru,
+          en: resources.en,
+        },
+        lng: savedLng,
         fallbackLng: 'ru',
         interpolation: { escapeValue: false },
       })
-      setI18n(i18nInstance)
+      setI18n(i18next)
 
       setupAxios()
-      initSocket(i18nInstance.t)
+      initSocket(i18next.t)
     }
     initApp()
   }, [])
