@@ -5,6 +5,7 @@ import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import { Container, Card, Navbar, FormGroup, FormControl, FormLabel } from 'react-bootstrap'
 import { useAuth } from '../slices/useAuth.js'
+import LanguageSwitcher from './LanguageSwitcher.jsx'
 
 const SignUpForm = () => {
   const inputRef = useRef(null)
@@ -27,6 +28,11 @@ const SignUpForm = () => {
     const { username, password } = values
     const url = '/api/v1/signup'
     signup(url, username, password)
+  }
+
+  const handleSignIn = (e) => {
+    e.preventDefault()
+    navigate('/signin')
   }
 
   const handleSubmitForm = (e, values, setTouched) => {
@@ -56,6 +62,7 @@ const SignUpForm = () => {
         <Navbar className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
           <Container>
             <Navbar.Brand href="/">{t('nameChat')}</Navbar.Brand>
+            <LanguageSwitcher />
           </Container>
         </Navbar>
 

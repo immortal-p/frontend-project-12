@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
+import i18next from 'i18next'
 import {
   fetchChannels,
 } from '../../slices/chatSlice'
@@ -9,6 +10,7 @@ import { Container, Button, Nav, ButtonGroup, Dropdown, Navbar } from 'react-boo
 import { BsPlusSquare } from 'react-icons/bs'
 import { ModalDeleteChannel } from './components/ModalDeleteChannel.jsx'
 import { ModalChannel } from './components/ModalChannel.jsx'
+import LanguageSwitcher from '../LanguageSwitcher.jsx'
 import { useTranslation } from 'react-i18next'
 import { ToastContainer, toast } from 'react-toastify'
 import MessagesBox from './components/MessageBox.jsx'
@@ -195,7 +197,12 @@ const Chat = () => {
             <Navbar.Brand as={Link} to="/" className="navbar-brand">
               {t('nameChat')}
             </Navbar.Brand>
-            <Button onClick={handleLogout}>{t('chat.buttonExit')}</Button>
+
+            <Container className="d-flex justify-content-end">
+              <LanguageSwitcher />
+              <Button className='m-1 exitBtn' onClick={handleLogout}>{t('chat.buttonExit')}</Button>
+            </Container>
+
           </Container>
         </Navbar>
         <Container className="h-100 my-4 overflow-hidden rounded shadow">

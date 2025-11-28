@@ -15,6 +15,7 @@ import {
   Button,
 } from 'react-bootstrap'
 import { useAuth } from '../slices/useAuth.js'
+import LanguageSwitcher from './LanguageSwitcher.jsx'
 
 const LogInForm = () => {
   const navigate = useNavigate()
@@ -44,7 +45,8 @@ const LogInForm = () => {
         <Navbar className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
           <Container>
             <Navbar.Brand href="/">{t('nameChat')}</Navbar.Brand>
-          </Container>
+            <LanguageSwitcher />
+            </Container>
         </Navbar>
 
         <Container fluid className="h-100">
@@ -113,7 +115,7 @@ const LogInForm = () => {
                   <span>
                     {t('auth.login.noAccount')}
                   </span>
-                  <a href="" onClick={handleSignUp}>
+                  <a href="" className="m-2" onClick={handleSignUp}>
                     {t('auth.login.buttonSignUp')}
                   </a>
                 </Card.Footer>

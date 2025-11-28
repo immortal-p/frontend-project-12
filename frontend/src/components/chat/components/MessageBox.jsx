@@ -76,7 +76,7 @@ const MessagesBox = ({ currentChannelId, t }) => {
       <div className="d-flex flex-column h-100">
         <div className="bg-light mb-4 p-3 shadow-sm small">
           <p className="m-0">
-            <b>{`# ${currentChannel?.name || t('chat.selectChannel')}`}</b>
+            <b className="fs-6">{`# ${currentChannel?.name || t('chat.selectChannel')}`}</b>
           </p>
           <span className="text-muted">{t('chat.messages', { count: totalMessages })}</span>
         </div>
