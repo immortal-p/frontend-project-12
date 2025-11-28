@@ -20,7 +20,6 @@ This project is a real-time chat application similar to Slack, built with modern
 
 * 🔥 Real-time messaging via Socket.IO
 * 📡 Automatic UI updates without page reloads
-* 📁 Multiple channels (rooms)
 * ➕ Create, rename, and delete channels
 * 🔄 Auto-redirect to *General* if the current channel is deleted
 * 🟢 Online users supported
@@ -81,7 +80,6 @@ After launching the project:
 1. The user enters a username or logs in.
 2. The chat interface loads with the default **General** channel.
 3. When a user sends a message:
-
    * It is transmitted to the backend via **WebSocket**.
    * The backend broadcasts it to all connected clients.
    * All users see updates instantly.
@@ -110,7 +108,6 @@ make test
 ## Tech Stack
 
 * **Frontend:** React, Redux Toolkit, Bootstrap, i18next
-* **Backend:** Node.js, Express
 * **Real-time:** Socket.IO
 * **Build tools:** Webpack, Make
 * **Deployment:** Render
@@ -122,25 +119,6 @@ make test
 ```
 frontend-project-12/
 ├── frontend/       # Client-side code
-├── backend/        # Server-side code
 ├── Makefile        # Scripts for install/start/dev
 └── README.md
 ```
-
----
-
-## Deployment
-
-The project is deployed on **Render**.
-To deploy your own version, create two services:
-
-* **Web Service** for backend
-* **Static Site** or **Web Service** for frontend
-
-Configure environment variables and build commands according to your setup.
-
----
-
-## Credits
-
-This project was completed as part of the **Hexlet Frontend Developer** program.
