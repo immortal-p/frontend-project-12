@@ -36,3 +36,7 @@
 .noneCheck {
   color: #dc3545
 }
+
+.exitBtn{
+  min-width: 80px;
+}
