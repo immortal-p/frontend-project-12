@@ -8,6 +8,9 @@ import { BsArrowRightSquare } from 'react-icons/bs'
 import { IoCheckmarkDoneOutline, IoCheckmarkOutline } from 'react-icons/io5'
 import { Form, Button } from 'react-bootstrap'
 import { addMessage, fetchMessages } from '../../../slices/chatSlice'
+import '../../utils/style.css'
+import checkTheme from '../../utils/checkTheme.js'
+import { useTheme } from '../../utils/useTheme.js'
 
 const MessagesBox = ({ currentChannelId, t }) => {
   const dispath = useDispatch()
@@ -21,6 +24,7 @@ const MessagesBox = ({ currentChannelId, t }) => {
   const messageEndRef = useRef(null)
   const currentMessages = messages.filter(msg => msg.channelId === currentChannelId)
   const totalMessages = currentMessages.length
+  const { theme, setTheme } = useTheme()
 
   useEffect(() => {
     if (currentChannelId) {
@@ -61,7 +65,7 @@ const MessagesBox = ({ currentChannelId, t }) => {
   }
   const builderMessage = message => (
     <div key={message.id} className="text-brak mb-2 text-container">
-      <div>
+      <div className={`${checkTheme(theme, "text-second-cl text-light2", "text-muted")}`}>
         <b>{message.username}</b>
         :
         {message.body}
@@ -74,11 +78,11 @@ const MessagesBox = ({ currentChannelId, t }) => {
   return (
     <div className="col p-0 h-100">
       <div className="d-flex flex-column h-100">
-        <div className="bg-light mb-4 p-3 shadow-sm small">
+        <div className="mb-4 p-3 shadow-sm small">
           <p className="m-0">
-            <b className="fs-6">{`# ${currentChannel?.name || t('chat.selectChannel')}`}</b>
+            <b className={`fs-6 ${checkTheme(theme, "text-second-cl text-light2")}`}>{`# ${currentChannel?.name || t('chat.selectChannel')}`}</b>
           </p>
-          <span className="text-muted">{t('chat.messages', { count: totalMessages })}</span>
+          <span className={`${checkTheme(theme, "text-second-cl text-light2")}`}>{t('chat.messages', { count: totalMessages })}</span>
         </div>
 
         <div id="messages-box" className="chat-messages overflow-auto px-5 ">
@@ -89,7 +93,7 @@ const MessagesBox = ({ currentChannelId, t }) => {
         </div>
 
         <div className="mt-auto px-5 py-3">
-          <Form noValidate onSubmit={handleSendMessage} className="py-1 border rounded-2">
+          <Form noValidate onSubmit={handleSendMessage} className="py-1 border rounded-2 message-input">
             <Form.Group className="input-group">
               <Form.Control
                 name="body"

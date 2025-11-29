@@ -1,7 +1,7 @@
 export default {
   translation: {
     language: 'ru',
-    nameChat: 'Hexlet Chat',
+    nameChat: 'Real-Time Chat',
     lngRu: 'Ru',
     lngEn: 'En',
     auth: {

@@ -40,3 +40,36 @@
 .exitBtn{
   min-width: 80px;
 }
+
+.container-chat{
+    padding: 0 !important;
+}
+
+[data-theme="dark"] .border-end {
+    border-right-color: #262a33 !important;
+}
+
+[data-theme="dark"] .btn-light {
+    background: #262a33;
+}
+
+[data-theme="dark"] .btn:hover {
+  background-color: #1a1d23 !important;
+  color: #e6e6e6 !important;
+}
+
+.channel-dropdown:hover .btn.btn,
+.channel-dropdown:hover .dropdown-toggle.btn {
+  color: #000;
+  background-color: #d3d4d5;
+}
+
+[data-theme="dark"] .channel-dropdown:hover .btn.btn,
+[data-theme="dark"] .channel-dropdown:hover .dropdown-toggle.btn {
+  background-color: #1a1d23 !important;
+  color: #e6e6e6 !important;
+}
+
+[data-theme="dark"] .btn.btn-secondary {
+  color: #e6e6e6;
+}
