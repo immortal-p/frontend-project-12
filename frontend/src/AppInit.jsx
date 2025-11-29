@@ -19,6 +19,9 @@ const AppInit = () => {
   const [i18n, setI18n] = useState(null)
   const { initSocket } = createSocketManager()
   const savedLng = localStorage.getItem('lng') || 'ru'
+  const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  localStorage.setItem('theme', systemTheme)
+
   useEffect(() => {
     const initApp = async () => {
       await i18next.use(initReactI18next).init({
