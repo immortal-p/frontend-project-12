@@ -1,17 +1,23 @@
 import { useEffect, useRef } from 'react'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
-import avatar_1 from '../assets/avatar_1.jpg'
+import avatar_1 from '../assets/NazunaNanakuza2.png'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
-import { Container, Card, Navbar, FormGroup, FormControl, FormLabel } from 'react-bootstrap'
+import { Container, Card, Navbar, FormGroup, FormControl, FormLabel, Button } from 'react-bootstrap'
 import { useAuth } from '../slices/useAuth.js'
+import './utils/style.css'
+import { GiBoomerangSun } from "react-icons/gi";
+import { GiMoonClaws } from "react-icons/gi";
 import LanguageSwitcher from './LanguageSwitcher.jsx'
+import checkTheme from './utils/checkTheme.js'
+import { useTheme } from './utils/useTheme.js'
 
 const SignUpForm = () => {
   const inputRef = useRef(null)
   const { t } = useTranslation()
   const { extended: signup, status: authStatus } = useAuth()
   const values = { username: '', password: '', confirmPassword: '' }
+  const { theme, toggleTheme } = useTheme() 
 
   const validationSchema = Yup.object().shape({
     username: Yup.string()
@@ -28,11 +34,6 @@ const SignUpForm = () => {
     const { username, password } = values
     const url = '/api/v1/signup'
     signup(url, username, password)
-  }
-
-  const handleSignIn = (e) => {
-    e.preventDefault()
-    navigate('/signin')
   }
 
   const handleSubmitForm = (e, values, setTouched) => {
@@ -58,21 +59,29 @@ const SignUpForm = () => {
 
   return (
     <div className="h-100" id="chat">
-      <div className="d-flex flex-column h-100">
-        <Navbar className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
+      <div className={`d-flex flex-column h-100 ${checkTheme(theme, "dark-theme-bg")}`}>
+        <Navbar className={`shadow-sm navbar ${checkTheme(theme, "glass-card bg-card")}`}>
           <Container>
-            <Navbar.Brand href="/">{t('nameChat')}</Navbar.Brand>
-            <LanguageSwitcher />
+            <Navbar.Brand className={`${checkTheme(theme, "text-first-cl text-light")}`} href="/">{t('nameChat')}</Navbar.Brand>
+            <Container className="d-flex justify-content-end">
+              <LanguageSwitcher />
+              <Button className="m-1 p-1 icon-parent" onClick={toggleTheme}>
+                {theme === 'dark'
+                ? <GiMoonClaws className='icon-elem icon' />
+                : <GiBoomerangSun className='icon' />
+                }
+              </Button>
+            </Container>
           </Container>
         </Navbar>
 
         <Container fluid className="h-100">
           <div className="row justify-content-center align-content-center h-100">
             <div className="col-12 col-md-8 col-xxl-6">
-              <Card className="shadow-sm">
+              <Card className={`${checkTheme(theme, "glass-card bg-card", "navbar-light bg-light")}`}>
                 <Card.Body className="card-body d-flex flex-column flex-md-row justify-content-around align-items-center p-5">
                   <div>
-                    <img src={avatar_1} className="rounded-circle" alt="Регистрация" />
+                    <img src={avatar_1} alt="Регистрация" />
                   </div>
 
                   <Formik
@@ -97,7 +106,7 @@ const SignUpForm = () => {
                           submitForm()
                         }}
                       >
-                        <h1 className="text-center mb-4">{t('auth.register.title')}</h1>
+                        <h1 className={`text-center mb-4 ${checkTheme(theme, "text-first-cl text-light", "")}`}>{t('auth.register.title')}</h1>
 
                         <FormGroup className="form-floating mb-3">
                           <Field name="username">
@@ -114,7 +123,7 @@ const SignUpForm = () => {
                               />
                             )}
                           </Field>
-                          <FormLabel htmlFor="username">
+                          <FormLabel className={`${checkTheme(theme, 'text-first-cl text-light')}`} htmlFor="username">
                             {t('auth.register.name')}
                           </FormLabel>
                           <ErrorMessage
@@ -139,7 +148,7 @@ const SignUpForm = () => {
                               />
                             )}
                           </Field>
-                          <FormLabel htmlFor="password">{t('auth.register.password')}</FormLabel>
+                          <FormLabel className={`${checkTheme(theme, 'text-first-cl text-light')}`} htmlFor="password">{t('auth.register.password')}</FormLabel>
                           <ErrorMessage
                             name="password"
                             component="div"
@@ -162,7 +171,7 @@ const SignUpForm = () => {
                               />
                             )}
                           </Field>
-                          <FormLabel htmlFor="confirmPassword">
+                          <FormLabel className={`${checkTheme(theme, 'text-first-cl text-light')}`} htmlFor="confirmPassword">
                             {t('auth.register.confirmPassword')}
                           </FormLabel>
                           <ErrorMessage
