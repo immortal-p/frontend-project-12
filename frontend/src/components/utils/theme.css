@@ -1,0 +1,68 @@
+:root {
+  --bg-dark: #1a1d23;
+  --bg-dark-2: #262a33;
+  --bg-dark-3: #212529;
+  --cl-text: #e6e6e6;
+  --cl-text-2: #9aa0a6;
+}
+
+.icon {
+  width: 100%;
+  height: 100%;
+}
+
+.bg-btn-cl-active.btn-bg {
+  background-color: var(--bg-dark-2) !important;
+}
+
+[data-theme=dark] ::-webkit-scrollbar-track {
+  background: red;
+}
+[data-theme=dark] .icon-elem,
+[data-theme=dark] .icon-parent,
+[data-theme=dark] .icon-parent:hover {
+  background-color: var(--bg-dark-2) !important;
+}
+[data-theme=dark] .btn-secondary,
+[data-theme=dark] .dropdown-item:hover {
+  background-color: var(--bg-dark-2);
+}
+[data-theme=dark] .icon-elem:hover {
+  border: none;
+}
+[data-theme=dark] .bg-fon,
+[data-theme=dark] .dropdown-toggle.show,
+[data-theme=dark] .dropdown-menu,
+[data-theme=dark] .dropdown-menu.show:hover {
+  background-color: var(--bg-dark);
+}
+[data-theme=dark] .text-first-cl,
+[data-theme=dark] .dropdown-item:hover {
+  color: var(--cl-text);
+}
+[data-theme=dark] .text-second-cl,
+[data-theme=dark] .dropdown-item {
+  color: var(--cl-text-2);
+}
+[data-theme=dark] .glass-card.bg-card {
+  background: rgba(0, 0, 0, 0.15) !important;
+  backdrop-filter: blur(20px);
+}
+[data-theme=dark] input.form-control {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  color: var(--cl-text) !important;
+}
+[data-theme=dark] .bg-light.text-primary {
+  background-color: var(--bg-dark-2) !important;
+  color: var(--cl-text) !important;
+}
+[data-theme=dark] .message-input {
+  border: 0 !important;
+}
+
+.icon-parent {
+  min-width: 40px;
+}
+
+/*# sourceMappingURL=theme.css.map */

@@ -1,3 +1,4 @@
+@import '../../utils/theme.css';
 * {
   margin: 0;
   padding: 0;
@@ -30,46 +31,85 @@
 }
 
 .doneCheck {
-  color: #28a745
+  color: #28a745;
 }
 
 .noneCheck {
-  color: #dc3545
+  color: #dc3545;
 }
 
-.exitBtn{
+.exitBtn {
   min-width: 80px;
 }
 
-.container-chat{
-    padding: 0 !important;
+.container-chat {
+  padding: 0 !important;
 }
 
-[data-theme="dark"] .border-end {
-    border-right-color: #262a33 !important;
+[data-theme=light] .w-100.nav-item:hover .btn {
+  background: #6C757D;
+  color: white;
+}
+[data-theme=light] .channel-dropdown:hover .dropdown-toggle-split::after {
+  color: white;
 }
 
-[data-theme="dark"] .btn-light {
-    background: #262a33;
+[data-theme=dark] .border-end {
+  border-right-color: #262a33 !important;
 }
-
-[data-theme="dark"] .btn:hover {
+[data-theme=dark] .btn:hover {
   background-color: #1a1d23 !important;
   color: #e6e6e6 !important;
+}
+[data-theme=dark] .btn.btn-secondary {
+  color: #e6e6e6;
+  background-color: var(--bg-dark);
+}
+[data-theme=dark] .btn.btn-light {
+  background-color: var(--bg-dark-2);
+}
+[data-theme=dark] .channel-dropdown:hover .btn.btn,
+[data-theme=dark] .channel-dropdown:hover .dropdown-toggle.btn {
+  background-color: #1a1d23 !important;
+  color: var(--cl-text) !important;
+}
+[data-theme=dark] .channel-dropdown:hover .dropdown-toggle-split::after {
+  color: var(--cl-text);
+}
+[data-theme=dark] .dropdown-toggle-split::after {
+  color: var(--cl-text-2);
+}
+[data-theme=dark] .btn-group-vertical,
+[data-theme=dark] .fs-6 {
+  color: var(--cl-text-2) !important;
+}
+[data-theme=dark] .form-control::placeholder {
+  color: var(--cl-text-2);
+}
+[data-theme=dark] .btn-send-mess {
+  border: 1px solid var(--cl-text-2) !important;
+  background-color: #262a33 !important;
+}
+[data-theme=dark] .modal-header,
+[data-theme=dark] .modal-body {
+  background-color: var(--bg-dark);
+}
+[data-theme=dark] .modal-header {
+  border-bottom-color: var(--bg-dark-2);
+}
+[data-theme=dark] .modal-title,
+[data-theme=dark] .lead {
+  color: var(--cl-text);
+}
+[data-theme=dark] .Toastify__toast-theme--light {
+  background: rgba(0, 0, 0, 0.15) !important;
+  backdrop-filter: blur(20px);
+  color: var(--cl-text-2);
 }
 
 .channel-dropdown:hover .btn.btn,
 .channel-dropdown:hover .dropdown-toggle.btn {
-  color: #000;
   background-color: #d3d4d5;
 }
 
-[data-theme="dark"] .channel-dropdown:hover .btn.btn,
-[data-theme="dark"] .channel-dropdown:hover .dropdown-toggle.btn {
-  background-color: #1a1d23 !important;
-  color: #e6e6e6 !important;
-}
-
-[data-theme="dark"] .btn.btn-secondary {
-  color: #e6e6e6;
-}
+/*# sourceMappingURL=chat.css.map */

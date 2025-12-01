@@ -1,0 +1,132 @@
+@import '../../utils/theme.css';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.text-container {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  border: 1px grey solid;
+  border-radius: 10px;
+  padding: 10px 9px;
+}
+
+#channels-box .text-start {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  white-space: normal;
+  overflow-x: hidden;
+}
+
+.Toastify__toast {
+  cursor: pointer;
+}
+
+.doneCheck {
+  color: #28a745
+}
+
+.noneCheck {
+  color: #dc3545
+}
+
+.exitBtn{
+  min-width: 80px;
+}
+
+.container-chat{
+    padding: 0 !important;
+}
+
+
+[data-theme="light"] {
+  .w-100.nav-item:hover .btn {
+    background: #6C757D;
+    color: white;
+  };
+  
+  .channel-dropdown:hover .dropdown-toggle-split::after {
+    color: white;
+  }
+}
+
+[data-theme="dark"] {
+  .border-end {
+    border-right-color: #262a33 !important;
+  }
+
+  .btn:hover {
+    background-color: #1a1d23 !important;
+    color: #e6e6e6 !important;
+  }
+
+  .btn.btn-secondary {
+    color: #e6e6e6;
+    background-color: var(--bg-dark);
+  }
+
+  .btn.btn-light{
+    background-color: var(--bg-dark-2);
+  }
+  
+  .channel-dropdown:hover {
+    .btn.btn,
+    .dropdown-toggle.btn {
+      background-color: #1a1d23 !important;
+      color: var(--cl-text) !important;
+    }
+
+    .dropdown-toggle-split::after {
+      color: var(--cl-text);
+    }
+  }
+
+  .dropdown-toggle-split::after {
+    color: var(--cl-text-2)
+  }
+
+  .btn-group-vertical,
+  .fs-6 {
+    color: var(--cl-text-2) !important
+  }
+
+  .form-control::placeholder {
+    color: var(--cl-text-2)
+  }
+
+  .btn-send-mess {
+    border: 1px solid var(--cl-text-2) !important;
+    background-color: #262a33 !important;
+  }
+
+  .modal-header,
+  .modal-body {
+    background-color: var(--bg-dark);
+  }
+
+  .modal-header {
+    border-bottom-color: var(--bg-dark-2);
+  }
+
+  .modal-title,
+  .lead {
+    color: var(--cl-text);
+  }
+
+  .Toastify__toast-theme--light {
+    background: rgba(0, 0, 0, 0.15) !important;
+    backdrop-filter: blur(20px);
+    color: var(--cl-text-2)
+  }
+}
+
+.channel-dropdown:hover {
+  .btn.btn,
+  .dropdown-toggle.btn {
+    background-color: #d3d4d5;
+  }
+}
