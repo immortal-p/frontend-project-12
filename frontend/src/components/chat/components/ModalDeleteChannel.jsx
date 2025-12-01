@@ -35,7 +35,7 @@ const ModalDeleteChannel = ({ channel, onChannelDefault, show, onHide }) => {
         <Modal.Title id="modalToggleLabel">{t('chat.deleteChannelModal.title')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p className="lead">{t('chat.deleteChannelModal.confirmMessage')}</p>
+        <p className="lead fw-normal">{t('chat.deleteChannelModal.confirmMessage')}</p>
         <div className="d-flex justify-content-end">
           <Button variant="secondary" className="me-2" onClick={onHide}>
             {t('chat.deleteChannelModal.cancel')}

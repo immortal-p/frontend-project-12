@@ -8,8 +8,7 @@ import { BsArrowRightSquare } from 'react-icons/bs'
 import { IoCheckmarkDoneOutline, IoCheckmarkOutline } from 'react-icons/io5'
 import { Form, Button } from 'react-bootstrap'
 import { addMessage, fetchMessages } from '../../../slices/chatSlice'
-import '../../utils/style.css'
-import checkTheme from '../../utils/checkTheme.js'
+import '../../utils/theme.css'
 import { useTheme } from '../../utils/useTheme.js'
 
 const MessagesBox = ({ currentChannelId, t }) => {
@@ -24,7 +23,6 @@ const MessagesBox = ({ currentChannelId, t }) => {
   const messageEndRef = useRef(null)
   const currentMessages = messages.filter(msg => msg.channelId === currentChannelId)
   const totalMessages = currentMessages.length
-  const { theme, setTheme } = useTheme()
 
   useEffect(() => {
     if (currentChannelId) {
@@ -65,9 +63,8 @@ const MessagesBox = ({ currentChannelId, t }) => {
   }
   const builderMessage = message => (
     <div key={message.id} className="text-brak mb-2 text-container">
-      <div className={`${checkTheme(theme, "text-second-cl text-light2", "text-muted")}`}>
-        <b>{message.username}</b>
-        :
+      <div className="text-second-cl text-light2">
+        <b>{`${message.username}: `}</b>
         {message.body}
       </div>
       {message.status === 'sent' && <IoCheckmarkDoneOutline size={20} className="doneCheck" />}
@@ -80,9 +77,9 @@ const MessagesBox = ({ currentChannelId, t }) => {
       <div className="d-flex flex-column h-100">
         <div className="mb-4 p-3 shadow-sm small">
           <p className="m-0">
-            <b className={`fs-6 ${checkTheme(theme, "text-second-cl text-light2")}`}>{`# ${currentChannel?.name || t('chat.selectChannel')}`}</b>
+            <b className="fs-6">{`# ${currentChannel?.name || t('chat.selectChannel')}`}</b>
           </p>
-          <span className={`${checkTheme(theme, "text-second-cl text-light2")}`}>{t('chat.messages', { count: totalMessages })}</span>
+          <span className="text-second-cl text-light2">{t('chat.messages', { count: totalMessages })}</span>
         </div>
 
         <div id="messages-box" className="chat-messages overflow-auto px-5 ">
@@ -107,7 +104,7 @@ const MessagesBox = ({ currentChannelId, t }) => {
                 style={{ border: 'none' }}
                 type="submit"
                 variant="group-vertical"
-                className="btn"
+                className="btn-send-mess"
                 disabled={newMessage.trim().length <= 0}
               >
                 <BsArrowRightSquare size={20} />
