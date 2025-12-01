@@ -4,7 +4,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import {
   fetchChannels,
 } from '../../slices/chatSlice'
-import './utils/chat.css'
+import './utils/chat.scss'
+import '../utils/theme.scss'
 import { Container, Button, Nav, ButtonGroup, Dropdown, Navbar } from 'react-bootstrap'
 import { BsPlusSquare } from 'react-icons/bs'
 import { ModalDeleteChannel } from './components/ModalDeleteChannel.jsx'
@@ -13,10 +14,8 @@ import LanguageSwitcher from '../LanguageSwitcher.jsx'
 import { useTranslation } from 'react-i18next'
 import { ToastContainer, toast } from 'react-toastify'
 import MessagesBox from './components/MessageBox.jsx'
-import '../utils/style.css'
 import { GiBoomerangSun } from "react-icons/gi";
 import { GiMoonClaws } from "react-icons/gi";
-import checkTheme from '../utils/checkTheme.js'
 import { useTheme } from '../utils/useTheme.js'
 
 const Chat = () => {
@@ -115,14 +114,14 @@ const Chat = () => {
 
   const builderChannel = (channel) => {
     return (
-      <Nav.Item key={channel.id} className={`w-100 ${checkTheme(theme, "channel-bg")}`} as="li">
+      <Nav.Item key={channel.id} className="w-100" as="li">
         {!channel.removable
           ? (
               <Button
                 style={{ border: 'none' }}
                 variant={channel.id === currentChannelId ? 'secondary' : 'light'}
                 type="button"
-                className={`w-100 rounded-0 text-start text-truncate ${checkTheme(theme, "text-second-cl text-light2")}`}
+                className="w-100 rounded-0 text-start text-truncate text-second-cl"
                 onClick={() => handleChannelClick(channel.id)}
               >
                 <span className="me-1" aria-hidden="true">
@@ -138,7 +137,7 @@ const Chat = () => {
                   variant={channel.id === currentChannelId
                     ? 'secondary'
                     : 'light'}
-                  className={`w-100 rounded-0 text-start text-truncate ${checkTheme(theme, "text-second-cl text-light2")}`}
+                  className="w-100 rounded-0 text-start text-truncate text-second-cl text-light2"
                   onClick={() => handleChannelClick(channel.id)}
                   aria-label={`Канал ${channel.name}`}
                 >
@@ -150,7 +149,7 @@ const Chat = () => {
                 <Dropdown.Toggle
                   style={{ borderRadius: 0, border: 0}}
                   variant={channel.id === currentChannelId ? 'secondary' : 'light'}
-                  className="flex-grow-0 dropdown-toggle-split"
+                  className="dropdown-toggle-split"
                 >
                   <span className="visually-hidden">{t('chat.channelManagement')}</span>
                 </Dropdown.Toggle>
@@ -196,10 +195,10 @@ const Chat = () => {
         }}
       />
 
-      <div className={`d-flex flex-column h-100 ${checkTheme(theme, "dark-theme-bg")}`}>
-        <Navbar bg="white" extand="lg" className={`shadow-sm navbar ${checkTheme(theme, "glass-card bg-card")}`}>
+      <div className="d-flex flex-column h-100 bg-fon">
+        <Navbar bg="white" extand="lg" className="shadow-sm navbar glass-card bg-card">
           <Container>
-            <Navbar.Brand as={Link} to="/" className={`${checkTheme(theme, "text-first-cl text-light")}`}>
+            <Navbar.Brand as={Link} to="/" className="text-first-cl">
               {t('nameChat')}
             </Navbar.Brand>
 
@@ -219,10 +218,10 @@ const Chat = () => {
           </Container>
         </Navbar>
         <Container className="h-100 my-4 overflow-hidden rounded shadow">
-          <div className={`row h-100 flex-md-row ${checkTheme(theme, "glass-card bg-card", "bg-white")}`}>
+          <div className="row h-100 flex-md-row glass-card bg-card">
             <div className={`col-4 col-md-2 border-end px-0 flex-column h-100 d-flex`}>
               <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
-                <b className={`${checkTheme(theme, "text-second-cl text-light2")}`}>{t('chat.title')}</b>
+                <b className="text-second-cl">{t('chat.title')}</b>
                 <Button
                   variant="group-vertical"
                   className="p-0 text-primary"

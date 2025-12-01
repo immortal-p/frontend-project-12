@@ -14,12 +14,11 @@ import {
   FormLabel,
   Button,
 } from 'react-bootstrap'
-import './utils/style.css'
+import './utils/theme.css'
 import { useAuth } from '../slices/useAuth.js'
 import { GiBoomerangSun } from "react-icons/gi";
 import { GiMoonClaws } from "react-icons/gi";
 import LanguageSwitcher from './LanguageSwitcher.jsx'
-import checkTheme from './utils/checkTheme.js'
 import { useTheme } from './utils/useTheme.js'
 
 const LogInForm = () => {
@@ -47,10 +46,10 @@ const LogInForm = () => {
 
   return (
     <div className="h-100">
-      <div className={`d-flex flex-column h-100 ${checkTheme(theme, "dark-theme-bg")}`}>
-        <Navbar className={`shadow-sm navbar ${checkTheme(theme, "glass-card bg-card")}`}>
+      <div className="d-flex flex-column h-100 bg-fon">
+        <Navbar className="shadow-sm navbar glass-card bg-card">
           <Container>
-            <Navbar.Brand className={`${checkTheme(theme, "text-first-cl text-light")}`} href="/">{t('nameChat')}</Navbar.Brand>
+            <Navbar.Brand className="text-first-cl" href="/">{t('nameChat')}</Navbar.Brand>
             <Container className="d-flex justify-content-end">
               <LanguageSwitcher />
               <Button className="m-1 p-1 icon-parent" onClick={toggleTheme}>
@@ -66,7 +65,7 @@ const LogInForm = () => {
         <Container fluid className="h-100">
           <Row className="justify-content-center align-content-center h-100">
             <Col xs={12} md={8} xxl={6}>
-              <Card className={`${checkTheme(theme, "glass-card bg-card", "navbar-light bg-light")}`}>
+              <Card className="glass-card bg-card">
                 <Card.Body className="row p-5">
                   <Col
                     xs={12}
@@ -79,7 +78,7 @@ const LogInForm = () => {
                   <Formik initialValues={values} onSubmit={handleSubmit}>
                     {({ status }) => (
                       <Form className="col-12 col-md-6 mt-3 mt-md-0">
-                        <h1 className={`text-center mb-4 ${checkTheme(theme, "text-first-cl text-light", "")}`}>{t('auth.login.title')}</h1>
+                        <h1 className="text-center mb-4 text-first-cl">{t('auth.login.title')}</h1>
 
                         <FormGroup className="form-floating mb-3">
                           <Field name="username">
@@ -96,7 +95,7 @@ const LogInForm = () => {
                               />
                             )}
                           </Field>
-                          <FormLabel className={`${checkTheme(theme, 'text-first-cl text-light')}`} htmlFor="username">{t('auth.login.name')}</FormLabel>
+                          <FormLabel className="text-first-cl" htmlFor="username">{t('auth.login.name')}</FormLabel>
                         </FormGroup>
 
                         <FormGroup className="form-floating mb-3">
@@ -113,7 +112,7 @@ const LogInForm = () => {
                               />
                             )}
                           </Field>
-                          <FormLabel className={`${checkTheme(theme, 'text-first-cl text-light')}`} htmlFor="password">{t('auth.login.password')}</FormLabel>
+                          <FormLabel className="text-first-cl" htmlFor="password">{t('auth.login.password')}</FormLabel>
                           {authStatus && <div className="invalid-tooltip d-block">{authStatus}</div>}
                         </FormGroup>
 
@@ -126,7 +125,7 @@ const LogInForm = () => {
                 </Card.Body>
 
                 <Card.Footer className="p-4 text-center">
-                  <span className={`${checkTheme(theme, "text-second-cl text-light2")}`}>
+                  <span className="text-second-cl text-light2">
                     {t('auth.login.noAccount')}
                   </span>
                   <a href="" className="m-2" onClick={handleSignUp}>
