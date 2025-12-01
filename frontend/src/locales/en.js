@@ -1,17 +1,17 @@
 export default {
   translation: {
     language: 'en',
-    nameChat: 'Real-Time Chat',
+    nameChat: 'Neko Chat',
     lngRu: 'Ru',
     lngEn: 'En',
     auth: {
       login: {
         title: 'Login',
-        name: 'Nickname',
+        name: 'Your nickname',
         password: 'Password',
         button: 'Login',
         noAccount: `Don't have account?`,
-        buttonSignUp: 'Registration',
+        buttonSignUp: 'Sign Up',
       },
       register: {
         title: 'Registration',
@@ -19,6 +19,8 @@ export default {
         password: 'Password',
         confirmPassword: 'Confirm password',
         button: 'Registration',
+        account: 'Remembered',
+        buttonSignIn: 'Sign In'
       },
       errors: {
         usernameLength: 'From 3 to 20 characters',
@@ -81,7 +83,7 @@ export default {
     errors: {
       nameLength: 'From 3 to 20 characters',
       existingNames: 'Must be unique',
-      required: 'Required',
+      required: 'Required field',
     },
   },
 }

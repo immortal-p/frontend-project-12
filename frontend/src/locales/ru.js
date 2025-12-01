@@ -1,7 +1,7 @@
 export default {
   translation: {
     language: 'ru',
-    nameChat: 'Real-Time Chat',
+    nameChat: 'Neko Chat',
     lngRu: 'Ru',
     lngEn: 'En',
     auth: {
@@ -19,6 +19,8 @@ export default {
         password: 'Пароль',
         confirmPassword: 'Подтвердите пароль',
         button: 'Зарегистрироваться',
+        account: 'Вспомнили',
+        buttonSignIn: 'Войти'
       },
       errors: {
         usernameLength: 'От 3 до 20 символов',
