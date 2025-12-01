@@ -2,7 +2,7 @@ import i18next from "i18next";
 import changeLng from "./utils/changeLng";
 import { ButtonGroup, Button } from "react-bootstrap";
 import { useTranslation } from 'react-i18next'
-import './utils/style.css'
+import './utils/theme.css'
 
 export default () => {
     const { t } = useTranslation()
